@@ -35,7 +35,7 @@ A modern web application for visualizing student statistics from the 42 API, inc
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ft_stats.git
+git clone https://github.com/pquline/ft_stats.git
 cd ft_stats
 ```
 
