@@ -143,66 +143,8 @@ export default function Home() {
     <main className="flex-1">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid grid-cols-1 lg:grid-cols-3">
-          {/* Left side - Search and Results */}
-          <div className="lg:col-span-2 space-y-6 w-full">
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-mono">Statistics</CardTitle>
-                <CardDescription>
-                  Enter a login to load student&apos;s statistics
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSearch} className="space-y-4">
-                  <div className="space-y-2">
-                    <Input
-                      id="login"
-                      value={login}
-                      onChange={(e) => setLogin(e.target.value)}
-                      placeholder="Enter student login"
-                      required
-                      className="bg-background/50 backdrop-blur-sm"
-                    />
-                  </div>
-                  <div className="flex gap-4">
-                    <Button
-                      type="submit"
-                      disabled={
-                        !hasCredentials ||
-                        isAuthenticating ||
-                        isLoadingStats ||
-                        !login
-                      }
-                      className="w-full"
-                    >
-                      {isLoadingStats ? "Loading..." : "Load Statistics"}
-                    </Button>
-                  </div>
-                </form>
-
-                {error && (
-                  <div className="mt-4 p-4 bg-red-50/80 backdrop-blur-sm text-red-700 rounded-md">
-                    {error}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <div className="w-full space-y-6">
-              {stats && (
-                <div className="w-full overflow-hidden">
-                  <EvaluationsCard
-                    stats={stats}
-                    evaluationsData={evaluationsData}
-                  />
-                </div>
-              )}
-              {hallVoiceSounds && <HallVoiceCard sounds={hallVoiceSounds} />}
-            </div>
-          </div>
-
-          {/* Right side - Credentials */}
-          <div className={`lg:col-span-1 ${(stats || hallVoiceSounds) ? 'mt-6 lg:mt-0' : ''} lg:ml-6`}>
+          {/* Left side - Credentials */}
+          <div className={`lg:col-span-1 ${(stats || hallVoiceSounds) ? 'mt-6 lg:mt-0' : ''} lg:mr-6`}>
             <Card className="sticky top-8">
               <div className="relative">
                 <Link
@@ -289,6 +231,64 @@ export default function Home() {
                 </form>
               </CardContent>
             </Card>
+          </div>
+
+          {/* Right side - Search and Results */}
+          <div className="lg:col-span-2 space-y-6 w-full">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-mono">Statistics</CardTitle>
+                <CardDescription>
+                  Enter a login to load student&apos;s statistics
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSearch} className="space-y-4">
+                  <div className="space-y-2">
+                    <Input
+                      id="login"
+                      value={login}
+                      onChange={(e) => setLogin(e.target.value)}
+                      placeholder="Enter student login"
+                      required
+                      className="bg-background/50 backdrop-blur-sm"
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <Button
+                      type="submit"
+                      disabled={
+                        !hasCredentials ||
+                        isAuthenticating ||
+                        isLoadingStats ||
+                        !login
+                      }
+                      className="w-full"
+                    >
+                      {isLoadingStats ? "Loading..." : "Load Statistics"}
+                    </Button>
+                  </div>
+                </form>
+
+                {error && (
+                  <div className="mt-4 p-4 bg-red-50/80 backdrop-blur-sm text-red-700 rounded-md">
+                    {error}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <div className="w-full space-y-6">
+              {stats && (
+                <div className="w-full overflow-hidden">
+                  <EvaluationsCard
+                    stats={stats}
+                    evaluationsData={evaluationsData}
+                  />
+                </div>
+              )}
+              {hallVoiceSounds && <HallVoiceCard sounds={hallVoiceSounds} />}
+            </div>
           </div>
         </div>
       </div>
