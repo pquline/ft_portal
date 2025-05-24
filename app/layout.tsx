@@ -15,6 +15,22 @@ const firaCode = Fira_Code({
 export const metadata: Metadata = {
   title: "ft_stats",
   description: "View students statistics at 42",
+  manifest: "/manifest.json",
+  icons: {
+    apple: "/pwa.png",
+    icon: "/pwa.png",
+  },
+  themeColor: "#000000",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "ft_stats",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 export default function RootLayout({
@@ -24,6 +40,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="apple-touch-icon" href="/pwa.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="ft_stats" />
+      </head>
       <body className={`${inter.className} ${firaCode.variable} bg-gradient-to-t from-primary/5 to-primary/10`}>
         <ThemeProvider
           attribute="class"
