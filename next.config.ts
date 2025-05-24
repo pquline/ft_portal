@@ -32,7 +32,8 @@ const nextConfig: NextConfig = withPWA({
     }
   ]
 })({
-  /* config options here */
+  reactStrictMode: true,
+  swcMinify: true,
 });
 
 export default nextConfig;
