@@ -4,8 +4,8 @@
   "description": "A modern web application for visualizing student statistics from the 42 API",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#1d1731",
+  "theme_color": "#1d1731",
   "icons": [
     {
       "src": "/pwa.png",
