@@ -26,7 +26,7 @@ export function HallVoiceCard({ sounds }: HallVoiceCardProps) {
           <CardDescription>Student&apos;s hall voice sounds</CardDescription>
         </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon"
           onClick={() => setIsExpanded(!isExpanded)}
           className="h-8 w-8"

@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${firaCode.variable}`}>
+      <body className={`${inter.className} ${firaCode.variable} bg-gradient-to-t from-primary/5 to-primary/10`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

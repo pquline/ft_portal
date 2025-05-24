@@ -89,7 +89,7 @@ export function AudioPlayer({ src, className, ...props }: AudioPlayerProps) {
   };
 
   return (
-    <div className={cn("flex flex-col gap-2 p-4 rounded-lg border bg-card text-card-foreground shadow-sm", className)} {...props}>
+    <div className={cn("flex flex-col gap-2 p-4 rounded-xl border bg-background dark:bg-background/50 text-card-foreground shadow-sm", className)} {...props}>
       <audio ref={audioRef} src={src} />
       <div className="flex items-center gap-2">
         <Button

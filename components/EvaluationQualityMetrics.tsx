@@ -48,7 +48,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card>
+      <Card className="dark:bg-background/30">
         <CardHeader>
           <CardTitle className="font-mono">Rating Distribution</CardTitle>
         </CardHeader>
@@ -64,7 +64,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
           ))}
         </CardContent>
       </Card>
-      <Card>
+      <Card className="dark:bg-background/30">
         <CardHeader>
           <CardTitle className="font-mono">Feedback Length Distribution</CardTitle>
         </CardHeader>

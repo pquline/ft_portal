@@ -1,6 +1,6 @@
 # ft_stats 📊
 
-A modern web application for visualizing student statistics from the 42 API, including evaluations.
+A modern web application for visualizing student statistics from the 42 API, including evaluations data.
 
 ## ✨ Features
 

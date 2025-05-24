@@ -1,0 +1,17 @@
+{
+  "name": "ft_stats",
+  "short_name": "ft_stats",
+  "description": "A modern web application for visualizing student statistics from the 42 API",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/pwa.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

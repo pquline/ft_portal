@@ -141,11 +141,11 @@ export default function Home() {
 
   return (
     <main className="flex-1">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3">
           {/* Left side - Search and Results */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="">
+          <div className="lg:col-span-2 space-y-6 w-full">
+            <Card>
               <CardHeader>
                 <CardTitle className="font-mono">Statistics</CardTitle>
                 <CardDescription>
@@ -188,19 +188,21 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <div className="grid gap-6">
+            <div className="w-full space-y-6">
               {stats && (
-                <EvaluationsCard
-                  stats={stats}
-                  evaluationsData={evaluationsData}
-                />
+                <div className="w-full overflow-hidden">
+                  <EvaluationsCard
+                    stats={stats}
+                    evaluationsData={evaluationsData}
+                  />
+                </div>
               )}
               {hallVoiceSounds && <HallVoiceCard sounds={hallVoiceSounds} />}
             </div>
           </div>
 
           {/* Right side - Credentials */}
-          <div className="lg:col-span-1">
+          <div className={`lg:col-span-1 ${(stats || hallVoiceSounds) ? 'mt-6 lg:mt-0' : ''} lg:ml-6`}>
             <Card className="sticky top-8">
               <div className="relative">
                 <Link
@@ -267,7 +269,7 @@ export default function Home() {
                   <div className="flex w-full gap-4">
                     <Button
                       type="button"
-                      variant="destructive"
+                      variant="outline"
                       onClick={
                         hasCredentials ? handleForgetCredentials : undefined
                       }

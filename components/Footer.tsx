@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="mt-auto py-8 bg-secondary/10 backdrop-blur-sm border-t">
+    <footer className="mt-auto py-8 bg-white dark:bg-secondary/50 backdrop-blur-sm border-t">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-foreground/70 font-mono">
         <div className="flex justify-center gap-2 text-xs mb-4">
           <Link
@@ -27,8 +27,8 @@ export function Footer() {
           </Link>
         </div>
         <div>
-          <span className="text-primary">$</span>
-          {" "}made with{" "}
+          <span className="text-primary">$&#62; </span>./made
+          {" "}with{" "}
           <span className="text-red-500">&lt;3</span> by{" "}
           <Link
             href="https://github.com/pquline"

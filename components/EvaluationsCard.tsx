@@ -94,7 +94,7 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
           </CardDescription>
         </div>
         <Button
-          variant="ghost"
+          variant="outline"
           size="icon"
           onClick={() => setIsExpanded(!isExpanded)}
           className="h-8 w-8"
@@ -109,9 +109,9 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
       {isExpanded && (
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card className="">
+            <Card className="dark:bg-background/30">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 font-mono">
+                <CardTitle className="text-sm font-medium text-gray-400 font-mono">
                   Total Evaluations
                 </CardTitle>
               </CardHeader>
@@ -121,9 +121,9 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
                 </div>
               </CardContent>
             </Card>
-            <Card className="">
+            <Card className="dark:bg-background/30">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 font-mono">
+                <CardTitle className="text-sm font-medium text-gray-400 font-mono">
                   Total Feedbacks
                 </CardTitle>
               </CardHeader>
@@ -133,9 +133,9 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
                 </div>
               </CardContent>
             </Card>
-            <Card className="">
+            <Card className="dark:bg-background/30">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 font-mono">
+                <CardTitle className="text-sm font-medium text-gray-400 font-mono">
                   Average Rating
                 </CardTitle>
               </CardHeader>
@@ -151,7 +151,7 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
 
           <EvaluationQualityMetrics evaluations={evaluationsData} />
 
-          <Card className="flex flex-col">
+          <Card className="flex flex-col dark:bg-background/30">
             <CardHeader className="items-center pb-0">
               <CardTitle className="font-mono">Flag Distribution</CardTitle>
             </CardHeader>
@@ -160,10 +160,9 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
                 {Object.entries(stats.flagStats).map(([flag, count]) => {
                   const flagColor = getFlagColor(flag);
                   return (
-                    <Card key={flag} className="relative overflow-hidden">
+                    <Card key={flag} className="relative overflow-hidden dark:bg-background/30">
                       <div
                         className="absolute inset-0 opacity-10"
-                        style={{ backgroundColor: flagColor }}
                       />
                       <CardHeader className="pb-2">
                         <CardTitle className="text-base">{flag}</CardTitle>
@@ -188,7 +187,7 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="dark:bg-background/30">
             <CardHeader className="pb-2">
               <CardTitle className="font-mono">Project Distribution</CardTitle>
             </CardHeader>
