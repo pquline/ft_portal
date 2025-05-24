@@ -8,6 +8,15 @@ declare module 'next-pwa' {
     skipWaiting?: boolean;
     scope?: string;
     sw?: string;
+    buildExcludes?: Array<string | RegExp>;
+    publicExcludes?: Array<string | RegExp>;
+    fallbacks?: {
+      document?: string;
+      image?: string;
+      font?: string;
+      audio?: string;
+      video?: string;
+    };
   }
 
   function withPWA(config: PWAConfig): (nextConfig: NextConfig) => NextConfig;
