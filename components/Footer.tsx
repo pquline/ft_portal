@@ -38,14 +38,14 @@ export function Footer() {
           >
             pquline
           </Link>
-          <span> @ </span>
+          <span> on </span>
           <Link
-            href="https://42.fr"
+            href="https://github.com/pquline/ft_stats"
             target="_blank"
             rel="noopener noreferrer"
             className="text-foreground hover:underline"
           >
-            42 Paris
+            GitHub
           </Link>
           <span className="text-yellow-400 animate-pulse"> █</span>
         </div>
