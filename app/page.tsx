@@ -141,10 +141,10 @@ export default function Home() {
 
   return (
     <main className="flex-1">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="grid grid-cols-1 lg:grid-cols-3">
           {/* Left side - Credentials */}
-          <div className={`lg:col-span-1 ${(stats || hallVoiceSounds) ? 'mt-6 lg:mt-0' : ''} lg:mr-6`}>
+          <div className="lg:col-span-1 lg:mr-6">
             <Card className="sticky top-8">
               <div className="relative">
                 <Link
@@ -234,7 +234,7 @@ export default function Home() {
           </div>
 
           {/* Right side - Search and Results */}
-          <div className="lg:col-span-2 space-y-6 w-full">
+          <div className="lg:col-span-2 space-y-4 pt-4 lg:py-0">
             <Card>
               <CardHeader>
                 <CardTitle className="font-mono">Statistics</CardTitle>
@@ -278,7 +278,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <div className="w-full space-y-6">
+            <div className="grid gap-4 w-full max-w-full overflow-hidden">
               {stats && (
                 <div className="w-full overflow-hidden">
                   <EvaluationsCard

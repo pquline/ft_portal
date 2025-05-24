@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     apple: "/pwa.png",
     icon: "/pwa.png",
   },
-  themeColor: "#000000",
+  themeColor: "#1d1731",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
