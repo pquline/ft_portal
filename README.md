@@ -1,6 +1,6 @@
-# ft_stats 📊
+# ft_stats
 
-A modern web application for visualizing student statistics from the 42 API, including evaluations data.
+A web application for visualizing student statistics from the 42 API, including evaluations data.
 
 ## ✨ Features
 
@@ -104,17 +104,3 @@ yarn dev
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- 42 API for providing the data
-- shadcn/ui for the beautiful component library
-- Recharts and Chart.js for the visualization capabilities
-
----
-
-$> made w/ <3 by [pquline](https://github.com/pquline)
