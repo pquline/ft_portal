@@ -29,15 +29,7 @@ export function Footer() {
         <div>
           <span className="text-primary">$&#62; </span>./made
           {" "}with{" "}
-          <span className="text-red-500">&lt;3</span> by{" "}
-          <Link
-            href="https://github.com/pquline"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-foreground hover:underline"
-          >
-            pquline
-          </Link>
+          <span className="text-red-500">&lt;3</span>
           <span> on </span>
           <Link
             href="https://github.com/pquline/ft_stats"
