@@ -183,7 +183,7 @@ export default function Home() {
                       onChange={(e) =>
                         setCredentials({
                           ...credentials,
-                          clientId: e.target.value,
+                          clientId: e.target.value.toLowerCase().replace(/\s+/g, ''),
                         })
                       }
                       placeholder="Enter your client_id"
@@ -200,7 +200,7 @@ export default function Home() {
                       onChange={(e) =>
                         setCredentials({
                           ...credentials,
-                          clientSecret: e.target.value,
+                          clientSecret: e.target.value.toLowerCase().replace(/\s+/g, ''),
                         })
                       }
                       placeholder="Enter your client_secret"
@@ -248,7 +248,7 @@ export default function Home() {
                     <Input
                       id="login"
                       value={login}
-                      onChange={(e) => setLogin(e.target.value)}
+                      onChange={(e) => setLogin(e.target.value.toLowerCase().replace(/\s+/g, ''))}
                       placeholder="Enter student login"
                       required
                       className="bg-background/50 backdrop-blur-sm"
