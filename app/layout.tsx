@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -12,24 +12,25 @@ const firaCode = Fira_Code({
   variable: '--font-fira-code',
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#1d1731",
+};
+
 export const metadata: Metadata = {
   title: "ft_stats",
   description: "View students statistics at 42",
   manifest: "/manifest.json",
   icons: {
     apple: "/pwa.png",
-    icon: "/pwa.png",
+    icon: "/favicon.ico",
   },
-  themeColor: "#1d1731",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "ft_stats",
-  },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
   },
 };
 
