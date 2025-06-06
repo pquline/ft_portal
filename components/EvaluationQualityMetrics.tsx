@@ -39,7 +39,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
         else if (length <= 500) lengthRanges['201-500']++;
         else lengthRanges['500+']++;
 
-        if (feedback.rating >= 1 && feedback.rating <= 5) {
+        if (feedback.rating >= 0 && feedback.rating <= 5) {
           ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
         }
       });
