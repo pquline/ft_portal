@@ -13,7 +13,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
     '101-200': 0,
     '201-500': 0,
     '500+': 0,
-    'Writer\'s soul': 0,
+    'Writer\'s soul (180+)': 0,
   };
 
   const ratingDistribution = {
@@ -32,7 +32,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
       evaluation.feedbacks.forEach(feedback => {
         totalFeedback++;
         const length = evaluation.comment?.length || 0;
-        if (length >= 180) lengthRanges['Writer\'s soul']++;
+        if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
         if (length <= 50) lengthRanges['0-50']++;
         else if (length <= 100) lengthRanges['51-100']++;
         else if (length <= 200) lengthRanges['101-200']++;
@@ -73,9 +73,18 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
             <div key={range} className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium">{range}</span>
-                <span className="text-sm text-gray-500">{count} feedbacks</span>
+                <span className="text-sm text-gray-500">
+                  {range === 'Writer\'s soul (180+)'
+                    ? `${count}/42 feedbacks`
+                    : `${count} feedbacks`}
+                </span>
               </div>
-              <Progress value={(count / totalFeedback) * 100} className="h-2" />
+              <Progress
+                value={range === 'Writer\'s soul (180+)'
+                  ? (count / 42) * 100
+                  : (count / totalFeedback) * 100}
+                className="h-2"
+              />
             </div>
           ))}
         </CardContent>
