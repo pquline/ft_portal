@@ -1,6 +1,6 @@
-# ft_stats
+# ft_portal
 
-A web application for visualizing student statistics from the 42 API, including evaluations data.
+A web application for visualizing student data from the 42 API, including evaluations data.
 
 ## ✨ Features
 
@@ -35,8 +35,8 @@ A web application for visualizing student statistics from the 42 API, including 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/pquline/ft_stats.git
-cd ft_stats
+git clone https://github.com/pquline/ft_portal.git
+cd ft_portal
 ```
 
 2. Install dependencies:

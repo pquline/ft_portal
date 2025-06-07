@@ -13,7 +13,7 @@ export default function Terms() {
         <div>
           <h2 className="text-2xl font-bold mb-2 font-mono">Terms of Use</h2>
           <p className="text-muted-foreground text-sm">
-            Rules and guidelines for using ft_stats
+            Rules and guidelines for using ft_portal
           </p>
         </div>
 
@@ -23,7 +23,7 @@ export default function Terms() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              By using <Link href="/" className="text-foreground font-mono">ft_stats</Link>, you agree to:
+              By using <Link href="/" className="text-foreground font-mono">ft_portal</Link>, you agree to:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>Use the service in accordance with 42&apos;s terms of service</li>
@@ -39,7 +39,7 @@ export default function Terms() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              <Link href="/" className="text-foreground font-mono">ft_stats</Link> uses the official 42 API. You are responsible for:
+              <Link href="/" className="text-foreground font-mono">ft_portal</Link> uses the official 42 API. You are responsible for:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>Keeping your API credentials secure</li>
@@ -55,7 +55,7 @@ export default function Terms() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              <Link href="/" className="text-foreground font-mono">ft_stats</Link> is provided as is without any warranties. We are not responsible for:
+              <Link href="/" className="text-foreground font-mono">ft_portal</Link> is provided as is without any warranties. We are not responsible for:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>Any misuse of the service</li>
@@ -71,7 +71,7 @@ export default function Terms() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              We reserve the right to modify these terms at any time. Continued use of <Link href="/" className="text-foreground font-mono">ft_stats</Link> after changes constitutes acceptance of the new terms.
+              We reserve the right to modify these terms at any time. Continued use of <Link href="/" className="text-foreground font-mono">ft_portal</Link> after changes constitutes acceptance of the new terms.
             </p>
           </CardContent>
         </Card>

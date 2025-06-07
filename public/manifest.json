@@ -1,7 +1,7 @@
 {
-  "name": "ft_stats",
-  "short_name": "ft_stats",
-  "description": "A modern web application for visualizing student statistics from the 42 API",
+  "name": "ft_portal",
+  "short_name": "ft_portal",
+  "description": "A modern web application for visualizing student data from the 42 API",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1d1731",

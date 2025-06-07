@@ -6,22 +6,22 @@ export default function About() {
     <main className="flex-1">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
-          <h2 className="text-2xl font-bold mb-2 font-mono">About ft_stats</h2>
+          <h2 className="text-2xl font-bold mb-2 font-mono">About ft_portal</h2>
           <p className="text-muted-foreground text-sm">
-            The ultimate tool for viewing 42 student statistics
+            The ultimate tool for viewing 42 student data
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">What is ft_stats?</CardTitle>
+            <CardTitle className="font-mono">What is ft_portal?</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
               <Link href="/" className="text-foreground font-mono">
-                ft_stats
+                ft_portal
               </Link>{" "}
-              is a powerful tool that allows you to view detailed statistics
+              is a powerful tool that allows you to view detailed insights
               about 42 students, such as their evaluations. It provides insights
               into student performance and activity patterns within the 42
               network.
@@ -41,7 +41,7 @@ export default function About() {
               <p className="text-muted-foreground">
                 To use{" "}
                 <Link href="/" className="text-foreground font-mono">
-                  ft_stats
+                  ft_portal
                 </Link>
                 , you need to authenticate with your 42 API credentials. You can
                 get these from your{" "}
@@ -62,15 +62,15 @@ export default function About() {
               <h3 className="mb-4 font-mono text-sm">2. Search for Students</h3>
               <p className="text-muted-foreground">
                 Once authenticated, you can search for any student by their
-                login. The tool will fetch and display comprehensive statistics
+                login. The tool will fetch and display comprehensive insights
                 about their activity at 42.
               </p>
             </div>
 
             <div>
-              <h3 className="mb-4 font-mono text-sm">3. View Statistics</h3>
+              <h3 className="mb-4 font-mono text-sm">3. View Insights</h3>
               <p className="text-muted-foreground">
-                The tool provides several categories of statistics:
+                The tool provides several categories of insights:
               </p>
               <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
                 <li>
@@ -104,7 +104,7 @@ export default function About() {
           <CardContent>
             <p className="text-muted-foreground">
               <Link href="/" className="text-foreground font-mono">
-                ft_stats
+                ft_portal
               </Link>{" "}
               is designed with privacy and security in mind. All data is fetched
               directly from the 42 API and is not stored on our servers. Your

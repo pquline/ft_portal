@@ -23,7 +23,7 @@ export default function Privacy() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              <Link href="/" className="text-foreground font-mono">ft_stats</Link> is designed with privacy as a core principle. We do not collect, store, or process any personal data on our servers. All data is fetched directly from the 42 API and is only stored locally in your browser.
+              <Link href="/" className="text-foreground font-mono">ft_portal</Link> is designed with privacy as a core principle. We do not collect, store, or process any personal data on our servers. All data is fetched directly from the 42 API and is only stored locally in your browser.
             </p>
           </CardContent>
         </Card>
@@ -52,7 +52,7 @@ export default function Privacy() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              <Link href="/" className="text-foreground font-mono">ft_stats</Link> interacts with the following third-party services:
+              <Link href="/" className="text-foreground font-mono">ft_portal</Link> interacts with the following third-party services:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>The official 42 API for student data and statistics</li>
