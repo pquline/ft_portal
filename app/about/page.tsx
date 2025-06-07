@@ -62,13 +62,13 @@ export default function About() {
               <h3 className="mb-4 font-mono text-sm">2. Search for Students</h3>
               <p className="text-muted-foreground">
                 Once authenticated, you can search for any student by their
-                login. The tool will fetch and display comprehensive statistics
+                login. The tool will fetch and display comprehensive insights
                 about their activity at 42.
               </p>
             </div>
 
             <div>
-              <h3 className="mb-4 font-mono text-sm">3. View Statistics</h3>
+              <h3 className="mb-4 font-mono text-sm">3. View Insights</h3>
               <p className="text-muted-foreground">
                 The tool provides several categories of insights:
               </p>

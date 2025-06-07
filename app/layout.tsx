@@ -21,7 +21,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "ft_portal",
-  description: "View students statistics at 42",
+  description: "View students data at 42",
   manifest: "/manifest.json",
   icons: {
     apple: "/pwa.png",

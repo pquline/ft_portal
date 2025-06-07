@@ -1,6 +1,6 @@
 # ft_portal
 
-A web application for visualizing student statistics from the 42 API, including evaluations data.
+A web application for visualizing student data from the 42 API, including evaluations data.
 
 ## ✨ Features
 

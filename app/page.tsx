@@ -124,14 +124,14 @@ export default function Home() {
       setEvaluationsData(evaluations);
       setHallVoiceSounds(hallVoice);
 
-      toast.success("Statistics loaded successfully");
+      toast.success("Data loaded successfully");
     } catch (err) {
       const errorMessage =
         err instanceof Error
           ? err.message
-          : "Failed to fetch evaluation statistics";
+          : "Failed to fetch evaluation data";
       setError(errorMessage);
-      toast.error("Failed to fetch statistics", {
+      toast.error("Failed to fetch data", {
         description: errorMessage.replace(/'/g, "&apos;"),
       });
     } finally {
@@ -237,9 +237,9 @@ export default function Home() {
           <div className="lg:col-span-2 space-y-4 lg:space-y-6 pt-4 lg:py-0">
             <Card>
               <CardHeader>
-                <CardTitle className="font-mono">Statistics</CardTitle>
+                <CardTitle className="font-mono">Data</CardTitle>
                 <CardDescription>
-                  Enter a login to load student&apos;s statistics
+                  Enter a login to load student&apos;s data
                 </CardDescription>
               </CardHeader>
               <CardContent>
