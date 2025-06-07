@@ -20,7 +20,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "ft_stats",
+  title: "ft_portal",
   description: "View students statistics at 42",
   manifest: "/manifest.json",
   icons: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "ft_stats",
+    title: "ft_portal",
   },
 };
 
@@ -47,7 +47,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/pwa.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="ft_stats" />
+        <meta name="apple-mobile-web-app-title" content="ft_portal" />
       </head>
       <body className={`${inter.className} ${firaCode.variable} bg-gradient-to-t from-primary/5 to-primary/10`}>
         <ThemeProvider

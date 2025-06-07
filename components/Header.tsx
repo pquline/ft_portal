@@ -12,11 +12,11 @@ export function Header({ hasCredentials }: HeaderProps) {
         <div className="flex items-center gap-3">
           <Link href="/">
             <Avatar className="h-8 w-8">
-              <AvatarImage src="/ft_stats.png" alt="ft_stats logo" />
+              <AvatarImage src="/ft_portal.png" alt="ft_portal logo" />
             </Avatar>
           </Link>
           <Link href="/" className="text-lg font-semibold font-mono">
-            <h1 className="text-2xl font-bold text-primary-900">ft_stats</h1>
+            <h1 className="text-2xl font-bold text-primary-900">ft_portal</h1>
           </Link>
         </div>
         {(hasCredentials && (
