@@ -58,22 +58,6 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Card className="dark:bg-background/30">
         <CardHeader>
-          <CardTitle className="font-mono">Rating Distribution</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {Object.entries(ratingDistribution).map(([rating, count]) => (
-            <div key={rating} className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">{rating}★</span>
-                <span className="text-sm text-gray-500">{count} ratings</span>
-              </div>
-              <Progress value={(count / totalRatings) * 100} className="h-2" />
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-      <Card className="dark:bg-background/30">
-        <CardHeader>
           <CardTitle className="font-mono">Evaluation Length Distribution</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -93,6 +77,22 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
                   : (count / totalEvaluations) * 100}
                 className="h-2"
               />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+      <Card className="dark:bg-background/30">
+        <CardHeader>
+          <CardTitle className="font-mono">Rating Distribution</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {Object.entries(ratingDistribution).map(([rating, count]) => (
+            <div key={rating} className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium">{rating}★</span>
+                <span className="text-sm text-gray-500">{count} ratings</span>
+              </div>
+              <Progress value={(count / totalRatings) * 100} className="h-2" />
             </div>
           ))}
         </CardContent>
