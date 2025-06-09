@@ -1,43 +1,53 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
+import { useEffect, useState } from "react";
+import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { toast } from "sonner";
 
 export function ClientLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [hasCredentials, setHasCredentials] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkCredentials = () => {
-      const storedToken = localStorage.getItem("accessToken");
-      setHasCredentials(!!storedToken);
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/session");
+        if (!response.ok && !pathname.startsWith("/auth")) {
+          router.push("/auth");
+        }
+      } catch (error) {
+        if (!pathname.startsWith("/auth")) {
+          router.push("/auth");
+          if (error instanceof Error) {
+            toast.error(error.message || "Authentication failed");
+          } else {
+            toast.error("Failed to authenticate. Please try again.");
+          }
+        }
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    checkCredentials();
+    checkAuth();
+  }, [pathname, router]);
 
-    window.addEventListener('storage', checkCredentials);
-
-    const handleForget = () => setHasCredentials(false);
-    const handleUpdate = () => setHasCredentials(true);
-
-    window.addEventListener('credentials-forgotten', handleForget);
-    window.addEventListener('credentials-updated', handleUpdate);
-
-    return () => {
-      window.removeEventListener('storage', checkCredentials);
-      window.removeEventListener('credentials-forgotten', handleForget);
-      window.removeEventListener('credentials-updated', handleUpdate);
-    };
-  }, []);
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-secondary-50 flex flex-col">
-      <Header hasCredentials={hasCredentials} />
-      {children}
+      <Header />
+      <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );

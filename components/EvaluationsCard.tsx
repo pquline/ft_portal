@@ -24,13 +24,16 @@ interface EvaluationsCardProps {
   evaluationsData: Evaluation[];
 }
 
-type SortField = 'project' | 'total' | 'ok' | 'outstanding';
-type SortDirection = 'asc' | 'desc';
+type SortField = "project" | "total" | "ok" | "outstanding";
+type SortDirection = "asc" | "desc";
 
-export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps) {
+export function EvaluationsCard({
+  stats,
+  evaluationsData,
+}: EvaluationsCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [sortField, setSortField] = useState<SortField>('total');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [sortField, setSortField] = useState<SortField>("total");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   const colorPalette = [
     "hsl(var(--chart-1))",
@@ -41,42 +44,53 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
     "hsl(var(--chart-6))",
   ];
 
-  const totalFlags = Object.values(stats.flagStats).reduce((acc, count) => acc + count, 0);
+  const totalFlags = Object.values(stats.flagStats).reduce(
+    (acc, count) => acc + count,
+    0
+  );
 
   const getFlagColor = (flag: string) => {
     if (flag === "Ok") return "oklch(0.723 0.219 149.579)";
     if (flag === "Outstanding project") return "oklch(0.541 0.281 293.009)";
-    return colorPalette[Object.keys(stats.flagStats).indexOf(flag) % colorPalette.length];
+    return colorPalette[
+      Object.keys(stats.flagStats).indexOf(flag) % colorPalette.length
+    ];
   };
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortField(field);
-      setSortDirection('desc');
+      setSortDirection("desc");
     }
   };
 
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) return <ArrowUpDown className="h-4 w-4" />;
-    return sortDirection === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />;
+    return sortDirection === "asc" ? (
+      <ChevronUp className="h-4 w-4" />
+    ) : (
+      <ChevronDown className="h-4 w-4" />
+    );
   };
 
-  const sortProjects = (projects: [string, typeof stats.projectStats[string]][]): [string, typeof stats.projectStats[string]][] => {
+  const sortProjects = (
+    projects: [string, (typeof stats.projectStats)[string]][]
+  ): [string, (typeof stats.projectStats)[string]][] => {
     return [...projects].sort((a, b) => {
       const [projectA, dataA] = a;
       const [projectB, dataB] = b;
-      const multiplier = sortDirection === 'asc' ? 1 : -1;
+      const multiplier = sortDirection === "asc" ? 1 : -1;
 
       switch (sortField) {
-        case 'project':
+        case "project":
           return multiplier * projectA.localeCompare(projectB);
-        case 'total':
+        case "total":
           return multiplier * (dataA.count - dataB.count);
-        case 'ok':
+        case "ok":
           return multiplier * (dataA.okCount - dataB.okCount);
-        case 'outstanding':
+        case "outstanding":
           return multiplier * (dataA.outstandingCount - dataB.outstandingCount);
         default:
           return 0;
@@ -86,8 +100,8 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
 
   return (
     <Card className="">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <div>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
+        <div className="space-y-2">
           <CardTitle className="font-mono">Evaluations</CardTitle>
           <CardDescription>
             Detailed statistics about student evaluations as a corrector
@@ -128,9 +142,7 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {stats.totalFeedback}
-                </div>
+                <div className="text-2xl font-bold">{stats.totalFeedback}</div>
               </CardContent>
             </Card>
             <Card className="dark:bg-background/30">
@@ -143,7 +155,8 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
                 <div className="text-2xl font-bold">
                   {stats.averageRating % 1 === 0
                     ? stats.averageRating.toFixed(0)
-                    : stats.averageRating.toFixed(2)}/5
+                    : stats.averageRating.toFixed(2)}
+                  /5
                 </div>
               </CardContent>
             </Card>
@@ -160,10 +173,11 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
                 {Object.entries(stats.flagStats).map(([flag, count]) => {
                   const flagColor = getFlagColor(flag);
                   return (
-                    <Card key={flag} className="relative overflow-hidden dark:bg-background/30">
-                      <div
-                        className="absolute inset-0 opacity-10"
-                      />
+                    <Card
+                      key={flag}
+                      className="relative overflow-hidden dark:bg-background/30"
+                    >
+                      <div className="absolute inset-0 opacity-10" />
                       <CardHeader className="pb-2">
                         <CardTitle className="text-base">{flag}</CardTitle>
                       </CardHeader>
@@ -193,55 +207,56 @@ export function EvaluationsCard({ stats, evaluationsData }: EvaluationsCardProps
             </CardHeader>
             <CardContent>
               <Table>
-                <TableHeader>
+                <TableHeader className="cursor-pointer hover:bg-secondary/10 dark:hover:bg-background/10">
                   <TableRow>
                     <TableHead
-                      className="cursor-pointer hover:bg-muted/50"
-                      onClick={() => handleSort('project')}
+                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30"
+                      onClick={() => handleSort("project")}
                     >
-                      <div className="flex items-center gap-2">
-                        Project
-                        {getSortIcon('project')}
+                      <div className="flex items-center gap-1">
+                        Project {getSortIcon("project")}
                       </div>
                     </TableHead>
                     <TableHead
-                      className="text-right cursor-pointer hover:bg-muted/50"
-                      onClick={() => handleSort('total')}
+                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-24"
+                      onClick={() => handleSort("total")}
                     >
-                      <div className="flex items-center justify-end gap-2">
-                        Total
-                        {getSortIcon('total')}
+                      <div className="flex items-center justify-end gap-1">
+                        Total {getSortIcon("total")}
                       </div>
                     </TableHead>
                     <TableHead
-                      className="text-right cursor-pointer hover:bg-muted/50"
-                      onClick={() => handleSort('ok')}
+                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-24"
+                      onClick={() => handleSort("ok")}
                     >
-                      <div className="flex items-center justify-end gap-2">
-                        ✅
-                        {getSortIcon('ok')}
+                      <div className="flex items-center justify-end gap-1">
+                        Ok {getSortIcon("ok")}
                       </div>
                     </TableHead>
                     <TableHead
-                      className="text-right cursor-pointer hover:bg-muted/50"
-                      onClick={() => handleSort('outstanding')}
+                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-32"
+                      onClick={() => handleSort("outstanding")}
                     >
-                      <div className="flex items-center justify-end gap-2">
-                        ⭐
-                        {getSortIcon('outstanding')}
+                      <div className="flex items-center justify-end gap-1">
+                        Outstanding {getSortIcon("outstanding")}
                       </div>
                     </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sortProjects(Object.entries(stats.projectStats)).map(([project, data]) => (
-                    <TableRow key={project}>
-                      <TableCell className="font-medium">{project}</TableCell>
-                      <TableCell className="text-right">{data.count}</TableCell>
-                      <TableCell className="text-right">{data.okCount}</TableCell>
-                      <TableCell className="text-right">{data.outstandingCount}</TableCell>
-                    </TableRow>
-                  ))}
+                  {sortProjects(Object.entries(stats.projectStats)).map(
+                    ([project, data]) => (
+                      <TableRow
+                        key={project}
+                        className="hover:bg-secondary/30 dark:hover:bg-background/30"
+                      >
+                        <TableCell className="font-medium">{project}</TableCell>
+                        <TableCell className="text-right">{data.count}</TableCell>
+                        <TableCell className="text-right">{data.okCount}</TableCell>
+                        <TableCell className="text-right">{data.outstandingCount}</TableCell>
+                      </TableRow>
+                    )
+                  )}
                 </TableBody>
               </Table>
             </CardContent>

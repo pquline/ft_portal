@@ -259,7 +259,7 @@ export async function searchStudent(login: string, accessToken: string): Promise
   return response.json();
 }
 
-export async function getEvaluations(userId: number, accessToken: string) {
+export async function getEvaluations(userId: number, accessToken: string): Promise<Evaluation[]> {
   const response = await fetchWithDelay(`/api/evaluations?userId=${userId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
