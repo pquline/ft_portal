@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Evaluation } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
 
-const EXCLUDED_FEEDBACK_MESSAGES = [
+const EXCLUDED_FEEDBACK_MESSAGES = new Set([
   "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
-];
+]);
 
 interface EvaluationQualityMetricsProps {
   evaluations: Evaluation[];
@@ -44,7 +44,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
 
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
       evaluation.feedbacks.forEach(feedback => {
-        if (!EXCLUDED_FEEDBACK_MESSAGES.includes(feedback.comment)) {
+        if (!EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)) {
           if (feedback.rating >= 0 && feedback.rating <= 5) {
             ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
             totalRatings++;
