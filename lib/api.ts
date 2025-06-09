@@ -254,18 +254,28 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
   let totalFeedbackCount = 0;
   let validRatingsCount = 0;
 
+  const EXCLUDED_FEEDBACK_MESSAGES = new Set([
+    "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
+  ]);
+
   evaluations.forEach((evaluation) => {
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
-      totalFeedbackCount++;
+      const validFeedbacks = evaluation.feedbacks.filter(
+        feedback => !EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)
+      );
 
-      const evaluationRatings = evaluation.feedbacks
-        .map(feedback => feedback.rating)
-        .filter(rating => typeof rating === 'number' && !isNaN(rating));
+      if (validFeedbacks.length > 0) {
+        totalFeedbackCount++;
 
-      if (evaluationRatings.length > 0) {
-        const averageRating = evaluationRatings.reduce((sum, rating) => sum + rating, 0) / evaluationRatings.length;
-        totalRating += averageRating;
-        validRatingsCount++;
+        const evaluationRatings = validFeedbacks
+          .map(feedback => feedback.rating)
+          .filter(rating => typeof rating === 'number' && !isNaN(rating));
+
+        if (evaluationRatings.length > 0) {
+          const averageRating = evaluationRatings.reduce((sum, rating) => sum + rating, 0) / evaluationRatings.length;
+          totalRating += averageRating;
+          validRatingsCount++;
+        }
       }
     }
 
@@ -313,7 +323,6 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
   };
 
   try {
-    // Check if user directory exists
     const userDirResponse = await fetch(`${baseUrl}/${login}`);
     if (!userDirResponse.ok) {
       return result;
@@ -321,7 +330,6 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
 
     result.hasHallVoice = true;
 
-    // Get in sounds
     const inDirResponse = await fetch(`${baseUrl}/${login}/in`);
     if (inDirResponse.ok) {
       const inFiles = await inDirResponse.json() as GitHubFile[];
@@ -330,7 +338,6 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
         .map(file => file.download_url);
     }
 
-    // Get out sounds
     const outDirResponse = await fetch(`${baseUrl}/${login}/out`);
     if (outDirResponse.ok) {
       const outFiles = await outDirResponse.json() as GitHubFile[];
