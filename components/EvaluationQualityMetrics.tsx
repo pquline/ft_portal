@@ -30,7 +30,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
 
   evaluations.forEach(evaluation => {
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
-      evaluation.feedbacks.forEach(feedback => {
+      evaluation.feedbacks.forEach(() => {
         totalFeedback++;
         const length = evaluation.comment?.length || 0;
         if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
