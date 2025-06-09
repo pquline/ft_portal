@@ -26,6 +26,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
   };
 
   let totalFeedback = 0;
+  let totalRatings = 0;
 
   evaluations.forEach(evaluation => {
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
@@ -38,9 +39,14 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
         else if (length <= 200) lengthRanges['101-200']++;
         else if (length <= 500) lengthRanges['201-500']++;
         else lengthRanges['500+']++;
+      });
 
-        if (feedback.rating >= 0 && feedback.rating <= 5) {
-          ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
+      evaluation.feedbacks.forEach(feedback => {
+        if (feedback.comment !== "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time).") {
+          if (feedback.rating >= 0 && feedback.rating <= 5) {
+            ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
+            totalRatings++;
+          }
         }
       });
     }
@@ -59,7 +65,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
                 <span className="text-sm font-medium">{rating}★</span>
                 <span className="text-sm text-gray-500">{count} ratings</span>
               </div>
-              <Progress value={(count / totalFeedback) * 100} className="h-2" />
+              <Progress value={(count / totalRatings) * 100} className="h-2" />
             </div>
           ))}
         </CardContent>
