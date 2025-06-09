@@ -4,10 +4,10 @@ A web application for visualizing student data from the 42 API, including evalua
 
 ## ✨ Features
 
-- 🔐 **API Authentication**
-  - Secure credential management with localStorage persistence
-  - OAuth 2.0 integration with 42 API
-  - Easy credential management with forget option
+- 🔐 **Authentication**
+  - Secure 42 OAuth 2.0 integration
+  - Single sign-on with your 42 account
+  - Automatic session management
 
 - 👤 **Student Statistics**
   - Real-time student search by login
@@ -29,7 +29,7 @@ A web application for visualizing student data from the 42 API, including evalua
 
 - Node.js (v18 or higher)
 - npm or yarn
-- 42 API credentials (client_id and client_secret)
+- A 42 account
 
 ### ⚙️ Installation
 
@@ -58,9 +58,16 @@ yarn dev
 ### Configuration
 
 1. Visit [42 API Applications](https://profile.intra.42.fr/oauth/applications)
-2. Create a new application or use existing credentials
-3. Copy your `client_id` and `client_secret`
-4. Enter these credentials in the application's API Credentials section
+2. Create a new application
+3. Set the redirect URI to `http://localhost:3000/api/auth/callback` for development
+4. Copy your `client_id` and `client_secret`
+5. Create a `.env` file in the root directory with:
+```
+FORTYTWO_CLIENT_ID=your_client_id
+FORTYTWO_CLIENT_SECRET=your_client_secret
+NEXT_PUBLIC_URL=http://localhost:3000
+JWT_SECRET=your_random_secret_key
+```
 
 ## 🛠️ Tech Stack
 
@@ -80,10 +87,9 @@ yarn dev
 
 ## 💡 Usage
 
-1. Enter your 42 API credentials in the "API Credentials" section
-2. Click "Authenticate" to authenticate
-3. Enter a student's login in the search field
-4. View detailed statistics including:
+1. Click "Sign in" to authenticate with your 42 account
+2. Enter a student's login in the search field
+3. View detailed statistics including:
    - Evaluation performance
    - Project completion rates
    - Hall voice sound management

@@ -23,25 +23,25 @@ export default function Privacy() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              <Link href="/" className="text-foreground font-mono">ft_portal</Link> is designed with privacy as a core principle. We do not collect, store, or process any personal data on our servers. All data is fetched directly from the 42 API and is only stored locally in your browser.
+              <Link href="/" className="text-foreground font-mono">ft_portal</Link> is designed with privacy as a core principle. We do not collect, store, or process any personal data on our servers. All data is fetched directly from the 42 API and is only stored temporarily in your browser&apos;s session.
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">Local Storage</CardTitle>
+            <CardTitle className="font-mono">Session Management</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              The only data stored locally in your browser are:
+              The only data stored in your browser are:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
-              <li>Your 42 API credentials (client_id and client_secret)</li>
-              <li>The access token received from the 42 API</li>
+              <li>Your session token (JWT)</li>
+              <li>Your user information (name, login, profile picture)</li>
             </ul>
             <p className="text-muted-foreground mt-4">
-              This data is stored in your browser&apos;s local storage and can be removed at any time using the <span className="font-mono text-foreground/90">Forget</span> button.
+              This data is stored in your browser&apos;s cookies and is automatically removed when you sign out or when your session expires (24 hours).
             </p>
           </CardContent>
         </Card>
@@ -70,12 +70,12 @@ export default function Privacy() {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Since we don&apos;t store any of your data on our servers, you have complete control over your information. You can:
+              You have full control over your data:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
-              <li>Remove your credentials at any time using the Forget button</li>
-              <li>Clear your browser&apos;s local storage to remove all stored data</li>
-              <li>Stop using the service at any time</li>
+              <li>Sign out at any time using the Sign out button</li>
+              <li>Clear your session data by signing out</li>
+              <li>Revoke access to your 42 account through your 42 OAuth applications settings</li>
             </ul>
           </CardContent>
         </Card>

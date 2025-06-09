@@ -1,12 +1,3 @@
-import { z } from 'zod';
-
-export const credentialsSchema = z.object({
-  clientId: z.string().min(1, "Client ID is required"),
-  clientSecret: z.string().min(1, "Client Secret is required"),
-});
-
-export type Credentials = z.infer<typeof credentialsSchema>;
-
 export interface TokenResponse {
   access_token: string;
   token_type: string;
@@ -218,30 +209,6 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
   }
    await new Promise(resolve => setTimeout(resolve, 500));
    return response;
-}
-
-export async function getAccessToken(credentials: Credentials): Promise<TokenResponse> {
-  try {
-    const response = await fetch('/api/auth', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to get access token");
-    }
-
-    return await response.json();
-  } catch (error) {
-    if (error instanceof Error) {
-      throw error;
-    }
-    throw new Error("Failed to get access token");
-  }
 }
 
 export async function searchStudent(login: string, accessToken: string): Promise<StudentProfile> {
