@@ -2,6 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Evaluation } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
 
+const EXCLUDED_FEEDBACK_MESSAGES = new Set([
+  "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
+]);
+
 interface EvaluationQualityMetricsProps {
   evaluations: Evaluation[];
 }
@@ -25,22 +29,26 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
     '5': 0,
   };
 
-  let totalFeedback = 0;
+  let totalEvaluations = 0;
+  let totalRatings = 0;
 
   evaluations.forEach(evaluation => {
+    totalEvaluations++;
+    const length = evaluation.comment?.length || 0;
+    if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
+    if (length <= 50) lengthRanges['0-50']++;
+    else if (length <= 100) lengthRanges['51-100']++;
+    else if (length <= 200) lengthRanges['101-200']++;
+    else if (length <= 500) lengthRanges['201-500']++;
+    else lengthRanges['500+']++;
+
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
       evaluation.feedbacks.forEach(feedback => {
-        totalFeedback++;
-        const length = evaluation.comment?.length || 0;
-        if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
-        if (length <= 50) lengthRanges['0-50']++;
-        else if (length <= 100) lengthRanges['51-100']++;
-        else if (length <= 200) lengthRanges['101-200']++;
-        else if (length <= 500) lengthRanges['201-500']++;
-        else lengthRanges['500+']++;
-
-        if (feedback.rating >= 0 && feedback.rating <= 5) {
-          ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
+        if (!EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)) {
+          if (feedback.rating >= 0 && feedback.rating <= 5) {
+            ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
+            totalRatings++;
+          }
         }
       });
     }
@@ -59,14 +67,14 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
                 <span className="text-sm font-medium">{rating}★</span>
                 <span className="text-sm text-gray-500">{count} ratings</span>
               </div>
-              <Progress value={(count / totalFeedback) * 100} className="h-2" />
+              <Progress value={(count / totalRatings) * 100} className="h-2" />
             </div>
           ))}
         </CardContent>
       </Card>
       <Card className="dark:bg-background/30">
         <CardHeader>
-          <CardTitle className="font-mono">Feedback Length Distribution</CardTitle>
+          <CardTitle className="font-mono">Evaluation Length Distribution</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {Object.entries(lengthRanges).map(([range, count]) => (
@@ -75,14 +83,14 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
                 <span className="text-sm font-medium">{range}</span>
                 <span className="text-sm text-gray-500">
                   {range === 'Writer\'s soul (180+)'
-                    ? `${count}/42 feedbacks`
-                    : `${count} feedbacks`}
+                    ? `${count}/42 evaluations`
+                    : `${count} evaluations`}
                 </span>
               </div>
               <Progress
                 value={range === 'Writer\'s soul (180+)'
                   ? (count / 42) * 100
-                  : (count / totalFeedback) * 100}
+                  : (count / totalEvaluations) * 100}
                 className="h-2"
               />
             </div>
