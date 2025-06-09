@@ -29,22 +29,20 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
     '5': 0,
   };
 
-  let totalFeedback = 0;
+  let totalEvaluations = 0;
   let totalRatings = 0;
 
   evaluations.forEach(evaluation => {
-    if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
-      evaluation.feedbacks.forEach(() => {
-        totalFeedback++;
-        const length = evaluation.comment?.length || 0;
-        if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
-        if (length <= 50) lengthRanges['0-50']++;
-        else if (length <= 100) lengthRanges['51-100']++;
-        else if (length <= 200) lengthRanges['101-200']++;
-        else if (length <= 500) lengthRanges['201-500']++;
-        else lengthRanges['500+']++;
-      });
+    totalEvaluations++;
+    const length = evaluation.comment?.length || 0;
+    if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
+    if (length <= 50) lengthRanges['0-50']++;
+    else if (length <= 100) lengthRanges['51-100']++;
+    else if (length <= 200) lengthRanges['101-200']++;
+    else if (length <= 500) lengthRanges['201-500']++;
+    else lengthRanges['500+']++;
 
+    if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
       evaluation.feedbacks.forEach(feedback => {
         if (!EXCLUDED_FEEDBACK_MESSAGES.includes(feedback.comment)) {
           if (feedback.rating >= 0 && feedback.rating <= 5) {
@@ -76,7 +74,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
       </Card>
       <Card className="dark:bg-background/30">
         <CardHeader>
-          <CardTitle className="font-mono">Feedback Length Distribution</CardTitle>
+          <CardTitle className="font-mono">Evaluation Length Distribution</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {Object.entries(lengthRanges).map(([range, count]) => (
@@ -85,14 +83,14 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
                 <span className="text-sm font-medium">{range}</span>
                 <span className="text-sm text-gray-500">
                   {range === 'Writer\'s soul (180+)'
-                    ? `${count}/42 feedbacks`
-                    : `${count} feedbacks`}
+                    ? `${count}/42 evaluations`
+                    : `${count} evaluations`}
                 </span>
               </div>
               <Progress
                 value={range === 'Writer\'s soul (180+)'
                   ? (count / 42) * 100
-                  : (count / totalFeedback) * 100}
+                  : (count / totalEvaluations) * 100}
                 className="h-2"
               />
             </div>
