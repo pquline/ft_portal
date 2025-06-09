@@ -43,18 +43,9 @@ export default function About() {
                 <Link href="/" className="text-foreground font-mono">
                   ft_portal
                 </Link>
-                , you need to authenticate with your 42 API credentials. You can
-                get these from your{" "}
-                <Link
-                  href="https://profile.intra.42.fr/oauth/applications"
-                  className="text-foreground hover:underline font-mono"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  42 OAuth applications
-                </Link>
-                . Your credentials are stored locally in your browser and are
-                never sent to our servers.
+                , simply click the &quot;Sign in&quot; button and authenticate with your 42 account.
+                This uses 42&apos;s OAuth system to securely authenticate you without storing any
+                credentials. Your session is managed securely using JWT tokens.
               </p>
             </div>
 
@@ -108,9 +99,9 @@ export default function About() {
               </Link>{" "}
               is designed with privacy and security in mind. All data is fetched
               directly from the 42 API and is not stored on our servers. Your
-              API credentials are stored locally in your browser and can be
-              removed at any time using the{" "}
-              <span className="font-mono text-foreground/90">Forget</span>{" "}
+              session is managed securely using JWT tokens, and you can sign out
+              at any time using the{" "}
+              <span className="font-mono text-foreground/90">Sign out</span>{" "}
               button.
             </p>
           </CardContent>

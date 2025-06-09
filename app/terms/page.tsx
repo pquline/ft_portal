@@ -27,24 +27,43 @@ export default function Terms() {
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>Use the service in accordance with 42&apos;s terms of service</li>
-              <li>Not use the service for any malicious or harmful purposes</li>
-              <li>Not attempt to bypass any security measures</li>
+              <li>Not abuse or overload the 42 API</li>
+              <li>Not share your account with others</li>
+              <li>Use the data responsibly and ethically</li>
             </ul>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">API Usage</CardTitle>
+            <CardTitle className="font-mono">Data Usage</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              <Link href="/" className="text-foreground font-mono">ft_portal</Link> uses the official 42 API. You are responsible for:
+              When using <Link href="/" className="text-foreground font-mono">ft_portal</Link>, you agree to:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
-              <li>Keeping your API credentials secure</li>
-              <li>Not sharing your credentials with others</li>
-              <li>Complying with 42&apos;s API rate limits</li>
+              <li>Use the data only for legitimate purposes</li>
+              <li>Not scrape or collect data in bulk</li>
+              <li>Respect student privacy and confidentiality</li>
+              <li>Not use the data for harassment or discrimination</li>
+            </ul>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-mono">Account Security</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              To maintain the security of your account:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
+              <li>Keep your 42 account secure</li>
+              <li>Sign out when using shared devices</li>
+              <li>Report any security concerns immediately</li>
+              <li>Not share your session with others</li>
             </ul>
           </CardContent>
         </Card>
