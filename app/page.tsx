@@ -72,7 +72,7 @@ export default function Home() {
         toast.error("Student not found");
         return;
       }
-      const evaluations = await getEvaluations(login, accessToken);
+      const evaluations = await getEvaluations(studentData.id, accessToken);
       if (
         !evaluations ||
         !Array.isArray(evaluations) ||
@@ -102,7 +102,7 @@ export default function Home() {
 
   return (
     <main className="flex-1">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6">
         <Card>
           <CardHeader>
             <CardTitle className="font-mono">Search</CardTitle>

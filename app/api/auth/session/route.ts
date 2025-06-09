@@ -1,27 +1,15 @@
 import { NextResponse } from 'next/server';
-import * as jose from 'jose';
+import { getSession } from "@/lib/auth";
 
-export async function GET(request: Request) {
-  const session = request.headers.get('cookie')
-    ?.split('; ')
-    .find(row => row.startsWith('session='))
-    ?.split('=')[1];
-
-  if (!session) {
-    return NextResponse.json({ error: 'No session found' }, { status: 401 });
-  }
-
+export async function GET() {
   try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jose.jwtVerify(session, secret);
-
-    if (!payload.accessToken) {
-      return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+    const session = await getSession();
+    if (!session) {
+      return new NextResponse(null, { status: 401 });
     }
-
-    return NextResponse.json({ accessToken: payload.accessToken });
+    return NextResponse.json(session);
   } catch (error) {
-    console.error('Session verification failed:', error);
-    return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
+    console.error("Session error:", error);
+    return new NextResponse(null, { status: 500 });
   }
 }

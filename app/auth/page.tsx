@@ -31,8 +31,8 @@ export default function SignIn() {
   };
 
   return (
-    <div className="py-6">
-      <Card className="w-[350px] mx-auto">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6">
+      <Card className="sm:w-[400px] mx-auto">
         <CardHeader>
           <CardTitle className="font-mono">Sign In</CardTitle>
           <CardDescription>
