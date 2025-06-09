@@ -17,24 +17,12 @@ import {
   DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import Logoimg from "@/public/ft_portal.png";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { EvaluationStats, Evaluation } from "@/lib/api";
 
 const Header = () => {
-  const { setTheme, theme } = useTheme();
+  const { setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
   const [user, setUser] = React.useState<{ profile_picture: string | null; login: string } | null>(null);
   const router = useRouter();
-  const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [login, setLogin] = useState("");
-  const [isLoadingStats, setIsLoadingStats] = useState(false);
-  const [stats, setStats] = useState<EvaluationStats | null>(null);
-  const [evaluationsData, setEvaluationsData] = useState<Evaluation[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   React.useEffect(() => {
     setMounted(true);

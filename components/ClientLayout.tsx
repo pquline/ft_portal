@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { toast } from "sonner";
 
 export function ClientLayout({
   children,
@@ -25,6 +26,11 @@ export function ClientLayout({
       } catch (error) {
         if (!pathname.startsWith("/auth")) {
           router.push("/auth");
+          if (error instanceof Error) {
+            toast.error(error.message || "Authentication failed");
+          } else {
+            toast.error("Failed to authenticate. Please try again.");
+          }
         }
       } finally {
         setIsLoading(false);
