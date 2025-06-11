@@ -2,13 +2,13 @@
 
 import HeaderAvatar from "@/components/HeaderAvatar";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Logoimg from "@/public/ft_portal.png";
 import { LogOut, Moon, Sun } from "lucide-react";
@@ -45,7 +45,7 @@ const Header = () => {
         }
         const data = await response.json();
         setUser(data.user);
-      } catch (error) {
+      } catch {
         setUser(null);
         router.push("/auth");
       }

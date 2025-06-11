@@ -44,7 +44,7 @@ export default function Home() {
         if (data.accessToken) {
           setAccessToken(data.accessToken);
         }
-      } catch (error) {
+      } catch {
         toast.error("Failed to verify session");
       }
     };

@@ -8,7 +8,7 @@ export async function GET() {
       return new NextResponse(null, { status: 401 });
     }
     return NextResponse.json(session);
-  } catch (error) {
+  } catch {
     return new NextResponse(null, { status: 500 });
   }
 }

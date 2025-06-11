@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json(allEvaluations);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch evaluations' }, { status: 500 });
   }
 }

@@ -25,7 +25,7 @@ export default function SignIn() {
       if (data.url) {
         window.location.href = data.url;
       }
-    } catch (error) {
+    } catch {
     }
   };
 

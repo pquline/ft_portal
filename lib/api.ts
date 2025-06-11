@@ -347,7 +347,7 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
     }
 
     return result;
-  } catch (error) {
+  } catch {
     return result;
   }
 }

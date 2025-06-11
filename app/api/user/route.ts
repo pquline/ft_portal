@@ -16,7 +16,7 @@ export async function GET() {
 
     const userData = jwtDecode(userCookie.value);
     return NextResponse.json({ user: userData });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
