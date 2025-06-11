@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import { Toaster } from "sonner";
-import { ClientLayout } from "@/components/ClientLayout";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 
