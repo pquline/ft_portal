@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { getAuthUrl } from '@/lib/auth';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
@@ -7,7 +7,6 @@ export async function GET() {
     const url = await getAuthUrl(redirectUri);
     return NextResponse.json({ url });
   } catch (error) {
-    console.error('Login error:', error);
     return NextResponse.json(
       { error: 'Failed to generate auth URL' },
       { status: 500 }

@@ -1,27 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import {
-  searchStudent,
-  getEvaluations,
-  calculateEvaluationStats,
-  type EvaluationStats,
-  Evaluation,
-  checkHallVoice,
-  type HallVoiceSounds,
-} from "@/lib/api";
 import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+	Evaluation,
+	calculateEvaluationStats,
+	checkHallVoice,
+	getEvaluations,
+	searchStudent,
+	type EvaluationStats,
+	type HallVoiceSounds,
+} from "@/lib/api";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Home() {
   const [login, setLogin] = useState("");
@@ -45,7 +45,6 @@ export default function Home() {
           setAccessToken(data.accessToken);
         }
       } catch (error) {
-        console.error("Failed to verify session:", error);
         toast.error("Failed to verify session");
       }
     };
@@ -88,7 +87,6 @@ export default function Home() {
       setEvaluationsData(evaluations);
       setHallVoiceSounds(hallVoice);
     } catch (err) {
-      console.error("Search error:", err);
       const errorMessage =
         err instanceof Error ? err.message : "Failed to fetch data";
       setError(errorMessage);
@@ -112,22 +110,19 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSearch} className="flex gap-4">
-                <Input
-                  id="login"
-                  value={login}
-                  onChange={(e) =>
-                    setLogin(e.target.value.toLowerCase().replace(/\s+/g, ""))
-                  }
-                  placeholder="Enter student login"
-                  required
-                  className="bg-background/50 backdrop-blur-sm"
-                />
-                <Button
-                  type="submit"
-                  disabled={isLoadingStats || !login}
-                >
-                  {isLoadingStats ? "Loading..." : "Load Data"}
-                </Button>
+              <Input
+                id="login"
+                value={login}
+                onChange={(e) =>
+                  setLogin(e.target.value.toLowerCase().replace(/\s+/g, ""))
+                }
+                placeholder="Enter student login"
+                required
+                className="bg-background/50 backdrop-blur-sm"
+              />
+              <Button type="submit" disabled={isLoadingStats || !login}>
+                {isLoadingStats ? "Loading..." : "Load Data"}
+              </Button>
             </form>
             {error && (
               <div className="mt-4 p-4 bg-red-50/80 backdrop-blur-sm text-red-700 rounded-md">

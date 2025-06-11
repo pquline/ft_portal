@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SignIn() {
   const router = useRouter();
@@ -26,7 +26,6 @@ export default function SignIn() {
         window.location.href = data.url;
       }
     } catch (error) {
-      console.error('Login error:', error);
     }
   };
 

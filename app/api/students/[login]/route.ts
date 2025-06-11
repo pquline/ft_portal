@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
-import { API_BASE_URL } from '@/lib/api'
-import { fetchWithDelay } from '@/lib/api'
+import { API_BASE_URL, fetchWithDelay } from '@/lib/api';
+import { NextResponse } from 'next/server';
 
 interface StudentResponse {
   id: number;
@@ -69,7 +68,6 @@ export async function GET(request: Request) {
     const data: StudentResponse = await response.json()
     return NextResponse.json(data)
   } catch (error) {
-    console.error('Error fetching student profile:', error)
     return NextResponse.json({ error: 'Failed to fetch student profile' }, { status: 500 })
   }
 }

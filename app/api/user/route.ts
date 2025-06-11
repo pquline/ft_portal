@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -17,7 +17,6 @@ export async function GET() {
     const userData = jwtDecode(userCookie.value);
     return NextResponse.json({ user: userData });
   } catch (error) {
-    console.error("Error fetching user data:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
