@@ -50,7 +50,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} ${firaCode.variable} bg-background dark:bg-gradient-to-t dark:from-primary/5 dark:to-primary/10`}>
         <Providers>
-          <ClientLayout>{children}</ClientLayout>
+          {children}
           <Toaster />
         </Providers>
       </body>
