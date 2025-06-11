@@ -85,12 +85,17 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div>
+              <button
+                type="button"
+                aria-label="User menu"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
                 <HeaderAvatar
                   profilePicture={user?.profile_picture || null}
                   login={user?.login || ""}
                 />
-              </div>
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuSub>
