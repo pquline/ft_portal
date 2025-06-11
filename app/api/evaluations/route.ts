@@ -1,13 +1,7 @@
+import { Evaluation, fetchWithDelay } from '@/lib/api';
 import { NextResponse } from 'next/server';
-import { Evaluation } from '@/lib/api';
 
 const API_BASE_URL = 'https://api.intra.42.fr';
-
-async function fetchWithDelay(url: string, options: RequestInit = {}) {
-  const response = await fetch(url, options);
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return response;
-}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -53,8 +47,7 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json(allEvaluations);
-  } catch (error) {
-    console.error('Error fetching evaluations:', error);
+  } catch {
     return NextResponse.json({ error: 'Failed to fetch evaluations' }, { status: 500 });
   }
 }

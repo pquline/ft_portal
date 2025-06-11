@@ -348,7 +348,9 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
 
     return result;
   } catch (error) {
-    console.error('Error checking hall voice:', error);
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error in checkHallVoice:', error);
+    }
     return result;
   }
 }

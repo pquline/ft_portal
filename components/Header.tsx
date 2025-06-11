@@ -1,27 +1,30 @@
 "use client";
 
-import * as React from "react";
-import { Moon, Sun, LogOut } from "lucide-react";
+import HeaderAvatar from "@/components/HeaderAvatar";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Logoimg from "@/public/ft_portal.png";
+import { LogOut, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import HeaderAvatar from "@/components/HeaderAvatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-} from "@/components/ui/dropdown-menu";
-import Logoimg from "@/public/ft_portal.png";
+import * as React from "react";
 
 const Header = () => {
   const { setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
-  const [user, setUser] = React.useState<{ profile_picture: string | null; login: string } | null>(null);
+  const [user, setUser] = React.useState<{
+    profile_picture: string | null;
+    login: string;
+  } | null>(null);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -42,8 +45,7 @@ const Header = () => {
         }
         const data = await response.json();
         setUser(data.user);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      } catch {
         setUser(null);
         router.push("/auth");
       }

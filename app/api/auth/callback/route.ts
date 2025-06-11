@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import * as jose from "jose";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -10,7 +10,6 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    console.log("Starting OAuth callback process...");
     const tokenResponse = await fetch("https://api.intra.42.fr/oauth/token", {
       method: "POST",
       headers: {
@@ -36,7 +35,6 @@ export async function GET(req: NextRequest) {
     }
 
     const tokenData = await tokenResponse.json();
-    console.log("Token received successfully");
 
     const userProfileResponse = await fetch("https://api.intra.42.fr/v2/me", {
       headers: {
@@ -54,10 +52,6 @@ export async function GET(req: NextRequest) {
     }
 
     const userProfile = await userProfileResponse.json();
-    console.log("User profile fetched:", {
-      login: userProfile.login,
-      id: userProfile.id,
-    });
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const alg = "HS256";
@@ -80,8 +74,6 @@ export async function GET(req: NextRequest) {
       .setExpirationTime("24h")
       .sign(secret);
 
-    console.log("Tokens created successfully");
-
     const response = NextResponse.redirect(new URL("/", req.url));
     const cookieOptions = {
       secure: process.env.NODE_ENV === "production",
@@ -92,10 +84,8 @@ export async function GET(req: NextRequest) {
       domain: process.env.NODE_ENV === "production" ? undefined : "localhost"
     };
 
-    console.log("Setting cookies with options:", cookieOptions);
     response.cookies.set("session", sessionToken, cookieOptions);
     response.cookies.set("user", userToken, cookieOptions);
-    console.log("Cookies set successfully");
 
     await new Promise(resolve => setTimeout(resolve, 100));
 
