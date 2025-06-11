@@ -1,6 +1,6 @@
+import * as jose from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import * as jose from "jose";
 
 const FORTYTWO_AUTH_URL = 'https://api.intra.42.fr/oauth/authorize';
 
@@ -15,6 +15,15 @@ export async function getAuthUrl(redirectUri: string): Promise<string> {
   return `${FORTYTWO_AUTH_URL}?${params.toString()}`;
 }
 
+export async function verifyJWT(token: string): Promise<jose.JWTVerifyResult | null> {
+  try {
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    return await jose.jwtVerify(token, secret);
+  } catch {
+    return null;
+  }
+}
+
 export async function getSession() {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("session");
@@ -24,35 +33,25 @@ export async function getSession() {
     return null;
   }
 
-  try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload: sessionPayload } = await jose.jwtVerify(sessionCookie.value, secret);
-    const { payload: userPayload } = await jose.jwtVerify(userCookie.value, secret);
+  const sessionResult = await verifyJWT(sessionCookie.value);
+  const userResult = await verifyJWT(userCookie.value);
 
-    if (!sessionPayload.accessToken) {
-      return null;
-    }
-
-    return {
-      ...userPayload,
-      accessToken: sessionPayload.accessToken
-    };
-  } catch {
+  if (!sessionResult || !userResult || !sessionResult.payload.accessToken) {
     return null;
   }
+
+  return {
+    ...userResult.payload,
+    accessToken: sessionResult.payload.accessToken
+  };
 }
 
 export async function getToken(request: NextRequest) {
   const sessionCookie = request.cookies.get("session");
   if (!sessionCookie) return null;
 
-  try {
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
-    return payload.accessToken as string;
-  } catch {
-    return null;
-  }
+  const result = await verifyJWT(sessionCookie.value);
+  return result?.payload.accessToken as string | null;
 }
 
 export async function setToken(token: string) {

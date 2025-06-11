@@ -1,11 +1,3 @@
-export interface TokenResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  scope: string;
-  created_at: number;
-}
-
 export interface StudentProfile {
   id: number;
   email: string;
@@ -180,23 +172,6 @@ export interface HallVoiceSounds {
   outSounds: string[];
 }
 
-interface GitHubFile {
-  name: string;
-  path: string;
-  sha: string;
-  size: number;
-  url: string;
-  html_url: string;
-  git_url: string;
-  download_url: string;
-  type: string;
-  _links: {
-    self: string;
-    git: string;
-    html: string;
-  };
-}
-
 export const API_BASE_URL = "https://api.intra.42.fr";
 
 export async function fetchWithDelay(url: string, options: RequestInit = {}, retryCount = 0): Promise<Response> {
@@ -305,6 +280,23 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
 }
 
 export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
+  interface GitHubFile {
+    name: string;
+    path: string;
+    sha: string;
+    size: number;
+    url: string;
+    html_url: string;
+    git_url: string;
+    download_url: string;
+    type: string;
+    _links: {
+      self: string;
+      git: string;
+      html: string;
+    };
+  }
+
   const baseUrl = 'https://api.github.com/repos/42paris/hall-voice/contents/mp3';
   const result: HallVoiceSounds = {
     hasHallVoice: false,
@@ -313,7 +305,6 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
   };
 
   try {
-    // Check if user directory exists
     const userDirResponse = await fetch(`${baseUrl}/${login}`);
     if (!userDirResponse.ok) {
       return result;
@@ -321,7 +312,6 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
 
     result.hasHallVoice = true;
 
-    // Get in sounds
     const inDirResponse = await fetch(`${baseUrl}/${login}/in`);
     if (inDirResponse.ok) {
       const inFiles = await inDirResponse.json() as GitHubFile[];
@@ -330,7 +320,6 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
         .map(file => file.download_url);
     }
 
-    // Get out sounds
     const outDirResponse = await fetch(`${baseUrl}/${login}/out`);
     if (outDirResponse.ok) {
       const outFiles = await outDirResponse.json() as GitHubFile[];

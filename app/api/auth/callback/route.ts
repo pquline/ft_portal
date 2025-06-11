@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
 import * as jose from "jose";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
 
   if (!code) {
-    return NextResponse.json({ error: "Code not found" }, { status: 400 });
+    return NextResponse.redirect(new URL("/auth", process.env.NEXT_PUBLIC_URL || "http://localhost:3000"));
   }
 
   try {
@@ -15,42 +15,31 @@ export async function GET(req: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Host: "api.intra.42.fr",
       },
       body: JSON.stringify({
         grant_type: "authorization_code",
         client_id: process.env.FORTYTWO_CLIENT_ID,
         client_secret: process.env.FORTYTWO_CLIENT_SECRET,
-        redirect_uri: process.env.NEXT_PUBLIC_URL + '/api/auth/callback',
         code,
+        redirect_uri: `${process.env.NEXT_PUBLIC_URL}/api/auth/callback`,
       }),
     });
 
     if (!tokenResponse.ok) {
-      const errorData = await tokenResponse.json();
-      console.error("Error fetching token:", errorData);
-      return NextResponse.json(
-        { error: "Failed to fetch token" },
-        { status: 500 }
-      );
+      return NextResponse.redirect(new URL("/auth", process.env.NEXT_PUBLIC_URL || "http://localhost:3000"));
     }
 
-    const tokenData = await tokenResponse.json();
+    const { access_token } = await tokenResponse.json();
     console.log("Token received successfully");
 
     const userProfileResponse = await fetch("https://api.intra.42.fr/v2/me", {
       headers: {
-        Authorization: `Bearer ${tokenData.access_token}`,
+        Authorization: `Bearer ${access_token}`,
       },
     });
 
     if (!userProfileResponse.ok) {
-      const errorData = await userProfileResponse.json();
-      console.error("Error fetching user profile:", errorData);
-      return NextResponse.json(
-        { error: "Failed to fetch user profile" },
-        { status: 500 }
-      );
+      return NextResponse.redirect(new URL("/auth", process.env.NEXT_PUBLIC_URL || "http://localhost:3000"));
     }
 
     const userProfile = await userProfileResponse.json();
@@ -60,29 +49,25 @@ export async function GET(req: NextRequest) {
     });
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const alg = "HS256";
 
-    const sessionToken = await new jose.SignJWT({
-      accessToken: tokenData.access_token,
-    })
-      .setProtectedHeader({ alg })
+    const sessionToken = await new jose.SignJWT({ accessToken: access_token })
+      .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("24h")
       .sign(secret);
 
     const userToken = await new jose.SignJWT({
-      profile_picture: userProfile.image.link,
-      login: userProfile.login,
-      displayname: userProfile.displayname,
       id: userProfile.id,
-      created_at: userProfile.created_at,
+      login: userProfile.login,
+      email: userProfile.email,
+      image: userProfile.image?.link,
     })
-      .setProtectedHeader({ alg })
+      .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("24h")
       .sign(secret);
 
     console.log("Tokens created successfully");
 
-    const response = NextResponse.redirect(new URL("/", req.url));
+    const response = NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_URL || "http://localhost:3000"));
     const cookieOptions = {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
@@ -102,9 +87,6 @@ export async function GET(req: NextRequest) {
     return response;
   } catch (error) {
     console.error("An unexpected error occurred:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.redirect(new URL("/auth", process.env.NEXT_PUBLIC_URL || "http://localhost:3000"));
   }
 }
