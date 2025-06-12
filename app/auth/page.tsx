@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import Logoimg from "@/public/ft_portal.png";
 import Image from "next/image";
 import Link from "next/link";
-import Logoimg from "@/public/ft_portal.png";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SignIn() {
   const router = useRouter();
@@ -65,7 +65,7 @@ export default function SignIn() {
           <div className="flex justify-center">
             <Button
               variant="outline"
-              className="p-6 rounded-lg border text-card-foreground shadow bg-white dark:bg-secondary dark:hover:bg-primary border-foreground/10 group"
+              className="p-6 rounded-lg text-card-foreground shadow bg-white dark:bg-secondary dark:hover:bg-primary group cursor-pointer dark:border-foreground/10"
               onClick={handleLogin}
               type="button"
             >
@@ -74,8 +74,7 @@ export default function SignIn() {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 57 40"
-                  height="48"
-                  className="transition-all group:fill-black dark:fill-white dark:group-hover:fill-white"
+                  className="m-1 transition-all group:fill-black dark:fill-white dark:group-hover:fill-white w-24 h-24 transform scale-150"
                   aria-hidden="true"
                 >
                   <path d="M31.627.205H21.084L0 21.097v8.457h21.084V40h10.543V21.097H10.542L31.627.205M35.349 10.233 45.58 0H35.35v10.233M56.744 10.542V0H46.512v10.542L36.279 21.085v10.543h10.233V21.085l10.232-10.543M56.744 21.395 46.512 31.628h10.232V21.395"></path>
