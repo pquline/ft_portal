@@ -3,12 +3,12 @@ import { getToken, refreshToken } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const token = await getToken(request);
-    if (!token) {
+    const tokens = await getToken(request);
+    if (!tokens) {
       return NextResponse.json({ error: 'No token found' }, { status: 401 });
     }
 
-    const newToken = await refreshToken(token);
+    const newToken = await refreshToken(tokens.refreshToken);
     if (!newToken) {
       return NextResponse.json({ error: 'Failed to refresh token' }, { status: 401 });
     }

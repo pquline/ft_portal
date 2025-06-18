@@ -102,13 +102,19 @@ export async function getToken(request: NextRequest) {
             path: "/",
           });
 
-          return newToken;
+          return {
+            accessToken: newToken,
+            refreshToken: payload.refreshToken
+          };
         }
       }
       return null;
     }
 
-    return payload.accessToken as string;
+    return {
+      accessToken: payload.accessToken as string,
+      refreshToken: payload.refreshToken as string
+    };
   } catch {
     return null;
   }
