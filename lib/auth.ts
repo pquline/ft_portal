@@ -69,7 +69,12 @@ export async function refreshToken(refreshToken: string): Promise<string | null>
   }
 }
 
-export async function getToken(request: NextRequest) {
+interface TokenPair {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export async function getToken(request: NextRequest): Promise<TokenPair | null> {
   const sessionCookie = request.cookies.get("session");
   if (!sessionCookie) return null;
 
@@ -104,7 +109,7 @@ export async function getToken(request: NextRequest) {
 
           return {
             accessToken: newToken,
-            refreshToken: payload.refreshToken
+            refreshToken: payload.refreshToken as string
           };
         }
       }
