@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import * as jose from "jose";
-import { decodeJwt } from "jose";
 
 const FORTYTWO_AUTH_URL = 'https://api.intra.42.fr/oauth/authorize';
 const TOKEN_REFRESH_URL = 'https://api.intra.42.fr/oauth/token';
