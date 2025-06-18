@@ -199,73 +199,16 @@ interface GitHubFile {
 
 export const API_BASE_URL = "https://api.intra.42.fr";
 
-function normalizeHeaders(headers: HeadersInit): Record<string, string> {
-  if (headers instanceof Headers) {
-    const normalized: Record<string, string> = {};
-    headers.forEach((value, key) => {
-      normalized[key] = value;
-    });
-    return normalized;
-  }
-  return headers as Record<string, string>;
-}
-
 export async function fetchWithDelay(url: string, options: RequestInit = {}, retryCount = 0): Promise<Response> {
   const response = await fetch(url, options);
-
   if (response.status === 429 && retryCount < 3) {
     const retryAfter = response.headers.get('Retry-After');
-    const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.min(500 * Math.pow(2, retryCount), 10000);
+    const waitTime = retryAfter ? parseInt(retryAfter) * 500 : Math.min(500 * Math.pow(2, retryCount), 10000);
     await new Promise(resolve => setTimeout(resolve, waitTime));
     return fetchWithDelay(url, options, retryCount + 1);
   }
-
-  if (response.status === 401) {
-    try {
-      const error = await response.json();
-      if (error.error === 'token_expired' || error.error === 'invalid_token') {
-        const refreshResponse = await fetch('/api/auth/refresh', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        });
-
-        if (!refreshResponse.ok) {
-          if (refreshResponse.status === 429) {
-            const retryAfter = refreshResponse.headers.get('Retry-After');
-            const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 5000;
-            await new Promise(resolve => setTimeout(resolve, waitTime));
-            return fetchWithDelay(url, options, retryCount);
-          }
-          throw new Error('Token refresh failed');
-        }
-
-        const { accessToken } = await refreshResponse.json();
-        if (!accessToken) {
-          throw new Error('No access token in refresh response');
-        }
-
-        const newOptions = {
-          ...options,
-          headers: {
-            ...normalizeHeaders(options.headers || {}),
-            Authorization: `Bearer ${accessToken}`,
-          },
-        };
-        return fetchWithDelay(url, newOptions, retryCount);
-      }
-    } catch (error) {
-      console.error('Error during token refresh:', error);
-      return response;
-    }
-  }
-
-  if (retryCount > 0) {
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
-  return response;
+   await new Promise(resolve => setTimeout(resolve, 500));
+   return response;
 }
 
 export async function searchStudent(login: string, accessToken: string): Promise<StudentProfile> {
