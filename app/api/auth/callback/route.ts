@@ -1,6 +1,5 @@
 import * as jose from "jose";
 import { NextRequest, NextResponse } from "next/server";
-import { createSecureCookie } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -59,11 +58,9 @@ export async function GET(req: NextRequest) {
 
     const sessionToken = await new jose.SignJWT({
       accessToken: tokenData.access_token,
-      refreshToken: tokenData.refresh_token,
-      exp: Math.floor(Date.now() / 1000) + 7200, // 2 hours
     })
       .setProtectedHeader({ alg })
-      .setExpirationTime("2h")
+      .setExpirationTime("24h")
       .sign(secret);
 
     const userToken = await new jose.SignJWT({
@@ -74,21 +71,27 @@ export async function GET(req: NextRequest) {
       created_at: userProfile.created_at,
     })
       .setProtectedHeader({ alg })
-      .setExpirationTime("2h")
+      .setExpirationTime("24h")
       .sign(secret);
 
     const response = NextResponse.redirect(new URL("/", req.url));
+    const cookieOptions = {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      path: "/",
+      maxAge: 24 * 60 * 60, // 24 hours in seconds
+      sameSite: "lax" as const,
+      domain: process.env.NODE_ENV === "production" ? undefined : "localhost"
+    };
 
-    const sessionCookie = createSecureCookie("session", sessionToken);
-    const userCookie = createSecureCookie("user", userToken);
+    response.cookies.set("session", sessionToken, cookieOptions);
+    response.cookies.set("user", userToken, cookieOptions);
 
-    response.cookies.set(sessionCookie.name, sessionCookie.value, sessionCookie.options);
-    response.cookies.set(userCookie.name, userCookie.value, userCookie.options);
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     return response;
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error("An unexpected error occurred:", errorMessage);
+    console.error("An unexpected error occurred:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }
