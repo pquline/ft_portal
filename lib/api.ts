@@ -204,7 +204,7 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
 
   if (response.status === 429 && retryCount < 3) {
     const retryAfter = response.headers.get('Retry-After');
-    const waitTime = retryAfter ? parseInt(retryAfter) * 500 : Math.min(500 * Math.pow(2, retryCount), 10000);
+    const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.min(500 * Math.pow(2, retryCount), 10000);
     await new Promise(resolve => setTimeout(resolve, waitTime));
     return fetchWithDelay(url, options, retryCount + 1);
   }

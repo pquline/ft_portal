@@ -81,7 +81,12 @@ interface JWTPayload {
   [key: string]: unknown;
 }
 
-async function refreshAndUpdateSession(payload: JWTPayload, secret: Uint8Array): Promise<TokenPair | null> {
+interface RefreshResult {
+  tokens: TokenPair;
+  response: NextResponse;
+}
+
+export async function refreshAndUpdateSession(payload: JWTPayload, secret: Uint8Array): Promise<RefreshResult | null> {
   if (!payload.refreshToken) return null;
 
   const newToken = await refreshToken(payload.refreshToken);
@@ -109,8 +114,11 @@ async function refreshAndUpdateSession(payload: JWTPayload, secret: Uint8Array):
   });
 
   return {
-    accessToken: newToken,
-    refreshToken: payload.refreshToken
+    tokens: {
+      accessToken: newToken,
+      refreshToken: payload.refreshToken
+    },
+    response
   };
 }
 
@@ -123,7 +131,8 @@ export async function getToken(request: NextRequest): Promise<TokenPair | null> 
     const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
 
     if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-      return refreshAndUpdateSession(payload as JWTPayload, secret);
+      const result = await refreshAndUpdateSession(payload as JWTPayload, secret);
+      return result?.tokens ?? null;
     }
 
     return {
