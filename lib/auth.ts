@@ -42,6 +42,33 @@ export async function getSession() {
   }
 }
 
+export async function refreshToken(refreshToken: string): Promise<string | null> {
+  try {
+    const response = await fetch('https://api.intra.42.fr/oauth/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        grant_type: 'refresh_token',
+        client_id: process.env.FORTYTWO_CLIENT_ID,
+        client_secret: process.env.FORTYTWO_CLIENT_SECRET,
+        refresh_token: refreshToken,
+      }),
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    return data.access_token;
+  } catch (error) {
+    console.error('Error refreshing token:', error);
+    return null;
+  }
+}
+
 export async function getToken(request: NextRequest) {
   const sessionCookie = request.cookies.get("session");
   if (!sessionCookie) return null;
@@ -49,6 +76,38 @@ export async function getToken(request: NextRequest) {
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
+
+    if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+      if (payload.refreshToken) {
+        const newToken = await refreshToken(payload.refreshToken as string);
+        if (newToken) {
+          const newPayload = {
+            ...payload,
+            accessToken: newToken,
+            exp: Math.floor(Date.now() / 1000) + 7200, // 2 hours from now
+          };
+
+          const newSessionToken = await new jose.SignJWT(newPayload)
+            .setProtectedHeader({ alg: 'HS256' })
+            .setExpirationTime('2h')
+            .sign(secret);
+
+          const response = NextResponse.next();
+          response.cookies.set({
+            name: "session",
+            value: newSessionToken,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            path: "/",
+          });
+
+          return newToken;
+        }
+      }
+      return null;
+    }
+
     return payload.accessToken as string;
   } catch {
     return null;
