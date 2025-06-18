@@ -74,6 +74,46 @@ interface TokenPair {
   refreshToken: string;
 }
 
+interface JWTPayload {
+  accessToken?: string;
+  refreshToken?: string;
+  exp?: number;
+  [key: string]: unknown;
+}
+
+async function refreshAndUpdateSession(payload: JWTPayload, secret: Uint8Array): Promise<TokenPair | null> {
+  if (!payload.refreshToken) return null;
+
+  const newToken = await refreshToken(payload.refreshToken);
+  if (!newToken) return null;
+
+  const newPayload = {
+    ...payload,
+    accessToken: newToken,
+    exp: Math.floor(Date.now() / 1000) + 7200, // 2 hours from now
+  };
+
+  const newSessionToken = await new jose.SignJWT(newPayload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('2h')
+    .sign(secret);
+
+  const response = NextResponse.next();
+  response.cookies.set({
+    name: "session",
+    value: newSessionToken,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+
+  return {
+    accessToken: newToken,
+    refreshToken: payload.refreshToken
+  };
+}
+
 export async function getToken(request: NextRequest): Promise<TokenPair | null> {
   const sessionCookie = request.cookies.get("session");
   if (!sessionCookie) return null;
@@ -83,37 +123,7 @@ export async function getToken(request: NextRequest): Promise<TokenPair | null> 
     const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
 
     if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-      if (payload.refreshToken) {
-        const newToken = await refreshToken(payload.refreshToken as string);
-        if (newToken) {
-          const newPayload = {
-            ...payload,
-            accessToken: newToken,
-            exp: Math.floor(Date.now() / 1000) + 7200, // 2 hours from now
-          };
-
-          const newSessionToken = await new jose.SignJWT(newPayload)
-            .setProtectedHeader({ alg: 'HS256' })
-            .setExpirationTime('2h')
-            .sign(secret);
-
-          const response = NextResponse.next();
-          response.cookies.set({
-            name: "session",
-            value: newSessionToken,
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-          });
-
-          return {
-            accessToken: newToken,
-            refreshToken: payload.refreshToken as string
-          };
-        }
-      }
-      return null;
+      return refreshAndUpdateSession(payload as JWTPayload, secret);
     }
 
     return {

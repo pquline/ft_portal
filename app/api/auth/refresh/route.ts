@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken, refreshToken } from '@/lib/auth';
+import { getToken } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,22 +8,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No token found' }, { status: 401 });
     }
 
-    const newToken = await refreshToken(tokens.refreshToken);
-    if (!newToken) {
-      return NextResponse.json({ error: 'Failed to refresh token' }, { status: 401 });
-    }
-
-    const response = NextResponse.json({ accessToken: newToken });
-
-    response.cookies.set({
-      name: 'session',
-      value: newToken,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-    });
-
+    const response = NextResponse.json({ accessToken: tokens.accessToken });
     return response;
   } catch (error) {
     console.error('Error refreshing token:', error);
