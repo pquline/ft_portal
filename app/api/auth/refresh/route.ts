@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from '@/lib/auth';
+import { getToken, refreshAndUpdateSession, createSecureCookie } from '@/lib/auth';
+import * as jose from 'jose';
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,21 +9,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No token found' }, { status: 401 });
     }
 
-    const response = NextResponse.json({ accessToken: tokens.accessToken });
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const sessionCookie = request.cookies.get('session');
 
-    response.cookies.set({
-      name: "session",
-      value: tokens.accessToken,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      expires: new Date(Date.now() + 7200 * 1000), // 2 hours from now
+    if (!sessionCookie?.value) {
+      return NextResponse.json({ error: 'No session found' }, { status: 401 });
+    }
+
+    const payload = jose.decodeJwt(sessionCookie.value);
+    const refreshResult = await refreshAndUpdateSession(payload, secret);
+
+    if (!refreshResult) {
+      return NextResponse.json({ error: 'Failed to refresh token' }, { status: 401 });
+    }
+
+    const response = NextResponse.json({
+      accessToken: refreshResult.tokens.accessToken
     });
+
+    const cookie = createSecureCookie(
+      "session",
+      refreshResult.response.cookies.get('session')?.value || ''
+    );
+    response.cookies.set(cookie.name, cookie.value, cookie.options);
 
     return response;
   } catch (error) {
-    console.error('Error refreshing token:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error refreshing token:', errorMessage);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -8,6 +8,10 @@ const TOKEN_REFRESH_URL = 'https://api.intra.42.fr/oauth/token';
 const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000; // 1 second
 const TOKEN_EXPIRY = 7200; // 2 hours in seconds
+const MAX_REFRESH_ATTEMPTS = 5; // Maximum refresh attempts per minute
+const REFRESH_WINDOW = 60 * 1000; // 1 minute in milliseconds
+
+const refreshAttempts = new Map<string, { count: number; timestamp: number }>();
 
 interface TokenPair {
   accessToken: string;
@@ -41,7 +45,7 @@ interface CookieOptions {
   expires?: Date;
 }
 
-const createSecureCookie = (
+export const createSecureCookie = (
   name: string,
   value: string,
   expires?: Date
@@ -113,7 +117,61 @@ export async function getSession() {
   }
 }
 
-export async function refreshToken(token: string, retryCount = 0): Promise<string | null> {
+export class AuthError extends Error {
+  constructor(
+    message: string,
+    public code: 'TOKEN_EXPIRED' | 'TOKEN_INVALID' | 'REFRESH_FAILED' | 'NETWORK_ERROR' | 'RATE_LIMITED' | 'API_ERROR',
+    public originalError?: unknown
+  ) {
+    super(message);
+    this.name = 'AuthError';
+  }
+}
+
+const validateTokenResponse = (data: unknown): data is TokenResponse => {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    'access_token' in data &&
+    typeof (data as TokenResponse).access_token === 'string'
+  );
+};
+
+const checkRateLimit = (userId: string): boolean => {
+  const now = Date.now();
+  const attempt = refreshAttempts.get(userId);
+
+  if (!attempt) {
+    refreshAttempts.set(userId, { count: 1, timestamp: now });
+    return true;
+  }
+
+  if (now - attempt.timestamp > REFRESH_WINDOW) {
+    refreshAttempts.set(userId, { count: 1, timestamp: now });
+    return true;
+  }
+
+  if (attempt.count >= MAX_REFRESH_ATTEMPTS) {
+    return false;
+  }
+
+  attempt.count++;
+  return true;
+};
+
+const logSecurityEvent = (event: string, data: Record<string, unknown>) => {
+  console.error(`[SECURITY] ${event}:`, {
+    timestamp: new Date().toISOString(),
+    ...data
+  });
+};
+
+export async function refreshToken(token: string, retryCount = 0, userId?: string): Promise<string | null> {
+  if (userId && !checkRateLimit(userId)) {
+    logSecurityEvent('Rate limit exceeded', { userId });
+    throw new AuthError('Too many refresh attempts', 'RATE_LIMITED');
+  }
+
   try {
     const response = await fetch(TOKEN_REFRESH_URL, {
       method: 'POST',
@@ -130,49 +188,76 @@ export async function refreshToken(token: string, retryCount = 0): Promise<strin
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      console.error('Token refresh failed:', error);
+      logSecurityEvent('Token refresh failed', {
+        status: response.status,
+        error,
+        userId
+      });
 
       if (response.status === 401 || response.status === 403) {
-        return null;
+        throw new AuthError('Refresh token is invalid or expired', 'TOKEN_EXPIRED', error);
+      }
+
+      if (response.status >= 500) {
+        logSecurityEvent('42 API error', {
+          status: response.status,
+          error,
+          userId
+        });
+        throw new AuthError('42 API is currently unavailable', 'API_ERROR', error);
       }
 
       if (retryCount < MAX_RETRIES) {
         await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * (retryCount + 1)));
-        return await refreshToken(token, retryCount + 1);
+        return await refreshToken(token, retryCount + 1, userId);
       }
 
-      return null;
+      throw new AuthError('Failed to refresh token after retries', 'REFRESH_FAILED', error);
     }
 
-    const data = await response.json() as TokenResponse;
-    if (!data.access_token) {
-      console.error('No access token in refresh response');
-      return null;
+    const data = await response.json();
+    if (!validateTokenResponse(data)) {
+      logSecurityEvent('Invalid token response', {
+        data,
+        userId
+      });
+      throw new AuthError('Invalid token response format', 'TOKEN_INVALID');
     }
 
     return data.access_token;
   } catch (error) {
+    if (error instanceof AuthError) {
+      throw error;
+    }
+
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error refreshing token:', errorMessage);
+    logSecurityEvent('Token refresh error', {
+      error: errorMessage,
+      userId
+    });
 
     if (retryCount < MAX_RETRIES) {
       await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * (retryCount + 1)));
-      return await refreshToken(token, retryCount + 1);
+      return await refreshToken(token, retryCount + 1, userId);
     }
 
-    return null;
+    throw new AuthError('Network error during token refresh', 'NETWORK_ERROR', error);
   }
 }
 
-export async function refreshAndUpdateSession(payload: JWTPayload, secret: Uint8Array): Promise<RefreshResult | null> {
+export async function refreshAndUpdateSession(
+  payload: JWTPayload,
+  secret: Uint8Array,
+  userId?: string
+): Promise<RefreshResult | null> {
   if (!payload.refreshToken) {
-    console.error('No refresh token available');
+    logSecurityEvent('No refresh token available', { userId });
     return null;
   }
 
-  const newToken = await refreshToken(payload.refreshToken);
+  const newToken = await refreshToken(payload.refreshToken, 0, userId);
   if (!newToken) {
-    console.error('Failed to refresh token');
+    logSecurityEvent('Failed to refresh token', { userId });
     return null;
   }
 
@@ -201,7 +286,10 @@ export async function refreshAndUpdateSession(payload: JWTPayload, secret: Uint8
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error creating new session token:', errorMessage);
+    logSecurityEvent('Error creating new session token', {
+      error: errorMessage,
+      userId
+    });
     return null;
   }
 }
