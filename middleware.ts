@@ -75,6 +75,8 @@ const logSecurityEvent = (event: string, data: Record<string, unknown>) => {
   });
 };
 
+const TOKEN_REFRESH_THRESHOLD = 300;
+
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
@@ -98,7 +100,9 @@ export async function middleware(req: NextRequest) {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
 
-      if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+      if (payload.exp &&
+          (payload.exp < Math.floor(Date.now() / 1000) ||
+           payload.exp < Math.floor(Date.now() / 1000) + TOKEN_REFRESH_THRESHOLD)) {
         const userId = payload.sub as string;
         const refreshResult = await refreshAndUpdateSession(payload as jose.JWTPayload, secret, userId);
         if (refreshResult) {

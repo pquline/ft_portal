@@ -233,6 +233,12 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
         });
 
         if (!refreshResponse.ok) {
+          if (refreshResponse.status === 429) {
+            const retryAfter = refreshResponse.headers.get('Retry-After');
+            const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : 5000;
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+            return fetchWithDelay(url, options, retryCount);
+          }
           throw new Error('Token refresh failed');
         }
 

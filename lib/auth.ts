@@ -7,6 +7,7 @@ const TOKEN_REFRESH_URL = 'https://api.intra.42.fr/oauth/token';
 const MAX_RETRIES = 2;
 const RETRY_DELAY = 1000; // 1 second
 const TOKEN_EXPIRY = 7200; // 2 hours in seconds
+const TOKEN_REFRESH_THRESHOLD = 300; // Refresh token 5 minutes before expiry
 const MAX_REFRESH_ATTEMPTS = 5; // Maximum refresh attempts per minute
 const REFRESH_WINDOW = 60 * 1000; // 1 minute in milliseconds
 
@@ -85,7 +86,9 @@ export async function getSession() {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload: sessionPayload } = await jose.jwtVerify(sessionCookie.value, secret);
 
-    if (sessionPayload.exp && sessionPayload.exp < Math.floor(Date.now() / 1000)) {
+    if (sessionPayload.exp &&
+        (sessionPayload.exp < Math.floor(Date.now() / 1000) ||
+         sessionPayload.exp < Math.floor(Date.now() / 1000) + TOKEN_REFRESH_THRESHOLD)) {
       const result = await refreshAndUpdateSession(sessionPayload as JWTPayload, secret);
       if (!result) return null;
 
@@ -191,6 +194,16 @@ export async function refreshToken(token: string, retryCount = 0, userId?: strin
         error,
         userId
       });
+
+      if (response.status === 429) {
+        const retryAfter = response.headers.get('Retry-After');
+        const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : Math.min(500 * Math.pow(2, retryCount), 10000);
+        if (retryCount < MAX_RETRIES) {
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+          return await refreshToken(token, retryCount + 1, userId);
+        }
+        throw new AuthError('Rate limit exceeded', 'RATE_LIMITED', error);
+      }
 
       if (response.status === 401 || response.status === 403) {
         throw new AuthError('Refresh token is invalid or expired', 'TOKEN_EXPIRED', error);
