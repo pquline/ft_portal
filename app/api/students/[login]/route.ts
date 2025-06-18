@@ -40,51 +40,6 @@ interface StudentResponse {
   }>;
 }
 
-interface LogData {
-  login: string;
-  event: 'search_started' | 'search_failed' | 'search_successful' | 'search_exception';
-  error?: string;
-  status?: number;
-  student_id?: number;
-}
-
-async function sendToBetterStack(level: 'info' | 'error', message: string, data: LogData) {
-  const sourceToken = process.env.BETTERSTACK_SOURCE_TOKEN;
-
-  if (!sourceToken) {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[Better Stack] ${level.toUpperCase()}: ${message}`, data);
-    }
-    return;
-  }
-
-  try {
-    const response = await fetch('https://in.logs.betterstack.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sourceToken}`
-      },
-      body: JSON.stringify({
-        level,
-        message,
-        timestamp: new Date().toISOString(),
-        ...data
-      })
-    });
-
-    if (!response.ok) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error(`[Better Stack] Failed to send log: ${response.status} ${response.statusText}`);
-      }
-    }
-  } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('[Better Stack] Network error:', error);
-    }
-  }
-}
-
 export async function GET(request: Request) {
   const authHeader = request.headers.get('Authorization')
 
@@ -107,28 +62,12 @@ export async function GET(request: Request) {
 
     if (!response.ok) {
       const error = await response.json()
-      await sendToBetterStack('error', 'Login search failed', {
-        login,
-        error: error.message || 'Failed to fetch profile',
-        status: response.status,
-        event: 'search_failed'
-      });
-      return NextResponse.json({ error: error.message || 'Failed to fetch profile' }, { status: response.status })
+      return NextResponse.json({ error: error.message || 'Failed to fetch student profile' }, { status: response.status })
     }
 
     const data: StudentResponse = await response.json()
-    await sendToBetterStack('info', 'Login search successful', {
-      login,
-      student_id: data.id,
-      event: 'search_successful'
-    });
     return NextResponse.json(data)
-  } catch (error) {
-    await sendToBetterStack('error', 'Login search exception', {
-      login,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      event: 'search_exception'
-    });
-    return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 })
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch student profile' }, { status: 500 })
   }
 }
