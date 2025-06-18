@@ -96,11 +96,11 @@ export async function middleware(req: NextRequest) {
   if (sessionCookie?.value) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      const payload = jose.decodeJwt(sessionCookie.value);
+      const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
 
       if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
         const userId = payload.sub as string;
-        const refreshResult = await refreshAndUpdateSession(payload, secret, userId);
+        const refreshResult = await refreshAndUpdateSession(payload as jose.JWTPayload, secret, userId);
         if (refreshResult) {
           const response = NextResponse.next();
           setSecureCookie(response, 'session', refreshResult.response.cookies.get('session')?.value || '');
@@ -113,9 +113,7 @@ export async function middleware(req: NextRequest) {
         return createAuthRedirect(req);
       }
 
-      const { payload: verifiedPayload } = await jose.jwtVerify(sessionCookie.value, secret);
       const response = NextResponse.next();
-
       if (userCookie?.value) {
         setSecureCookie(response, 'user', userCookie.value);
       }

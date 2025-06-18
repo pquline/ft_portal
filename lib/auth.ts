@@ -84,7 +84,7 @@ export async function getSession() {
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const sessionPayload = decodeJwt(sessionCookie.value);
+    const { payload: sessionPayload } = await jose.jwtVerify(sessionCookie.value, secret);
 
     if (sessionPayload.exp && sessionPayload.exp < Math.floor(Date.now() / 1000)) {
       const result = await refreshAndUpdateSession(sessionPayload as JWTPayload, secret);
@@ -99,20 +99,19 @@ export async function getSession() {
       };
     }
 
-    const { payload: verifiedSessionPayload } = await jose.jwtVerify(sessionCookie.value, secret);
     const { payload: userPayload } = await jose.jwtVerify(userCookie.value, secret);
 
-    if (!verifiedSessionPayload.accessToken) {
+    if (!sessionPayload.accessToken) {
       return null;
     }
 
     return {
       ...userPayload,
-      accessToken: verifiedSessionPayload.accessToken as string
+      accessToken: sessionPayload.accessToken as string
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Session verification failed:', errorMessage);
+    logSecurityEvent('Session verification failed', { error: errorMessage });
     return null;
   }
 }
@@ -300,22 +299,20 @@ export async function getToken(request: NextRequest): Promise<TokenPair | null> 
 
   try {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const payload = decodeJwt(sessionCookie.value);
+    const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
 
     if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
       const result = await refreshAndUpdateSession(payload as JWTPayload, secret);
       return result?.tokens ?? null;
     }
 
-    const { payload: verifiedPayload } = await jose.jwtVerify(sessionCookie.value, secret);
-
     return {
-      accessToken: verifiedPayload.accessToken as string,
-      refreshToken: verifiedPayload.refreshToken as string
+      accessToken: payload.accessToken as string,
+      refreshToken: payload.refreshToken as string
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Token verification failed:', errorMessage);
+    logSecurityEvent('Token verification failed', { error: errorMessage });
     return null;
   }
 }
