@@ -199,6 +199,17 @@ interface GitHubFile {
 
 export const API_BASE_URL = "https://api.intra.42.fr";
 
+function normalizeHeaders(headers: HeadersInit): Record<string, string> {
+  if (headers instanceof Headers) {
+    const normalized: Record<string, string> = {};
+    headers.forEach((value, key) => {
+      normalized[key] = value;
+    });
+    return normalized;
+  }
+  return headers as Record<string, string>;
+}
+
 export async function fetchWithDelay(url: string, options: RequestInit = {}, retryCount = 0): Promise<Response> {
   const response = await fetch(url, options);
 
@@ -210,27 +221,38 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
   }
 
   if (response.status === 401) {
-    const error = await response.json();
-    if (error.error === 'token_expired' || error.error === 'invalid_token') {
-      const refreshResponse = await fetch('/api/auth/refresh', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-      });
+    try {
+      const error = await response.json();
+      if (error.error === 'token_expired' || error.error === 'invalid_token') {
+        const refreshResponse = await fetch('/api/auth/refresh', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
 
-      if (refreshResponse.ok) {
+        if (!refreshResponse.ok) {
+          throw new Error('Token refresh failed');
+        }
+
         const { accessToken } = await refreshResponse.json();
+        if (!accessToken) {
+          throw new Error('No access token in refresh response');
+        }
+
         const newOptions = {
           ...options,
           headers: {
-            ...options.headers,
+            ...normalizeHeaders(options.headers || {}),
             Authorization: `Bearer ${accessToken}`,
           },
         };
         return fetchWithDelay(url, newOptions, retryCount);
       }
+    } catch (error) {
+      console.error('Error during token refresh:', error);
+      return response;
     }
   }
 

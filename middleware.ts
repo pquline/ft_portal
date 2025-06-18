@@ -1,19 +1,63 @@
 import * as jose from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { refreshAndUpdateSession } from './lib/auth';
+
+const PUBLIC_PATHS = [
+  '/auth',
+  '/api/auth',
+  '/_next',
+  '/favicon.ico',
+  '/manifest.json',
+  '.png',
+  '.ico'
+] as const;
+
+const isPublicPath = (path: string): boolean => {
+  return PUBLIC_PATHS.some(publicPath =>
+    path === publicPath ||
+    path.startsWith(publicPath) ||
+    path.endsWith(publicPath)
+  );
+};
+
+const createAuthRedirect = (req: NextRequest): NextResponse => {
+  const response = NextResponse.redirect(new URL('/auth', req.url));
+  response.cookies.delete('session');
+  response.cookies.delete('user');
+  return response;
+};
+
+const createUnauthorizedResponse = (): NextResponse => {
+  return new NextResponse(
+    JSON.stringify({ error: 'Unauthorized' }),
+    {
+      status: 401,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+};
+
+const setSecureCookie = (
+  response: NextResponse,
+  name: string,
+  value: string
+): void => {
+  response.cookies.set(name, value, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost'
+  });
+};
 
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
-  if (
-    path === '/auth' ||
-    path.startsWith('/api/auth') ||
-    path.startsWith('/_next') ||
-    path === '/favicon.ico' ||
-    path === '/manifest.json' ||
-    path.endsWith('.png') ||
-    path.endsWith('.ico')
-  ) {
+  if (isPublicPath(path)) {
     return NextResponse.next();
   }
 
@@ -22,15 +66,7 @@ export async function middleware(req: NextRequest) {
 
   if (path.startsWith('/api/')) {
     if (!sessionCookie?.value && !userCookie?.value) {
-      return new NextResponse(
-        JSON.stringify({ error: 'Unauthorized' }),
-        {
-          status: 401,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      return createUnauthorizedResponse();
     }
     return NextResponse.next();
   }
@@ -38,69 +74,38 @@ export async function middleware(req: NextRequest) {
   if (sessionCookie?.value) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
+      const payload = jose.decodeJwt(sessionCookie.value);
 
+      if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+        const refreshResult = await refreshAndUpdateSession(payload, secret);
+        if (refreshResult) {
+          const response = NextResponse.next();
+          setSecureCookie(response, 'session', refreshResult.tokens.accessToken);
+          return response;
+        }
+        return createAuthRedirect(req);
+      }
+
+      const { payload: verifiedPayload } = await jose.jwtVerify(sessionCookie.value, secret);
       const response = NextResponse.next();
 
-      response.cookies.set('session', sessionCookie.value, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost'
-      });
+      if (sessionCookie.value !== verifiedPayload.accessToken) {
+        setSecureCookie(response, 'session', sessionCookie.value);
+      }
 
       if (userCookie?.value) {
-        response.cookies.set('user', userCookie.value, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost'
-        });
+        setSecureCookie(response, 'user', userCookie.value);
       }
 
       return response;
     } catch (error) {
-      console.error("Session JWT verification failed:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Session verification failed:', errorMessage);
+      return createAuthRedirect(req);
     }
   }
 
-  if (userCookie?.value) {
-    try {
-      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      const { payload } = await jose.jwtVerify(userCookie.value, secret);
-
-      const response = NextResponse.next();
-
-      response.cookies.set('user', userCookie.value, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost'
-      });
-
-      if (sessionCookie?.value) {
-        response.cookies.set('session', sessionCookie.value, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          path: '/',
-          domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost'
-        });
-      }
-
-      return response;
-    } catch (error) {
-      console.error("User JWT verification failed:", error);
-    }
-  }
-
-  const response = NextResponse.redirect(new URL('/auth', req.url));
-  response.cookies.delete('session');
-  response.cookies.delete('user');
-  return response;
+  return createAuthRedirect(req);
 }
 
 export const config = {
