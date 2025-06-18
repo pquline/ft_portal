@@ -13,7 +13,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to refresh token' }, { status: 401 });
     }
 
-    return NextResponse.json({ accessToken: newToken });
+    const response = NextResponse.json({ accessToken: newToken });
+
+    response.cookies.set({
+      name: 'session',
+      value: newToken,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Error refreshing token:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

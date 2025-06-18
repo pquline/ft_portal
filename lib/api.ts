@@ -217,6 +217,7 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
       });
 
       if (refreshResponse.ok) {
@@ -233,7 +234,9 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
     }
   }
 
-  await new Promise(resolve => setTimeout(resolve, 500));
+  if (retryCount > 0) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
   return response;
 }
 
