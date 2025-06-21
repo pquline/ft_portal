@@ -52,7 +52,6 @@ def main():
 
     for project in projects:
         slug = project['slug'].replace('"', '\\"')
-        cursus = project.get('cursus', [])
         project_path = f"deprecated/{slug}"
         tsx_lines.append(f"  {{ id: {project['id']}, project_path: \"{project_path}\" }},")
     tsx_lines.append("];")
