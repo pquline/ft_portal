@@ -1,3 +1,5 @@
+import { projectMap } from '@/components/projectMap';
+
 export interface TokenResponse {
   access_token: string;
   token_type: string;
@@ -283,7 +285,13 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
     stats.flagStats[flagName] = (stats.flagStats[flagName] || 0) + 1;
 
     const gitlabPath = evaluation.team.project_gitlab_path;
-    const projectName = gitlabPath ? gitlabPath.split('/').slice(-2).join('/') : 'Unknown Project';
+    let projectName: string;
+    if (gitlabPath) {
+      projectName = gitlabPath.split('/').slice(-2).join('/');
+    } else {
+      const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
+      projectName = projectEntry ? projectEntry.project_path : 'Unknown Project';
+    }
 
     if (!stats.projectStats[projectName]) {
       stats.projectStats[projectName] = {
