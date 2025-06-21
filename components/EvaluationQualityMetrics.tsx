@@ -46,8 +46,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
       evaluation.feedbacks.forEach(feedback => {
         if (!EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)) {
           if (
-            feedback.rating !== null &&
-            feedback.rating !== undefined &&
+            feedback.rating != null &&
             feedback.rating >= 0 &&
             feedback.rating <= 5
           ) {
