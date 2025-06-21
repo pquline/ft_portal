@@ -45,7 +45,12 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
       evaluation.feedbacks.forEach(feedback => {
         if (!EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)) {
-          if (feedback.rating >= 0 && feedback.rating <= 5) {
+          if (
+            feedback.rating !== null &&
+            feedback.rating !== undefined &&
+            feedback.rating >= 0 &&
+            feedback.rating <= 5
+          ) {
             ratingDistribution[feedback.rating.toString() as keyof typeof ratingDistribution]++;
             totalRatings++;
           }
