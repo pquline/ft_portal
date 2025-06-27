@@ -20,7 +20,7 @@ A web application for visualizing student data from the 42 API, including evalua
   - Detailed evaluation statistics
 
 - 🎙️ **Hall Voice**
-  - Student's hall voice sound management
+  - Listen to student's Hall Voice sounds
   - Audio player integration for sound playback
 
 ## 🚀 Getting Started
@@ -92,7 +92,7 @@ JWT_SECRET=your_random_secret_key
 3. View detailed statistics including:
    - Evaluation performance
    - Project completion rates
-   - Hall voice sound management
+   - Listen to Hall Voice sounds
 
 ## Development
 
