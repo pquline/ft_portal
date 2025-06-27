@@ -2,44 +2,6 @@ import * as jose from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-async function sendDiscordErrorNotification(errorMessage: string) {
-  const webhookUrl = process.env.DISCORD_WEBHOOK_URL_ERROR;
-
-  if (!webhookUrl) {
-    console.error("Discord webhook URL not configured");
-    return;
-  }
-
-  const embed = {
-    title: "⚠️ **ft_portal** ⚠️",
-    color: 0xFF0000,
-    description: "JWT verification failed in middleware.",
-    fields: [{
-      name: "Error Details",
-      value: errorMessage,
-      inline: false
-    }],
-    timestamp: new Date().toISOString()
-  };
-
-  const payload = { embeds: [embed] };
-  const headers = { "Content-Type": "application/json" };
-
-  try {
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(payload)
-    });
-
-    if (response.status !== 204) {
-      console.error(`Failed to send error notification. Status code: ${response.status}`);
-    }
-  } catch (error) {
-    console.error("Failed to send error notification:", error);
-  }
-}
-
 export async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 

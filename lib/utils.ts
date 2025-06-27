@@ -22,7 +22,6 @@ export async function sendDiscordErrorNotification(errorMessage?: string) {
       value: string;
       inline: boolean;
     }>,
-    timestamp: new Date().toISOString()
   };
 
   if (errorMessage) {
