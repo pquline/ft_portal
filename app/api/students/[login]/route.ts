@@ -1,5 +1,5 @@
 import { API_BASE_URL, fetchWithDelay } from '@/lib/api';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 interface StudentResponse {
   id: number;
@@ -40,14 +40,17 @@ interface StudentResponse {
   }>;
 }
 
-export async function GET(request: Request) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ login: string }> }
+) {
   const authHeader = request.headers.get('Authorization')
 
   if (!authHeader) {
     return NextResponse.json({ error: 'Missing authorization header' }, { status: 401 })
   }
 
-  const login = request.url.split('/').pop();
+  const { login } = await params;
 
   if (!login) {
     return NextResponse.json({ error: 'Missing login parameter' }, { status: 400 });

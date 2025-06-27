@@ -4,21 +4,21 @@ import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
 import { Button } from "@/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-	Evaluation,
-	calculateEvaluationStats,
-	checkHallVoice,
-	getEvaluations,
-	searchStudent,
-	type EvaluationStats,
-	type HallVoiceSounds,
+    Evaluation,
+    calculateEvaluationStats,
+    checkHallVoice,
+    getEvaluations,
+    searchStudent,
+    type EvaluationStats,
+    type HallVoiceSounds,
 } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -59,6 +59,12 @@ export default function Home() {
       return;
     }
 
+    const trimmedLogin = login.trim();
+    if (!trimmedLogin) {
+      toast.error("Please enter a valid login");
+      return;
+    }
+
     setIsLoadingStats(true);
     setError(null);
     setStats(null);
@@ -66,7 +72,7 @@ export default function Home() {
     setHallVoiceSounds(null);
 
     try {
-      const studentData = await searchStudent(login, accessToken);
+      const studentData = await searchStudent(trimmedLogin, accessToken);
       if (!studentData) {
         toast.error("Student not found");
         return;
@@ -81,7 +87,7 @@ export default function Home() {
         return;
       }
       const stats = calculateEvaluationStats(evaluations);
-      const hallVoice = await checkHallVoice(login);
+      const hallVoice = await checkHallVoice(trimmedLogin);
 
       setStats(stats);
       setEvaluationsData(evaluations);

@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Evaluation } from "@/lib/api";
 import { Progress } from "@/components/ui/progress";
+import { Evaluation } from "@/lib/api";
 
 const EXCLUDED_FEEDBACK_MESSAGES = new Set([
   "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
@@ -96,7 +96,7 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
                 <span className="text-sm font-medium">{rating}★</span>
                 <span className="text-sm text-gray-500">{count} ratings</span>
               </div>
-              <Progress value={(count / totalRatings) * 100} className="h-2" />
+              <Progress value={totalRatings > 0 ? (count / totalRatings) * 100 : 0} className="h-2" />
             </div>
           ))}
         </CardContent>
