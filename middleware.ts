@@ -105,8 +105,6 @@ export async function middleware(req: NextRequest) {
       return response;
     } catch (error) {
       console.error("Session JWT verification failed:", error);
-      await sendDiscordErrorNotification(`Session JWT verification failed: ${error instanceof Error ? error.message : String(error)}`);
-      // Clear invalid cookies
       const response = NextResponse.redirect(new URL('/auth', req.url));
       response.cookies.delete('session');
       response.cookies.delete('user');
@@ -146,8 +144,6 @@ export async function middleware(req: NextRequest) {
       return response;
     } catch (error) {
       console.error("User JWT verification failed:", error);
-      await sendDiscordErrorNotification(`User JWT verification failed: ${error instanceof Error ? error.message : String(error)}`);
-      // Clear invalid cookies
       const response = NextResponse.redirect(new URL('/auth', req.url));
       response.cookies.delete('session');
       response.cookies.delete('user');
