@@ -8,6 +8,7 @@ A web application for visualizing student data from the 42 API, including evalua
   - Secure 42 OAuth 2.0 integration
   - Single sign-on with your 42 account
   - Automatic session management
+  - Discord webhook notifications for authentication failures
 
 - 👤 **Student Statistics**
   - Real-time student search by login
@@ -30,6 +31,7 @@ A web application for visualizing student data from the 42 API, including evalua
 - Node.js (v18 or higher)
 - npm or yarn
 - A 42 account
+- Discord webhook URL (optional, for error notifications)
 
 ### ⚙️ Installation
 
@@ -67,7 +69,13 @@ FORTYTWO_CLIENT_ID=your_client_id
 FORTYTWO_CLIENT_SECRET=your_client_secret
 NEXT_PUBLIC_URL=http://localhost:3000
 JWT_SECRET=your_random_secret_key
+DISCORD_WEBHOOK_URL_ERROR=your_discord_webhook_url
 ```
+
+**Optional: Discord Webhook Setup**
+- Create a Discord webhook in your server
+- Add the webhook URL to `DISCORD_WEBHOOK_URL_ERROR`
+- The app will send notifications when authentication fails
 
 ## 🛠️ Tech Stack
 
@@ -84,6 +92,7 @@ JWT_SECRET=your_random_secret_key
 - **Form Handling:** React Hook Form
 - **Notifications:** Sonner
 - **Authentication:** 42 OAuth API
+- **Error Monitoring:** Discord Webhooks
 
 ## 💡 Usage
 
