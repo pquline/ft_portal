@@ -1,8 +1,9 @@
+import { ClientLayout } from "@/components/ClientLayout";
+import { Providers } from "@/components/Providers";
 import type { Metadata, Viewport } from "next";
-import { Inter, Fira_Code } from "next/font/google";
+import { Fira_Code, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-import { Providers } from "@/components/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 const firaCode = Fira_Code({
@@ -49,7 +50,9 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} ${firaCode.variable} bg-background dark:bg-gradient-to-t dark:from-primary/5 dark:to-primary/10`}>
         <Providers>
-          {children}
+          <ClientLayout>
+            {children}
+          </ClientLayout>
           <Toaster />
         </Providers>
       </body>
