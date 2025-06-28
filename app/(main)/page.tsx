@@ -4,21 +4,21 @@ import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
 import { Button } from "@/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-	Evaluation,
-	calculateEvaluationStats,
-	checkHallVoice,
-	getEvaluations,
-	searchStudent,
-	type EvaluationStats,
-	type HallVoiceSounds,
+    Evaluation,
+    calculateEvaluationStats,
+    checkHallVoice,
+    getEvaluations,
+    searchStudent,
+    type EvaluationStats,
+    type HallVoiceSounds,
 } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -35,6 +35,12 @@ export default function Home() {
 
   useEffect(() => {
     const verifySession = async () => {
+      // Set mock access token in development
+      if (process.env.NODE_ENV !== 'production') {
+        setAccessToken('dev_mock_token');
+        return;
+      }
+
       try {
         const response = await fetch("/api/auth/session");
         if (!response.ok) {
@@ -54,7 +60,9 @@ export default function Home() {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!accessToken) {
+
+    // Allow search in development mode without real access token
+    if (!accessToken && process.env.NODE_ENV === 'production') {
       toast.error("Not authenticated");
       return;
     }
@@ -66,12 +74,13 @@ export default function Home() {
     setHallVoiceSounds(null);
 
     try {
-      const studentData = await searchStudent(login, accessToken);
+      // In development mode, the API routes will return mock data
+      const studentData = await searchStudent(login, accessToken || 'dev_mock_token');
       if (!studentData) {
         toast.error("Student not found");
         return;
       }
-      const evaluations = await getEvaluations(studentData.id, accessToken);
+      const evaluations = await getEvaluations(studentData.id, accessToken || 'dev_mock_token');
       if (
         !evaluations ||
         !Array.isArray(evaluations) ||

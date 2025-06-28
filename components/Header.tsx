@@ -33,6 +33,15 @@ const Header = () => {
 
   React.useEffect(() => {
     const fetchUser = async () => {
+      // Set mock user in development
+      if (process.env.NODE_ENV !== 'production') {
+        setUser({
+          profile_picture: 'https://via.placeholder.com/150',
+          login: 'dev_user'
+        });
+        return;
+      }
+
       try {
         const response = await fetch("/api/user");
         if (!response.ok) {

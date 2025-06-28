@@ -41,6 +41,58 @@ interface StudentResponse {
 }
 
 export async function GET(request: Request) {
+  // Return mock student data in development
+  if (process.env.NODE_ENV !== 'production') {
+    const login = request.url.split('/').pop() || 'dev_user';
+    return NextResponse.json({
+      id: 1,
+      email: `${login}@student.42.fr`,
+      login: login,
+      first_name: 'Dev',
+      last_name: 'User',
+      usual_first_name: 'Dev',
+      usual_full_name: 'Dev User',
+      url: `https://api.intra.42.fr/v2/users/${login}`,
+      phone: '+1234567890',
+      displayname: 'Dev User',
+      kind: 'student',
+      image: {
+        link: 'https://via.placeholder.com/150',
+        versions: {
+          large: 'https://via.placeholder.com/300',
+          medium: 'https://via.placeholder.com/200',
+          small: 'https://via.placeholder.com/100',
+          micro: 'https://via.placeholder.com/50'
+        }
+      },
+      correction_point: 10,
+      wallet: 100,
+      cursus_users: [
+        {
+          cursus_id: 1,
+          cursus: {
+            id: 1,
+            name: '42',
+            slug: '42'
+          },
+          level: 10.5,
+          skills: [
+            {
+              id: 1,
+              name: 'C',
+              level: 10.5
+            },
+            {
+              id: 2,
+              name: 'Python',
+              level: 8.2
+            }
+          ]
+        }
+      ]
+    });
+  }
+
   const authHeader = request.headers.get('Authorization')
 
   if (!authHeader) {

@@ -3,6 +3,10 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export async function middleware(req: NextRequest) {
+  if (process.env.NODE_ENV !== 'production') {
+    return NextResponse.next();
+  }
+
   const path = req.nextUrl.pathname;
 
   if (
@@ -38,11 +42,7 @@ export async function middleware(req: NextRequest) {
   if (sessionCookie?.value) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
-
-      if (!payload.accessToken) {
-        throw new Error("Invalid session payload");
-      }
+      await jose.jwtVerify(sessionCookie.value, secret);
 
       const response = NextResponse.next();
 
@@ -77,11 +77,7 @@ export async function middleware(req: NextRequest) {
   if (userCookie?.value) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      const { payload } = await jose.jwtVerify(userCookie.value, secret);
-
-      if (!payload.login || !payload.id) {
-        throw new Error("Invalid user payload");
-      }
+      await jose.jwtVerify(userCookie.value, secret);
 
       const response = NextResponse.next();
 
