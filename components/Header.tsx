@@ -2,13 +2,13 @@
 
 import HeaderAvatar from "@/components/HeaderAvatar";
 import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Logoimg from "@/public/ft_portal.png";
 import { LogOut, Moon, Sun } from "lucide-react";
@@ -33,6 +33,15 @@ const Header = () => {
 
   React.useEffect(() => {
     const fetchUser = async () => {
+      // Set mock user in development
+      if (process.env.NODE_ENV !== 'production') {
+        setUser({
+          profile_picture: 'https://via.placeholder.com/150',
+          login: 'dev_user'
+        });
+        return;
+      }
+
       try {
         const response = await fetch("/api/user");
         if (!response.ok) {

@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Header from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
+import Header from "@/components/Header";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export function ClientLayout({
@@ -18,6 +17,12 @@ export function ClientLayout({
 
   useEffect(() => {
     const checkAuth = async () => {
+      // Skip auth check in development
+      if (process.env.NODE_ENV !== 'production') {
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch("/api/auth/session");
         if (!response.ok && !pathname.startsWith("/auth")) {

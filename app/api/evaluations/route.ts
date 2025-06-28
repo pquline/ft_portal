@@ -4,6 +4,30 @@ import { NextResponse } from 'next/server';
 const API_BASE_URL = 'https://api.intra.42.fr';
 
 export async function GET(request: Request) {
+  // Return mock evaluations in development
+  if (process.env.NODE_ENV !== 'production') {
+    return NextResponse.json([
+      {
+        id: 1,
+        scale_id: 1,
+        comment: "Great work!",
+        feedback: "Excellent implementation",
+        final_mark: 100,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        flag: {
+          id: 1,
+          name: "Perfect"
+        },
+        feedback_rating: 5,
+        team: {
+          id: 1,
+          name: "Sample Project"
+        }
+      }
+    ]);
+  }
+
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
   const accessToken = request.headers.get('Authorization')?.split(' ')[1];
