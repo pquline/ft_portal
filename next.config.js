@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: 'cdn.intra.42.fr',
         pathname: '/users/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        pathname: '/**',
+      },
     ],
   },
 };
