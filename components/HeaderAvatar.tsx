@@ -1,5 +1,6 @@
-import Image from "next/image";
 import { User } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
 
 interface HeaderAvatarProps {
   profilePicture: string | null;
@@ -7,16 +8,16 @@ interface HeaderAvatarProps {
 }
 
 const HeaderAvatar = ({ profilePicture, login }: HeaderAvatarProps) => {
-  if (!profilePicture || !login) {
+  const [imageError, setImageError] = useState(false);
+
+  if (!profilePicture || !login || imageError) {
     return (
       <div
         role="img"
         aria-label={`${login || 'User'}'s avatar`}
-        className="relative h-8 w-8 rounded-full overflow-hidden border border-border"
+        className="relative h-8 w-8 rounded-full overflow-hidden border border-border bg-muted flex items-center justify-center"
       >
-        <div className="h-full w-full bg-muted flex items-center justify-center">
-          <User className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-        </div>
+        <User className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
       </div>
     );
   }
@@ -33,6 +34,8 @@ const HeaderAvatar = ({ profilePicture, login }: HeaderAvatarProps) => {
         fill
         className="object-cover"
         aria-hidden="true"
+        onError={() => setImageError(true)}
+        unoptimized={false}
       />
     </div>
   );

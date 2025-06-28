@@ -1,3 +1,4 @@
+import { sendDiscordErrorNotification } from "@/lib/utils";
 import * as jose from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,6 +7,7 @@ export async function GET(req: NextRequest) {
   const code = searchParams.get("code");
 
   if (!code) {
+    await sendDiscordErrorNotification("Code not found in callback");
     return NextResponse.json({ error: "Code not found" }, { status: 400 });
   }
 
@@ -28,6 +30,7 @@ export async function GET(req: NextRequest) {
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.json();
       console.error("Error fetching token:", errorData);
+      await sendDiscordErrorNotification(`Failed to fetch token: ${JSON.stringify(errorData)}`);
       return NextResponse.json(
         { error: "Failed to fetch token" },
         { status: 500 }
@@ -45,6 +48,7 @@ export async function GET(req: NextRequest) {
     if (!userProfileResponse.ok) {
       const errorData = await userProfileResponse.json();
       console.error("Error fetching user profile:", errorData);
+      await sendDiscordErrorNotification(`Failed to fetch user profile: ${JSON.stringify(errorData)}`);
       return NextResponse.json(
         { error: "Failed to fetch user profile" },
         { status: 500 }
@@ -92,6 +96,7 @@ export async function GET(req: NextRequest) {
     return response;
   } catch (error) {
     console.error("An unexpected error occurred:", error);
+    await sendDiscordErrorNotification(`Unexpected error in auth callback: ${error instanceof Error ? error.message : String(error)}`);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

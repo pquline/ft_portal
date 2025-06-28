@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
+import { Pause, Play, Volume2, VolumeX } from "lucide-react";
+import * as React from "react";
 
 interface AudioPlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   src: string;
@@ -44,14 +44,19 @@ export function AudioPlayer({ src, className, ...props }: AudioPlayerProps) {
     };
   }, []);
 
-  const togglePlay = () => {
+  const togglePlay = async () => {
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      audioRef.current.play();
+      try {
+        await audioRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error('Failed to play audio:', error);
+      }
     }
-    setIsPlaying(!isPlaying);
   };
 
   const handleTimeChange = (value: number[]) => {
