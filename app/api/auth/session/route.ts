@@ -14,6 +14,7 @@ export async function GET() {
           link: 'https://via.placeholder.com/150'
         }
       },
+      accessToken: 'dev_mock_token',
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
     });
   }
