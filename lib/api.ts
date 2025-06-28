@@ -290,7 +290,7 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
       projectName = gitlabPath.split('/').slice(-2).join('/');
     } else {
       const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
-      projectName = projectEntry ? projectEntry.project_path : 'unkown_project';
+      projectName = projectEntry ? projectEntry.project_path : 'unknown_project';
     }
 
     if (!stats.projectStats[projectName]) {
