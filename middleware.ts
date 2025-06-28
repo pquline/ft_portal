@@ -44,10 +44,6 @@ export async function middleware(req: NextRequest) {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       await jose.jwtVerify(sessionCookie.value, secret);
 
-      if (!payload.accessToken) {
-        throw new Error("Invalid session payload");
-      }
-
       const response = NextResponse.next();
 
       response.cookies.set('session', sessionCookie.value, {
@@ -82,10 +78,6 @@ export async function middleware(req: NextRequest) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       await jose.jwtVerify(userCookie.value, secret);
-
-      if (!payload.login || !payload.id) {
-        throw new Error("Invalid user payload");
-      }
 
       const response = NextResponse.next();
 
