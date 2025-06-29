@@ -42,7 +42,15 @@ export async function middleware(req: NextRequest) {
   if (sessionCookie?.value) {
     try {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-      await jose.jwtVerify(sessionCookie.value, secret);
+      const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
+
+      const now = Math.floor(Date.now() / 1000);
+      if (payload.exp && payload.exp < now) {
+        const response = NextResponse.redirect(new URL('/auth', req.url));
+        response.cookies.delete('session');
+        response.cookies.delete('user');
+        return response;
+      }
 
       const response = NextResponse.next();
 

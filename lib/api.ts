@@ -211,25 +211,10 @@ export async function fetchWithDelay(url: string, options: RequestInit = {}, ret
     return fetchWithDelay(url, options, retryCount + 1);
   }
 
-  if (response.status === 401 && retryCount === 0) {
-    try {
-      const sessionResponse = await fetch("/api/auth/session");
-      if (sessionResponse.ok) {
-        const sessionData = await sessionResponse.json();
-        if (sessionData.accessToken) {
-          const newOptions = {
-            ...options,
-            headers: {
-              ...options.headers,
-              Authorization: `Bearer ${sessionData.accessToken}`,
-            },
-          };
-          return fetchWithDelay(url, newOptions, retryCount + 1);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to refresh token:", error);
-    }
+  if (response.status === 401 && retryCount === 0 && typeof window !== 'undefined') {
+    document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    window.location.href = '/auth';
   }
 
   await new Promise(resolve => setTimeout(resolve, 500));

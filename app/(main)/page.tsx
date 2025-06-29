@@ -4,21 +4,21 @@ import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-    Evaluation,
-    calculateEvaluationStats,
-    checkHallVoice,
-    getEvaluations,
-    searchStudent,
-    type EvaluationStats,
-    type HallVoiceSounds,
+	Evaluation,
+	calculateEvaluationStats,
+	checkHallVoice,
+	getEvaluations,
+	searchStudent,
+	type EvaluationStats,
+	type HallVoiceSounds,
 } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -100,22 +100,9 @@ export default function Home() {
         err instanceof Error ? err.message : "Failed to fetch data";
 
       if (errorMessage.includes("access token expired") || errorMessage.includes("401")) {
-        try {
-          const sessionResponse = await fetch("/api/auth/session");
-          if (sessionResponse.ok) {
-            const sessionData = await sessionResponse.json();
-            if (sessionData.accessToken) {
-              setAccessToken(sessionData.accessToken);
-              toast.success("Session refreshed, please try your search again");
-              return;
-            }
-          }
-        } catch (refreshError) {
-          console.error("Failed to refresh session:", refreshError);
-        }
-
-        toast.error("Session expired. Please log in again.");
-        window.location.href = "/auth";
+        document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/auth';
         return;
       }
 
