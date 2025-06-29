@@ -24,19 +24,6 @@ export async function getAuthUrl(redirectUri: string): Promise<string> {
   return `${FORTYTWO_AUTH_URL}?${params.toString()}`;
 }
 
-export async function validateToken(accessToken: string): Promise<boolean> {
-  try {
-    const response = await fetch("https://api.intra.42.fr/v2/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
-
 export async function getSession(): Promise<SessionData | null> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("session");
@@ -55,9 +42,8 @@ export async function getSession(): Promise<SessionData | null> {
       return null;
     }
 
-    // Validate the token with 42 API
-    const isValid = await validateToken(sessionPayload.accessToken as string);
-    if (!isValid) {
+    const now = Math.floor(Date.now() / 1000);
+    if (sessionPayload.exp && sessionPayload.exp < now) {
       return null;
     }
 

@@ -2,19 +2,6 @@ import * as jose from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-async function validateToken(accessToken: string): Promise<boolean> {
-  try {
-    const response = await fetch("https://api.intra.42.fr/v2/me", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.ok;
-  } catch {
-    return false;
-  }
-}
-
 export async function middleware(req: NextRequest) {
   if (process.env.NODE_ENV !== 'production') {
     return NextResponse.next();
@@ -57,16 +44,12 @@ export async function middleware(req: NextRequest) {
       const secret = new TextEncoder().encode(process.env.JWT_SECRET);
       const { payload } = await jose.jwtVerify(sessionCookie.value, secret);
 
-      // Validate the token with 42 API
-      if (payload.accessToken) {
-        const isValid = await validateToken(payload.accessToken as string);
-        if (!isValid) {
-          // Token is expired, redirect to auth
-          const response = NextResponse.redirect(new URL('/auth', req.url));
-          response.cookies.delete('session');
-          response.cookies.delete('user');
-          return response;
-        }
+      const now = Math.floor(Date.now() / 1000);
+      if (payload.exp && payload.exp < now) {
+        const response = NextResponse.redirect(new URL('/auth', req.url));
+        response.cookies.delete('session');
+        response.cookies.delete('user');
+        return response;
       }
 
       const response = NextResponse.next();
