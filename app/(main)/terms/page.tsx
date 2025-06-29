@@ -1,10 +1,35 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms of Use - ft_portal",
+  description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, and account security requirements.",
+  keywords: [
+    "terms of use",
+    "acceptable use",
+    "42 school",
+    "student portal",
+    "data usage",
+    "account security",
+    "service terms",
+    "user guidelines"
+  ],
+  openGraph: {
+    title: "Terms of Use - ft_portal",
+    description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, and account security requirements.",
+    url: "https://portal.pfischof.com/terms",
+  },
+  twitter: {
+    title: "Terms of Use - ft_portal",
+    description: "Rules and guidelines for using ft_portal.",
+  },
+};
 
 export default function Terms() {
   return (

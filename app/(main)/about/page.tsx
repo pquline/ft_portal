@@ -1,5 +1,33 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "About ft_portal",
+  description: "Learn about ft_portal, a powerful tool for viewing detailed insights about 42 students, including evaluations, performance metrics, and hall voice data.",
+  keywords: [
+    "42 school",
+    "student portal",
+    "evaluation data",
+    "student analytics",
+    "42 API",
+    "coding school",
+    "student performance",
+    "data visualization",
+    "educational technology",
+    "hall voice",
+    "peer evaluations"
+  ],
+  openGraph: {
+    title: "About ft_portal - 42 Student Data Visualization",
+    description: "Learn about ft_portal, a powerful tool for viewing detailed insights about 42 students, including evaluations, performance metrics, and hall voice data.",
+    url: "https://portal.pfischof.com/about",
+  },
+  twitter: {
+    title: "About ft_portal - 42 Student Data Visualization",
+    description: "Learn about ft_portal, a powerful tool for viewing detailed insights about 42 students.",
+  },
+};
 
 export default function About() {
   return (

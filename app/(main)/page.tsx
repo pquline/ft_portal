@@ -4,22 +4,23 @@ import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
 import { Button } from "@/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-	Evaluation,
-	calculateEvaluationStats,
-	checkHallVoice,
-	getEvaluations,
-	searchStudent,
-	type EvaluationStats,
-	type HallVoiceSounds,
+    Evaluation,
+    calculateEvaluationStats,
+    checkHallVoice,
+    getEvaluations,
+    searchStudent,
+    type EvaluationStats,
+    type HallVoiceSounds,
 } from "@/lib/api";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -32,6 +33,33 @@ export default function Home() {
   const [hallVoiceSounds, setHallVoiceSounds] =
     useState<HallVoiceSounds | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ft_portal",
+    "description": "A modern web application for visualizing student data from the 42 API. Search and analyze student evaluations, performance metrics, and hall voice data with an intuitive interface.",
+    "url": "https://portal.pfischof.com",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "ft_portal Team"
+    },
+    "featureList": [
+      "Student data visualization",
+      "Evaluation analytics",
+      "Performance metrics",
+      "Hall voice data analysis",
+      "42 API integration"
+    ]
+  };
 
   useEffect(() => {
     const verifySession = async () => {
@@ -117,6 +145,9 @@ export default function Home() {
 
   return (
     <main className="flex-1">
+      <Head>
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      </Head>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6">
         <Card>
           <CardHeader>

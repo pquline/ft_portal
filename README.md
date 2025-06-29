@@ -24,6 +24,14 @@ A web application for visualizing student data from the 42 API, including evalua
   - Listen to student's Hall Voice sounds
   - Audio player integration for sound playback
 
+- 🔍 **SEO Optimized**
+  - Comprehensive meta tags and Open Graph data
+  - Structured data (JSON-LD) for better search visibility
+  - Dynamic sitemap generation
+  - Robots.txt configuration
+  - Custom 404 page
+  - Performance optimizations
+
 ## 🚀 Getting Started
 
 ### 📋 Prerequisites

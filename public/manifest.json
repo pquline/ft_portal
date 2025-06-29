@@ -1,11 +1,15 @@
 {
-  "name": "ft_portal",
+  "name": "ft_portal - 42 Student Data Visualization",
   "short_name": "ft_portal",
-  "description": "A modern web application for visualizing student data from the 42 API",
+  "description": "A modern web application for visualizing student data from the 42 API. Search and analyze student evaluations, performance metrics, and hall voice data with an intuitive interface.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1d1731",
   "theme_color": "#1d1731",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["education", "productivity", "utilities"],
   "icons": [
     {
       "src": "/favicon.ico",
