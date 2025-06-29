@@ -1,10 +1,35 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Terms of Use - FT Portal",
+  description: "Rules and guidelines for using FT Portal. Learn about acceptable use, data usage policies, and account security requirements.",
+  keywords: [
+    "terms of use",
+    "acceptable use",
+    "42 school",
+    "student portal",
+    "data usage",
+    "account security",
+    "service terms",
+    "user guidelines"
+  ],
+  openGraph: {
+    title: "Terms of Use - FT Portal",
+    description: "Rules and guidelines for using FT Portal. Learn about acceptable use, data usage policies, and account security requirements.",
+    url: "https://ft-portal.vercel.app/terms",
+  },
+  twitter: {
+    title: "Terms of Use - FT Portal",
+    description: "Rules and guidelines for using FT Portal.",
+  },
+};
 
 export default function Terms() {
   return (

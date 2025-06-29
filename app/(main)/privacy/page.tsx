@@ -1,10 +1,35 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy - FT Portal",
+  description: "Learn how FT Portal handles your data and protects your privacy. We do not collect, store, or process any personal data on our servers.",
+  keywords: [
+    "privacy policy",
+    "data protection",
+    "42 school",
+    "student portal",
+    "privacy",
+    "data security",
+    "OAuth",
+    "session management"
+  ],
+  openGraph: {
+    title: "Privacy Policy - FT Portal",
+    description: "Learn how FT Portal handles your data and protects your privacy.",
+    url: "https://ft-portal.vercel.app/privacy",
+  },
+  twitter: {
+    title: "Privacy Policy - FT Portal",
+    description: "Learn how FT Portal handles your data and protects your privacy.",
+  },
+};
 
 export default function Privacy() {
   return (
