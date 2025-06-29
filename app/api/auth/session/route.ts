@@ -26,21 +26,6 @@ export async function GET() {
       return new NextResponse(null, { status: 401 });
     }
 
-    // Check if session was refreshed and needs cookie update
-    if (session._newSessionToken) {
-      const { _newSessionToken, ...sessionData } = session;
-      const response = NextResponse.json(sessionData);
-      response.cookies.set("session", _newSessionToken, {
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: true,
-        path: "/",
-        maxAge: 24 * 60 * 60,
-        sameSite: "lax",
-        domain: process.env.NODE_ENV === "production" ? undefined : "localhost"
-      });
-      return response;
-    }
-
     return NextResponse.json(session);
   } catch (error) {
     await sendDiscordErrorNotification(`Session verification error: ${error instanceof Error ? error.message : String(error)}`);

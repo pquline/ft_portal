@@ -11,7 +11,6 @@ export interface SessionData {
   id?: number;
   profile_picture?: string;
   created_at?: string;
-  _newSessionToken?: string;
 }
 
 export async function getAuthUrl(redirectUri: string): Promise<string> {
@@ -25,29 +24,16 @@ export async function getAuthUrl(redirectUri: string): Promise<string> {
   return `${FORTYTWO_AUTH_URL}?${params.toString()}`;
 }
 
-export async function refreshToken(refreshToken: string): Promise<{ access_token: string; refresh_token: string } | null> {
+export async function validateToken(accessToken: string): Promise<boolean> {
   try {
-    const tokenResponse = await fetch("https://api.intra.42.fr/oauth/token", {
-      method: "POST",
+    const response = await fetch("https://api.intra.42.fr/v2/me", {
       headers: {
-        "Content-Type": "application/json",
-        Host: "api.intra.42.fr",
+        Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        grant_type: "refresh_token",
-        client_id: process.env.FORTYTWO_CLIENT_ID,
-        client_secret: process.env.FORTYTWO_CLIENT_SECRET,
-        refresh_token: refreshToken,
-      }),
     });
-
-    if (!tokenResponse.ok) {
-      return null;
-    }
-
-    return await tokenResponse.json();
+    return response.ok;
   } catch {
-    return null;
+    return false;
   }
 }
 
@@ -69,29 +55,10 @@ export async function getSession(): Promise<SessionData | null> {
       return null;
     }
 
-    if (sessionPayload.refreshToken && sessionPayload.accessTokenExpiresAt) {
-      const expiresAt = new Date(sessionPayload.accessTokenExpiresAt as string);
-      const now = new Date();
-
-      if (expiresAt.getTime() - now.getTime() < 5 * 60 * 1000) {
-        const refreshedTokens = await refreshToken(sessionPayload.refreshToken as string);
-        if (refreshedTokens) {
-          const newSessionToken = await new jose.SignJWT({
-            accessToken: refreshedTokens.access_token,
-            refreshToken: refreshedTokens.refresh_token,
-            accessTokenExpiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), // 2 hours
-          })
-            .setProtectedHeader({ alg: "HS256" })
-            .setExpirationTime("24h")
-            .sign(secret);
-
-          return {
-            ...userPayload,
-            accessToken: refreshedTokens.access_token,
-            _newSessionToken: newSessionToken // Flag to indicate session needs updating
-          };
-        }
-      }
+    // Validate the token with 42 API
+    const isValid = await validateToken(sessionPayload.accessToken as string);
+    if (!isValid) {
+      return null;
     }
 
     return {
