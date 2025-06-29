@@ -62,6 +62,8 @@ export async function GET(req: NextRequest) {
 
     const sessionToken = await new jose.SignJWT({
       accessToken: tokenData.access_token,
+      refreshToken: tokenData.refresh_token,
+      accessTokenExpiresAt: new Date(Date.now() + (tokenData.expires_in * 1000)).toISOString(),
     })
       .setProtectedHeader({ alg })
       .setExpirationTime("24h")

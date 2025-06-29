@@ -98,6 +98,27 @@ export default function Home() {
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to fetch data";
+
+      if (errorMessage.includes("access token expired") || errorMessage.includes("401")) {
+        try {
+          const sessionResponse = await fetch("/api/auth/session");
+          if (sessionResponse.ok) {
+            const sessionData = await sessionResponse.json();
+            if (sessionData.accessToken) {
+              setAccessToken(sessionData.accessToken);
+              toast.success("Session refreshed, please try your search again");
+              return;
+            }
+          }
+        } catch (refreshError) {
+          console.error("Failed to refresh session:", refreshError);
+        }
+
+        toast.error("Session expired. Please log in again.");
+        window.location.href = "/auth";
+        return;
+      }
+
       setError(errorMessage);
       toast.error("Failed to fetch data", {
         description: errorMessage,

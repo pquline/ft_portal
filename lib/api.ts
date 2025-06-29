@@ -203,14 +203,37 @@ export const API_BASE_URL = "https://api.intra.42.fr";
 
 export async function fetchWithDelay(url: string, options: RequestInit = {}, retryCount = 0): Promise<Response> {
   const response = await fetch(url, options);
+
   if (response.status === 429 && retryCount < 3) {
     const retryAfter = response.headers.get('Retry-After');
     const waitTime = retryAfter ? parseInt(retryAfter) * 500 : Math.min(500 * Math.pow(2, retryCount), 10000);
     await new Promise(resolve => setTimeout(resolve, waitTime));
     return fetchWithDelay(url, options, retryCount + 1);
   }
-   await new Promise(resolve => setTimeout(resolve, 500));
-   return response;
+
+  if (response.status === 401 && retryCount === 0) {
+    try {
+      const sessionResponse = await fetch("/api/auth/session");
+      if (sessionResponse.ok) {
+        const sessionData = await sessionResponse.json();
+        if (sessionData.accessToken) {
+          const newOptions = {
+            ...options,
+            headers: {
+              ...options.headers,
+              Authorization: `Bearer ${sessionData.accessToken}`,
+            },
+          };
+          return fetchWithDelay(url, newOptions, retryCount + 1);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to refresh token:", error);
+    }
+  }
+
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return response;
 }
 
 export async function searchStudent(login: string, accessToken: string): Promise<StudentProfile> {

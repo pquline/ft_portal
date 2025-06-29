@@ -114,7 +114,16 @@ export async function GET(request: Request) {
 
     if (!response.ok) {
       const error = await response.json()
-      return NextResponse.json({ error: error.message || 'Failed to fetch student profile' }, { status: response.status })
+
+      if (response.status === 401) {
+        return NextResponse.json({
+          error: 'The access token expired. Please refresh your session.'
+        }, { status: 401 })
+      }
+
+      return NextResponse.json({
+        error: error.message || 'Failed to fetch student profile'
+      }, { status: response.status })
     }
 
     const data: StudentResponse = await response.json()

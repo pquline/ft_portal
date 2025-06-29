@@ -60,6 +60,13 @@ export async function GET(request: Request) {
         } else {
           errorMessage = await response.text() || errorMessage;
         }
+
+        if (response.status === 401) {
+          return NextResponse.json({
+            error: 'The access token expired. Please refresh your session.'
+          }, { status: 401 });
+        }
+
         return NextResponse.json({ error: errorMessage }, { status: response.status });
       }
 
