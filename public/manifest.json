@@ -1,6 +1,6 @@
 {
-  "name": "FT Portal - 42 Student Data Visualization",
-  "short_name": "FT Portal",
+  "name": "ft_portal - 42 Student Data Visualization",
+  "short_name": "ft_portal",
   "description": "A modern web application for visualizing student data from the 42 API. Search and analyze student evaluations, performance metrics, and hall voice data with an intuitive interface.",
   "start_url": "/",
   "display": "standalone",

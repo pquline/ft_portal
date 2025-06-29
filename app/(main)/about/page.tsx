@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "About FT Portal",
-  description: "Learn about FT Portal, a powerful tool for viewing detailed insights about 42 students, including evaluations, performance metrics, and hall voice data.",
+  title: "About ft_portal",
+  description: "Learn about ft_portal, a powerful tool for viewing detailed insights about 42 students, including evaluations, performance metrics, and hall voice data.",
   keywords: [
     "42 school",
     "student portal",
@@ -19,13 +19,13 @@ export const metadata: Metadata = {
     "peer evaluations"
   ],
   openGraph: {
-    title: "About FT Portal - 42 Student Data Visualization",
-    description: "Learn about FT Portal, a powerful tool for viewing detailed insights about 42 students, including evaluations, performance metrics, and hall voice data.",
-    url: "https://ft-portal.vercel.app/about",
+    title: "About ft_portal - 42 Student Data Visualization",
+    description: "Learn about ft_portal, a powerful tool for viewing detailed insights about 42 students, including evaluations, performance metrics, and hall voice data.",
+    url: "https://portal.pfischof.com/about",
   },
   twitter: {
-    title: "About FT Portal - 42 Student Data Visualization",
-    description: "Learn about FT Portal, a powerful tool for viewing detailed insights about 42 students.",
+    title: "About ft_portal - 42 Student Data Visualization",
+    description: "Learn about ft_portal, a powerful tool for viewing detailed insights about 42 students.",
   },
 };
 

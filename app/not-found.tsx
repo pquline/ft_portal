@@ -4,8 +4,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Page Not Found - FT Portal",
-  description: "The page you're looking for doesn't exist. Return to FT Portal to search and analyze student data from the 42 API.",
+  title: "Page Not Found - ft_portal",
+  description: "The page you're looking for doesn't exist. Return to ft_portal to search and analyze student data from the 42 API.",
   robots: {
     index: false,
     follow: false,
@@ -24,7 +24,7 @@ export default function NotFound() {
         </CardHeader>
         <CardContent className="text-center space-y-4">
           <p className="text-muted-foreground">
-            The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
+            The page you&apos;re looking for doesn&apos;t exist. It might have been moved, deleted, or you entered the wrong URL.
           </p>
           <div className="space-y-2">
             <Button asChild className="w-full">
@@ -34,7 +34,7 @@ export default function NotFound() {
             </Button>
             <Button variant="outline" asChild className="w-full">
               <Link href="/about">
-                Learn More About FT Portal
+                Learn More About ft_portal
               </Link>
             </Button>
           </div>

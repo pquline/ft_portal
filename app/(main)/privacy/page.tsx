@@ -8,8 +8,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - FT Portal",
-  description: "Learn how FT Portal handles your data and protects your privacy. We do not collect, store, or process any personal data on our servers.",
+  title: "Privacy Policy - ft_portal",
+  description: "Learn how ft_portal handles your data and protects your privacy. We do not collect, store, or process any personal data on our servers.",
   keywords: [
     "privacy policy",
     "data protection",
@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     "session management"
   ],
   openGraph: {
-    title: "Privacy Policy - FT Portal",
-    description: "Learn how FT Portal handles your data and protects your privacy.",
-    url: "https://ft-portal.vercel.app/privacy",
+    title: "Privacy Policy - ft_portal",
+    description: "Learn how ft_portal handles your data and protects your privacy.",
+    url: "https://portal.pfischof.com/privacy",
   },
   twitter: {
-    title: "Privacy Policy - FT Portal",
-    description: "Learn how FT Portal handles your data and protects your privacy.",
+    title: "Privacy Policy - ft_portal",
+    description: "Learn how ft_portal handles your data and protects your privacy.",
   },
 };
 

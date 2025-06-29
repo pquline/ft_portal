@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://ft-portal.vercel.app'
+  const baseUrl = 'https://portal.pfischof.com'
 
   return [
     {

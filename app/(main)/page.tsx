@@ -38,9 +38,9 @@ export default function Home() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "FT Portal",
+    "name": "ft_portal",
     "description": "A modern web application for visualizing student data from the 42 API. Search and analyze student evaluations, performance metrics, and hall voice data with an intuitive interface.",
-    "url": "https://ft-portal.vercel.app",
+    "url": "https://portal.pfischof.com",
     "applicationCategory": "EducationalApplication",
     "operatingSystem": "Web Browser",
     "offers": {
@@ -50,7 +50,7 @@ export default function Home() {
     },
     "author": {
       "@type": "Organization",
-      "name": "FT Portal Team"
+      "name": "ft_portal Team"
     },
     "featureList": [
       "Student data visualization",
