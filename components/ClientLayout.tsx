@@ -17,8 +17,8 @@ export function ClientLayout({
 
   useEffect(() => {
     const checkAuth = async () => {
-      // Skip auth check in development
       if (process.env.NODE_ENV !== 'production') {
+        await new Promise(resolve => setTimeout(resolve, 2000));
         setIsLoading(false);
         return;
       }
@@ -46,7 +46,18 @@ export function ClientLayout({
   }, [pathname, router]);
 
   if (isLoading) {
-    return null;
+    return (
+      <div className="min-h-screen bg-secondary-50 flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
+            <p className="text-sm text-muted-foreground">Loading application...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   return (

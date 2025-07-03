@@ -102,6 +102,10 @@ export default function Home() {
     setHallVoiceSounds(null);
 
     try {
+      if (process.env.NODE_ENV !== 'production') {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+
       // In development mode, the API routes will return mock data
       const studentData = await searchStudent(login, accessToken || 'dev_mock_token');
       if (!studentData) {
@@ -169,7 +173,14 @@ export default function Home() {
                 className="bg-background/50 backdrop-blur-sm"
               />
               <Button type="submit" disabled={isLoadingStats || !login}>
-                {isLoadingStats ? "Loading..." : "Load Data"}
+                {isLoadingStats ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
+                    Loading...
+                  </div>
+                ) : (
+                  "Load Data"
+                )}
               </Button>
             </form>
             {error && (
@@ -179,6 +190,26 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
+
+        {/* Loading State */}
+        {isLoadingStats && (
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex flex-col items-center justify-center py-8 space-y-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+                <div className="text-center space-y-2">
+                  <p className="text-lg font-medium text-foreground">
+                    Loading student data...
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Fetching evaluations and statistics for {login}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {stats && evaluationsData.length > 0 && (
           <EvaluationsCard stats={stats} evaluationsData={evaluationsData} />
         )}
