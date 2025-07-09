@@ -38,6 +38,25 @@ interface StudentResponse {
       level: number;
     }>;
   }>;
+  projects_users: Array<{
+    id: number;
+    occurrence: number;
+    final_mark: number | null;
+    status: string;
+    validated: boolean;
+    project: {
+      id: number;
+      name: string;
+      slug: string;
+      parent_id: number | null;
+    };
+    cursus_ids: number[];
+    marked_at: string | null;
+    marked: boolean;
+    retriable_at: string | null;
+    created_at: string;
+    updated_at: string;
+  }>;
 }
 
 export async function GET(request: Request) {
@@ -88,6 +107,84 @@ export async function GET(request: Request) {
               level: 8.2
             }
           ]
+        }
+      ],
+      projects_users: [
+        {
+          id: 1,
+          occurrence: 0,
+          final_mark: 100,
+          status: "finished",
+          validated: true,
+          project: {
+            id: 1301,
+            name: "C Piscine Exam 00",
+            slug: "c-piscine-exam-00",
+            parent_id: null
+          },
+          cursus_ids: [9],
+          marked_at: "2024-02-09T16:44:24.883Z",
+          marked: true,
+          retriable_at: null,
+          created_at: "2024-02-06T15:15:46.556Z",
+          updated_at: "2024-02-09T19:55:50.956Z"
+        },
+        {
+          id: 2,
+          occurrence: 0,
+          final_mark: 100,
+          status: "finished",
+          validated: true,
+          project: {
+            id: 1302,
+            name: "C Piscine Exam 01",
+            slug: "c-piscine-exam-01",
+            parent_id: null
+          },
+          cursus_ids: [9],
+          marked_at: "2024-02-16T16:47:54.114Z",
+          marked: true,
+          retriable_at: null,
+          created_at: "2024-02-14T09:24:01.295Z",
+          updated_at: "2024-02-20T10:22:21.390Z"
+        },
+        {
+          id: 3,
+          occurrence: 0,
+          final_mark: 100,
+          status: "finished",
+          validated: true,
+          project: {
+            id: 1303,
+            name: "C Piscine Exam 02",
+            slug: "c-piscine-exam-02",
+            parent_id: null
+          },
+          cursus_ids: [9],
+          marked_at: "2024-02-23T17:18:08.462Z",
+          marked: true,
+          retriable_at: null,
+          created_at: "2024-02-19T21:12:16.681Z",
+          updated_at: "2024-02-23T19:09:18.970Z"
+        },
+        {
+          id: 4,
+          occurrence: 0,
+          final_mark: 72,
+          status: "finished",
+          validated: true,
+          project: {
+            id: 1304,
+            name: "C Piscine Final Exam",
+            slug: "c-piscine-final-exam",
+            parent_id: null
+          },
+          cursus_ids: [9],
+          marked_at: "2024-03-01T15:13:34.537Z",
+          marked: true,
+          retriable_at: null,
+          created_at: "2024-02-24T19:57:57.462Z",
+          updated_at: "2024-03-01T17:34:48.273Z"
         }
       ]
     });

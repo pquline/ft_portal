@@ -45,6 +45,25 @@ export interface StudentProfile {
       level: number;
     }>;
   }>;
+  projects_users: Array<{
+    id: number;
+    occurrence: number;
+    final_mark: number | null;
+    status: string;
+    validated: boolean;
+    project: {
+      id: number;
+      name: string;
+      slug: string;
+      parent_id: number | null;
+    };
+    cursus_ids: number[];
+    marked_at: string | null;
+    marked: boolean;
+    retriable_at: string | null;
+    created_at: string;
+    updated_at: string;
+  }>;
 }
 
 export interface Evaluation {
@@ -182,20 +201,21 @@ export interface HallVoiceSounds {
   outSounds: string[];
 }
 
-interface GitHubFile {
+export interface CPiscineExamResult {
   name: string;
-  path: string;
-  sha: string;
-  size: number;
-  url: string;
-  html_url: string;
-  git_url: string;
-  download_url: string;
-  type: string;
-  _links: {
-    self: string;
-    git: string;
-    html: string;
+  mark: number;
+  date: string;
+  validated: boolean;
+}
+
+export interface CPiscineExamStats {
+  exams: CPiscineExamResult[];
+  averageScore: number;
+  totalExams: number;
+  passedExams: number;
+  evolution: {
+    labels: string[];
+    data: number[];
   };
 }
 
@@ -331,42 +351,83 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
 }
 
 export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
-  const baseUrl = 'https://api.github.com/repos/42paris/hall-voice/contents/mp3';
-  const result: HallVoiceSounds = {
-    hasHallVoice: false,
-    inSounds: [],
-    outSounds: []
-  };
+  // Mock data for development
+  if (process.env.NODE_ENV !== 'production') {
+    return {
+      hasHallVoice: true,
+      inSounds: ["sound1", "sound2"],
+      outSounds: ["sound3", "sound4"],
+    };
+  }
 
   try {
-    const userDirResponse = await fetch(`${baseUrl}/${login}`);
-    if (!userDirResponse.ok) {
-      return result;
+    const response = await fetch(`https://api.intra.42.fr/v2/users/${login}/locations`, {
+      headers: {
+        Authorization: `Bearer ${process.env.FORTYTWO_ACCESS_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch hall voice data');
     }
 
-    result.hasHallVoice = true;
-
-    const inDirResponse = await fetch(`${baseUrl}/${login}/in`);
-    if (inDirResponse.ok) {
-      const inFiles = await inDirResponse.json() as GitHubFile[];
-      result.inSounds = inFiles
-        .filter(file => file.name.endsWith('.mp3'))
-        .map(file => file.download_url);
-    }
-
-    const outDirResponse = await fetch(`${baseUrl}/${login}/out`);
-    if (outDirResponse.ok) {
-      const outFiles = await outDirResponse.json() as GitHubFile[];
-      result.outSounds = outFiles
-        .filter(file => file.name.endsWith('.mp3'))
-        .map(file => file.download_url);
-    }
-
-    return result;
+    const data = await response.json();
+    return {
+      hasHallVoice: data.length > 0,
+      inSounds: data.filter((location: { end_at: string | null }) => location.end_at === null).map((location: { host: string }) => location.host),
+      outSounds: data.filter((location: { end_at: string | null }) => location.end_at !== null).map((location: { host: string }) => location.host),
+    };
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error in checkHallVoice:', error);
-    }
-    return result;
+    console.error('Error fetching hall voice data:', error);
+    return {
+      hasHallVoice: false,
+      inSounds: [],
+      outSounds: [],
+    };
   }
+}
+
+export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPiscineExamStats {
+  const examNames = [
+    "C Piscine Exam 00",
+    "C Piscine Exam 01",
+    "C Piscine Exam 02",
+    "C Piscine Final Exam"
+  ];
+
+  const examResults: CPiscineExamResult[] = [];
+
+  studentProfile.projects_users.forEach(project => {
+    if (examNames.includes(project.project.name) && project.final_mark !== null) {
+      examResults.push({
+        name: project.project.name,
+        mark: project.final_mark,
+        date: project.marked_at || project.created_at,
+        validated: project.validated
+      });
+    }
+  });
+
+  // Sort by date
+  examResults.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+  const totalExams = examResults.length;
+  const passedExams = examResults.filter(exam => exam.validated).length;
+  const averageScore = totalExams > 0
+    ? examResults.reduce((sum, exam) => sum + exam.mark, 0) / totalExams
+    : 0;
+
+  // Prepare evolution data for chart
+  const evolution = {
+    labels: examResults.map(exam => exam.name.replace("C Piscine ", "")),
+    data: examResults.map(exam => exam.mark)
+  };
+
+  return {
+    exams: examResults,
+    averageScore,
+    totalExams,
+    passedExams,
+    evolution
+  };
 }

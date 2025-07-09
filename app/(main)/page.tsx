@@ -2,6 +2,7 @@
 
 import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
+import { AcademicPerformanceCard } from "@/components/AcademicPerformanceCard";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -17,8 +18,10 @@ import {
     checkHallVoice,
     getEvaluations,
     searchStudent,
+    calculateCPiscineExamStats,
     type EvaluationStats,
     type HallVoiceSounds,
+    type CPiscineExamStats,
 } from "@/lib/api";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -32,6 +35,7 @@ export default function Home() {
   const [evaluationsData, setEvaluationsData] = useState<Evaluation[]>([]);
   const [hallVoiceSounds, setHallVoiceSounds] =
     useState<HallVoiceSounds | null>(null);
+  const [cPiscineStats, setCPiscineStats] = useState<CPiscineExamStats | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   // Structured data for SEO
@@ -88,18 +92,14 @@ export default function Home() {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Allow search in development mode without real access token
-    if (!accessToken && process.env.NODE_ENV === 'production') {
-      toast.error("Not authenticated");
-      return;
-    }
+    if (!login.trim()) return;
 
     setIsLoadingStats(true);
     setError(null);
     setStats(null);
     setEvaluationsData([]);
     setHallVoiceSounds(null);
+    setCPiscineStats(null);
 
     try {
       if (process.env.NODE_ENV !== 'production') {
@@ -123,10 +123,12 @@ export default function Home() {
       }
       const stats = calculateEvaluationStats(evaluations);
       const hallVoice = await checkHallVoice(login);
+      const cPiscineStats = calculateCPiscineExamStats(studentData);
 
       setStats(stats);
       setEvaluationsData(evaluations);
       setHallVoiceSounds(hallVoice);
+      setCPiscineStats(cPiscineStats);
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Failed to fetch data";
@@ -213,6 +215,7 @@ export default function Home() {
         {stats && evaluationsData.length > 0 && (
           <EvaluationsCard stats={stats} evaluationsData={evaluationsData} />
         )}
+        {cPiscineStats && <AcademicPerformanceCard stats={cPiscineStats} />}
         {hallVoiceSounds && <HallVoiceCard sounds={hallVoiceSounds} />}
       </div>
     </main>
