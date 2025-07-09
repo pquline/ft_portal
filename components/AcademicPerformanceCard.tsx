@@ -15,67 +15,45 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
   Legend,
-  Filler,
   type ChartData,
   type ChartOptions,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
+  BarElement,
   Title,
   Tooltip,
-  Legend,
-  Filler
+  Legend
 );
 
 interface AcademicPerformanceCardProps {
   stats: CPiscineExamStats;
 }
 
-interface ChartContext {
-  parsed: {
-    y: number;
-  };
-}
-
 export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const chartData: ChartData<'line'> = {
+  const chartData: ChartData<'bar'> = {
     labels: stats.evolution.labels,
     datasets: [
       {
         label: 'Exam Score',
         data: stats.evolution.data,
+        backgroundColor: 'hsl(var(--primary))',
         borderColor: 'hsl(var(--primary))',
-        backgroundColor: 'hsla(var(--primary), 0.1)',
-        borderWidth: 3,
-        fill: true,
-        tension: 0.4,
-        pointBackgroundColor: (context: ChartContext) => {
-          const value = context.parsed.y;
-          if (value >= 72) return '#22c55e'; // green
-          if (value >= 30) return '#f97316'; // orange
-          return '#ef4444'; // red
-        },
-        pointBorderColor: '#fff',
-        pointBorderWidth: 2,
-        pointRadius: 6,
-        pointHoverRadius: 8,
+        borderWidth: 1,
       },
     ],
   };
 
-  const chartOptions: ChartOptions<'line'> = {
+  const chartOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -91,9 +69,8 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
         cornerRadius: 8,
         displayColors: false,
         callbacks: {
-          label: function(context: ChartContext) {
-            const value = context.parsed.y;
-            return `Score: ${value}/100`;
+          label: function(context) {
+            return `Score: ${context.parsed.y}/100`;
           },
         },
       },
@@ -127,12 +104,6 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
         },
       },
     },
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 72) return "text-green-600 dark:text-green-400";
-    if (score >= 30) return "text-orange-600 dark:text-orange-400";
-    return "text-red-600 dark:text-red-400";
   };
 
   const getValidationColor = (validated: boolean) => {
@@ -230,28 +201,14 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
               {stats.exams.length > 0 && (
                 <Card className="dark:bg-background/50">
                   <CardHeader>
-                    <CardTitle className="font-mono">Exam Evolution</CardTitle>
+                    <CardTitle className="font-mono">Exam Scores</CardTitle>
                     <CardDescription>
-                      Progress through the C Piscine exams with validation status
+                      Raw scores for each C Piscine exam
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="h-64">
-                      <Line data={chartData} options={chartOptions} />
-                    </div>
-                    <div className="mt-4 flex flex-wrap gap-4 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span>72-100: Good</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                        <span>30-71: Passing</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <span>0-29: Below threshold</span>
-                      </div>
+                      <Bar data={chartData} options={chartOptions} />
                     </div>
                   </CardContent>
                 </Card>
@@ -273,7 +230,7 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
                           </CardHeader>
                           <CardContent>
                             <div className="flex items-baseline justify-between">
-                              <div className={`text-2xl font-bold ${getScoreColor(exam.mark)}`}>
+                              <div className="text-2xl font-bold">
                                 {exam.mark}/100
                               </div>
                               <div className={`flex items-center gap-1 text-sm ${getValidationColor(exam.validated)}`}>
