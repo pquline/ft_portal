@@ -9,29 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, TrendingUp, Award, Calendar, CheckCircle, XCircle, GraduationCap } from "lucide-react";
+import { ChevronDown, ChevronUp, TrendingUp, Award, Calendar, CheckCircle, XCircle } from "lucide-react";
 import { type CPiscineExamStats } from "@/lib/api";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  type ChartData,
-  type ChartOptions,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 interface AcademicPerformanceCardProps {
   stats: CPiscineExamStats;
@@ -39,72 +18,6 @@ interface AcademicPerformanceCardProps {
 
 export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
-
-  const chartData: ChartData<'bar'> = {
-    labels: stats.evolution.labels,
-    datasets: [
-      {
-        label: 'Exam Score',
-        data: stats.evolution.data,
-        backgroundColor: 'hsl(var(--primary))',
-        borderColor: 'hsl(var(--primary))',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const chartOptions: ChartOptions<'bar'> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        backgroundColor: 'hsl(var(--background))',
-        titleColor: 'hsl(var(--foreground))',
-        bodyColor: 'hsl(var(--muted-foreground))',
-        borderColor: 'hsl(var(--border))',
-        borderWidth: 1,
-        cornerRadius: 8,
-        displayColors: false,
-        callbacks: {
-          label: function(context) {
-            return `Score: ${context.parsed.y}/100`;
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          color: 'hsl(var(--border))',
-        },
-        ticks: {
-          color: 'hsl(var(--muted-foreground))',
-          font: {
-            size: 12,
-          },
-        },
-      },
-      y: {
-        min: 0,
-        max: 100,
-        grid: {
-          color: 'hsl(var(--border))',
-        },
-        ticks: {
-          color: 'hsl(var(--muted-foreground))',
-          font: {
-            size: 12,
-          },
-          callback: function(value: number) {
-            return value + '/100';
-          },
-        },
-      },
-    },
-  };
 
   const getValidationColor = (validated: boolean) => {
     return validated ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400";
