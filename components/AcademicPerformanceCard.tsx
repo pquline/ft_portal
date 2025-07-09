@@ -145,9 +145,6 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
           <Card className="dark:bg-background/30">
             <CardHeader>
               <CardTitle className="font-mono text-lg">C Piscine Exams</CardTitle>
-              <CardDescription>
-                Performance in the intensive C programming bootcamp exams
-              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -201,22 +198,6 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
               {stats.exams.length > 0 && (
                 <Card className="dark:bg-background/50">
                   <CardHeader>
-                    <CardTitle className="font-mono">Exam Scores</CardTitle>
-                    <CardDescription>
-                      Raw scores for each C Piscine exam
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-64">
-                      <Bar data={chartData} options={chartOptions} />
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {stats.exams.length > 0 && (
-                <Card className="dark:bg-background/50">
-                  <CardHeader>
                     <CardTitle className="font-mono">Exam Details</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -266,19 +247,6 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
             </CardContent>
           </Card>
 
-          {/* Placeholder for future academic sections */}
-          <Card className="dark:bg-background/30">
-            <CardContent className="pt-6">
-              <div className="text-center py-8">
-                <div className="text-muted-foreground mb-2">
-                  📊 More academic metrics coming soon
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Additional academic performance indicators will be added here.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
         </CardContent>
       )}
     </Card>
