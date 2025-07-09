@@ -43,7 +43,7 @@ interface StudentResponse {
     occurrence: number;
     final_mark: number | null;
     status: string;
-    validated: boolean;
+    "validated?": boolean;
     project: {
       id: number;
       name: string;
@@ -113,9 +113,9 @@ export async function GET(request: Request) {
         {
           id: 1,
           occurrence: 0,
-          final_mark: 20,
+          final_mark: 100,
           status: "finished",
-          validated: false,
+          "validated?": true,
           project: {
             id: 1301,
             name: "C Piscine Exam 00",
@@ -132,9 +132,9 @@ export async function GET(request: Request) {
         {
           id: 2,
           occurrence: 0,
-          final_mark: 50,
+          final_mark: 100,
           status: "finished",
-          validated: true,
+          "validated?": true,
           project: {
             id: 1302,
             name: "C Piscine Exam 01",
@@ -151,9 +151,9 @@ export async function GET(request: Request) {
         {
           id: 3,
           occurrence: 0,
-          final_mark: 70,
+          final_mark: 100,
           status: "finished",
-          validated: true,
+          "validated?": true,
           project: {
             id: 1303,
             name: "C Piscine Exam 02",
@@ -170,9 +170,9 @@ export async function GET(request: Request) {
         {
           id: 4,
           occurrence: 0,
-          final_mark: 84,
+          final_mark: 72,
           status: "finished",
-          validated: true,
+          "validated?": true,
           project: {
             id: 1304,
             name: "C Piscine Final Exam",
