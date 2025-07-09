@@ -113,7 +113,7 @@ export async function GET(request: Request) {
         {
           id: 1,
           occurrence: 0,
-          final_mark: 100,
+          final_mark: 30,
           status: "finished",
           validated: true,
           project: {
@@ -132,7 +132,7 @@ export async function GET(request: Request) {
         {
           id: 2,
           occurrence: 0,
-          final_mark: 100,
+          final_mark: 50,
           status: "finished",
           validated: true,
           project: {
@@ -151,7 +151,7 @@ export async function GET(request: Request) {
         {
           id: 3,
           occurrence: 0,
-          final_mark: 100,
+          final_mark: 70,
           status: "finished",
           validated: true,
           project: {
@@ -170,7 +170,7 @@ export async function GET(request: Request) {
         {
           id: 4,
           occurrence: 0,
-          final_mark: 72,
+          final_mark: 84,
           status: "finished",
           validated: true,
           project: {
