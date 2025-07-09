@@ -43,6 +43,7 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
           size="icon"
           onClick={() => setIsExpanded(!isExpanded)}
           className="h-8 w-8"
+          aria-label={isExpanded ? "Collapse Academic Performance" : "Expand Academic Performance"}
         >
           {isExpanded ? (
             <ChevronUp className="h-4 w-4" />
