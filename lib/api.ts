@@ -50,7 +50,7 @@ export interface StudentProfile {
     occurrence: number;
     final_mark: number | null;
     status: string;
-    validated: boolean;
+    "validated?": boolean;
     project: {
       id: number;
       name: string;
@@ -403,7 +403,7 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
         name: project.project.name,
         mark: project.final_mark,
         date: project.marked_at || project.created_at,
-        validated: project.validated
+        validated: project["validated?"]
       });
     }
   });
