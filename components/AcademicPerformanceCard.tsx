@@ -119,7 +119,6 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
         <div className="space-y-2">
           <CardTitle className="font-mono flex items-center gap-2">
-            <GraduationCap className="h-5 w-5" />
             Academic Performance
           </CardTitle>
           <CardDescription>

@@ -113,9 +113,9 @@ export async function GET(request: Request) {
         {
           id: 1,
           occurrence: 0,
-          final_mark: 30,
+          final_mark: 20,
           status: "finished",
-          validated: true,
+          validated: false,
           project: {
             id: 1301,
             name: "C Piscine Exam 00",
