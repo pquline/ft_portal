@@ -24,7 +24,7 @@ interface EvaluationsCardProps {
   evaluationsData: Evaluation[];
 }
 
-type SortField = "project" | "total" | "ok" | "outstanding";
+type SortField = "project" | "total" | "ok" | "outstanding" | "ko";
 type SortDirection = "asc" | "desc";
 
 export function EvaluationsCard({
@@ -92,6 +92,10 @@ export function EvaluationsCard({
           return multiplier * (dataA.okCount - dataB.okCount);
         case "outstanding":
           return multiplier * (dataA.outstandingCount - dataB.outstandingCount);
+        case "ko":
+          const koA = dataA.count - dataA.okCount - dataA.outstandingCount;
+          const koB = dataB.count - dataB.okCount - dataB.outstandingCount;
+          return multiplier * (koA - koB);
         default:
           return 0;
       }
@@ -241,6 +245,14 @@ export function EvaluationsCard({
                         Outstanding {getSortIcon("outstanding")}
                       </div>
                     </TableHead>
+                    <TableHead
+                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-24"
+                      onClick={() => handleSort("ko")}
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        KO {getSortIcon("ko")}
+                      </div>
+                    </TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -254,6 +266,7 @@ export function EvaluationsCard({
                         <TableCell className="text-right">{data.count}</TableCell>
                         <TableCell className="text-right">{data.okCount}</TableCell>
                         <TableCell className="text-right">{data.outstandingCount}</TableCell>
+                        <TableCell className="text-right">{data.count - data.okCount - data.outstandingCount}</TableCell>
                       </TableRow>
                     )
                   )}
