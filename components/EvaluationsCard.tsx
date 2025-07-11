@@ -261,19 +261,19 @@ export function EvaluationsCard({
                       </div>
                     </TableHead>
                     <TableHead
-                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-32"
-                      onClick={() => handleSort("outstanding")}
-                    >
-                      <div className="flex items-center justify-end gap-1">
-                        Outstanding {getSortIcon("outstanding")}
-                      </div>
-                    </TableHead>
-                    <TableHead
                       className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-24"
                       onClick={() => handleSort("ko")}
                     >
                       <div className="flex items-center justify-end gap-1">
                         KO {getSortIcon("ko")}
+                      </div>
+                    </TableHead>
+                    <TableHead
+                      className="cursor-pointer hover:bg-secondary/30 dark:hover:bg-background/30 w-32"
+                      onClick={() => handleSort("outstanding")}
+                    >
+                      <div className="flex items-center justify-end gap-1">
+                        Outstanding {getSortIcon("outstanding")}
                       </div>
                     </TableHead>
                   </TableRow>
