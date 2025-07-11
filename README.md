@@ -3,14 +3,8 @@
 <div align="center">
 
 ![ft_portal](https://img.shields.io/badge/ft_portal-42%20Analytics%20Platform-blue?style=for-the-badge&logo=42)
-![Next.js](https://img.shields.io/badge/Next.js-15.3.2-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
 
 **A modern, comprehensive analytics platform for visualizing student data from the 42 API**
-
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Online-green?style=for-the-badge&logo=vercel)](https://portal.pfischof.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/pquline/ft_portal)
 
 *Empowering the 42 community with advanced student analytics and performance insights*
 
@@ -177,33 +171,33 @@ The application includes a comprehensive development mode that provides:
 
 ```
 ft_portal/
-├── 📁 app/                          # Next.js App Router
-│   ├── 📁 (main)/                   # Main application routes
-│   │   ├── 📄 page.tsx             # Home dashboard
-│   │   ├── 📁 about/               # About page
-│   │   ├── 📁 privacy/             # Privacy policy
-│   │   └── 📁 terms/               # Terms of use
-│   ├── 📁 api/                     # API routes
-│   │   ├── 📁 auth/                # Authentication endpoints
-│   │   ├── 📁 students/            # Student data endpoints
-│   │   ├── 📁 evaluations/         # Evaluation data
-│   │   ├── 📁 hall-voice/          # Hall voice integration
-│   │   └── 📁 user/                # User profile data
-│   ├── 📁 auth/                    # Authentication page
-│   └── 📄 layout.tsx               # Root layout
-├── 📁 components/                   # React components
-│   ├── 📁 ui/                      # shadcn/ui components
-│   ├── 📄 EvaluationsCard.tsx      # Evaluation analytics
-│   ├── 📄 AcademicPerformanceCard.tsx # Academic metrics
-│   ├── 📄 HallVoiceCard.tsx        # Hall voice player
+├── 📁 app/                             # Next.js App Router
+│   ├── 📁 (main)/                      # Main application routes
+│   │   ├── 📄 page.tsx                 # Home dashboard
+│   │   ├── 📁 about/                   # About page
+│   │   ├── 📁 privacy/                 # Privacy policy
+│   │   └── 📁 terms/                   # Terms of use
+│   ├── 📁 api/                         # API routes
+│   │   ├── 📁 auth/                    # Authentication endpoints
+│   │   ├── 📁 students/                # Student data endpoints
+│   │   ├── 📁 evaluations/             # Evaluation data
+│   │   ├── 📁 hall-voice/              # Hall voice integration
+│   │   └── 📁 user/                    # User profile data
+│   ├── 📁 auth/                        # Authentication page
+│   └── 📄 layout.tsx                   # Root layout
+├── 📁 components/                      # React components
+│   ├── 📁 ui/                          # shadcn/ui components
+│   ├── 📄 EvaluationsCard.tsx          # Evaluation analytics
+│   ├── 📄 AcademicPerformanceCard.tsx  # Academic metrics
+│   ├── 📄 HallVoiceCard.tsx            # Hall voice player
 │   └── 📄 EvaluationQualityMetrics.tsx # Quality analysis
-├── 📁 lib/                         # Utility libraries
-│   ├── 📄 api.ts                   # API client functions
-│   ├── 📄 auth.ts                  # Authentication utilities
-│   └── 📄 utils.ts                 # General utilities
-├── 📄 middleware.ts                # Route protection
-├── 📁 types/                       # TypeScript definitions
-└── 📁 public/                      # Static assets
+├── 📁 lib/                             # Utility libraries
+│   ├── 📄 api.ts                       # API client functions
+│   ├── 📄 auth.ts                      # Authentication utilities
+│   └── 📄 utils.ts                     # General utilities
+├── 📄 middleware.ts                    # Route protection
+├── 📁 types/                           # TypeScript definitions
+└── 📁 public/                          # Static assets
 ```
 
 ---
@@ -299,9 +293,9 @@ We welcome contributions from the 42 community! Here's how you can help:
 
 ### **Getting Started**
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+2. Create your feature branch (`git checkout -b feat/amazing-feature`)
 3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+4. Push to the branch (`git push origin feat/amazing-feature`)
 5. Open a Pull Request
 
 ### **Contribution Guidelines**
@@ -319,28 +313,12 @@ We welcome contributions from the 42 community! Here's how you can help:
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## 🔗 Links
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Online-green?style=for-the-badge&logo=vercel)](https://portal.pfischof.com)
+![ft_portal](https://img.shields.io/badge/ft_portal-42%20Analytics%20Platform-blue?style=for-the-badge&logo=42)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/pquline/ft_portal)
 [![42 API](https://img.shields.io/badge/42%20API-Documentation-blue?style=for-the-badge)](https://api.intra.42.fr/apidoc)
-
-</div>
-
----
-
-<div align="center">
-
-**Built with ❤️ for the 42 community**
-
-*Empowering students with data-driven insights*
 
 </div>
