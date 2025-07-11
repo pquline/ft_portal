@@ -51,6 +51,11 @@ export function EvaluationDetailsModal({
       }
       return false;
     });
+  } else if (range.startsWith("flag-")) {
+    const targetFlag = range.replace("flag-", "");
+    filteredEvaluations = evaluations.filter(evaluation => {
+      return evaluation.flag?.name === targetFlag;
+    });
   } else if (range === "Writer's soul (180+)") {
     filteredEvaluations = evaluations.filter(
       (evaluation) => (evaluation.comment?.length || 0) >= 180
@@ -88,6 +93,9 @@ export function EvaluationDetailsModal({
     if (range.startsWith("rating-")) {
       const rating = range.replace("rating-", "");
       return `Evaluations with ${rating}/5 Rating (${filteredEvaluations.length} evaluations)`;
+    } else if (range.startsWith("flag-")) {
+      const flag = range.replace("flag-", "");
+      return `Evaluations with ${flag} Flag (${filteredEvaluations.length} evaluations)`;
     }
     return `Evaluations - ${range} (${filteredEvaluations.length} evaluations)`;
   };
