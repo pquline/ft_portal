@@ -91,7 +91,7 @@ export function EvaluationDetailsModal({
                       <span className="font-medium text-blue-800 dark:text-blue-200">Student Rating:</span>
                       <div className="flex items-center gap-2">
                         <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                          {(evaluation.feedbacks.reduce((sum, f) => sum + f.rating, 0) / evaluation.feedbacks.length).toFixed(1)}/5
+                          {(evaluation.feedbacks.reduce((sum, f) => sum + f.rating, 0) / evaluation.feedbacks.length).toFixed(2)}/5
                         </span>
                         <span className="text-sm text-blue-600 dark:text-blue-400">★</span>
                       </div>

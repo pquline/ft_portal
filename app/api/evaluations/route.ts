@@ -17,49 +17,228 @@ export async function GET(request: Request) {
         updated_at: new Date().toISOString(),
         flag: {
           id: 1,
-          name: "Ok"
+          name: "Ok",
+          positive: true,
+          icon: "check",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         },
-        feedback_rating: 5,
+        begin_at: new Date().toISOString(),
+        correcteds: [
+          { id: 1, login: "student1", url: "https://api.intra.42.fr/v2/users/student1" }
+        ],
+        corrector: {
+          id: 1,
+          login: "corrector1",
+          url: "https://api.intra.42.fr/v2/users/corrector1"
+        },
+        truant: null,
+        filled_at: new Date().toISOString(),
+        questions_with_answers: [],
+        scale: {
+          id: 1,
+          evaluation_id: 1,
+          name: "Sample Scale",
+          is_primary: true,
+          comment: "Sample scale comment",
+          introduction_md: "",
+          disclaimer_md: "",
+          guidelines_md: "",
+          created_at: new Date().toISOString(),
+          correction_number: 1,
+          duration: 60,
+          manual_subscription: false,
+          languages: [],
+          flags: [],
+          free: true
+        },
         team: {
           id: 1,
-          name: "Sample Project"
-        }
+          name: "Sample Project",
+          url: "https://api.intra.42.fr/v2/teams/1",
+          final_mark: 100,
+          project_id: 1,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          status: "finished",
+          terminating_at: null,
+          users: [],
+          locked: false,
+          validated: true,
+          closed: true,
+          repo_url: "https://gitlab.com/sample/project",
+          repo_uuid: "uuid1",
+          locked_at: new Date().toISOString(),
+          closed_at: new Date().toISOString(),
+          project_session_id: 1,
+          project_gitlab_path: "sample/project"
+        },
+        feedbacks: [
+          {
+            id: 1,
+            user: { login: "student1", id: 1, url: "https://api.intra.42.fr/v2/users/student1" },
+            feedbackable_type: "ScaleTeam",
+            feedbackable_id: 1,
+            comment: "Great evaluation, very helpful feedback!",
+            rating: 5,
+            created_at: new Date().toISOString()
+          }
+        ]
       },
       {
         id: 2,
         scale_id: 1,
-        comment: "Great work!",
-        feedback: "Excellent implementation",
-        final_mark: 100,
+        comment: "Good work, but could be improved",
+        feedback: "Nice implementation",
+        final_mark: 85,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         flag: {
-          id: 1,
-          name: "Outstanding project"
+          id: 9,
+          name: "Outstanding project",
+          positive: true,
+          icon: "star",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         },
-        feedback_rating: 5,
-        team: {
+        begin_at: new Date().toISOString(),
+        correcteds: [
+          { id: 2, login: "student2", url: "https://api.intra.42.fr/v2/users/student2" }
+        ],
+        corrector: {
           id: 1,
-          name: "Sample Project"
-        }
+          login: "corrector1",
+          url: "https://api.intra.42.fr/v2/users/corrector1"
+        },
+        truant: null,
+        filled_at: new Date().toISOString(),
+        questions_with_answers: [],
+        scale: {
+          id: 1,
+          evaluation_id: 2,
+          name: "Sample Scale",
+          is_primary: true,
+          comment: "Sample scale comment",
+          introduction_md: "",
+          disclaimer_md: "",
+          guidelines_md: "",
+          created_at: new Date().toISOString(),
+          correction_number: 1,
+          duration: 60,
+          manual_subscription: false,
+          languages: [],
+          flags: [],
+          free: true
+        },
+        team: {
+          id: 2,
+          name: "Another Project",
+          url: "https://api.intra.42.fr/v2/teams/2",
+          final_mark: 85,
+          project_id: 2,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          status: "finished",
+          terminating_at: null,
+          users: [],
+          locked: false,
+          validated: true,
+          closed: true,
+          repo_url: "https://gitlab.com/sample/project2",
+          repo_uuid: "uuid2",
+          locked_at: new Date().toISOString(),
+          closed_at: new Date().toISOString(),
+          project_session_id: 1,
+          project_gitlab_path: "sample/project2"
+        },
+        feedbacks: [
+          {
+            id: 2,
+            user: { login: "student2", id: 2, url: "https://api.intra.42.fr/v2/users/student2" },
+            feedbackable_type: "ScaleTeam",
+            feedbackable_id: 2,
+            comment: "Fair evaluation, thanks for the feedback",
+            rating: 4,
+            created_at: new Date().toISOString()
+          },
+          {
+            id: 3,
+            user: { login: "student3", id: 3, url: "https://api.intra.42.fr/v2/users/student3" },
+            feedbackable_type: "ScaleTeam",
+            feedbackable_id: 2,
+            comment: "Good evaluation",
+            rating: 3,
+            created_at: new Date().toISOString()
+          }
+        ]
       },
       {
         id: 3,
         scale_id: 1,
-        comment: "Great work!",
-        feedback: "Excellent implementation",
+        comment: "Excellent work! Very impressive implementation",
+        feedback: "Outstanding job",
         final_mark: 100,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         flag: {
-          id: 1,
-          name: "Outstanding project"
+          id: 9,
+          name: "Outstanding project",
+          positive: true,
+          icon: "star",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         },
-        feedback_rating: 5,
-        team: {
+        begin_at: new Date().toISOString(),
+        correcteds: [
+          { id: 3, login: "student3", url: "https://api.intra.42.fr/v2/users/student3" }
+        ],
+        corrector: {
           id: 1,
-          name: "Sample Project"
-        }
+          login: "corrector1",
+          url: "https://api.intra.42.fr/v2/users/corrector1"
+        },
+        truant: null,
+        filled_at: new Date().toISOString(),
+        questions_with_answers: [],
+        scale: {
+          id: 1,
+          evaluation_id: 3,
+          name: "Sample Scale",
+          is_primary: true,
+          comment: "Sample scale comment",
+          introduction_md: "",
+          disclaimer_md: "",
+          guidelines_md: "",
+          created_at: new Date().toISOString(),
+          correction_number: 1,
+          duration: 60,
+          manual_subscription: false,
+          languages: [],
+          flags: [],
+          free: true
+        },
+        team: {
+          id: 3,
+          name: "Third Project",
+          url: "https://api.intra.42.fr/v2/teams/3",
+          final_mark: 100,
+          project_id: 3,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          status: "finished",
+          terminating_at: null,
+          users: [],
+          locked: false,
+          validated: true,
+          closed: true,
+          repo_url: "https://gitlab.com/sample/project3",
+          repo_uuid: "uuid3",
+          locked_at: new Date().toISOString(),
+          closed_at: new Date().toISOString(),
+          project_session_id: 1,
+          project_gitlab_path: "sample/project3"
+        },
+        feedbacks: []
       },
       {
         id: 4,
@@ -70,32 +249,152 @@ export async function GET(request: Request) {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         flag: {
-          id: 1,
-          name: "Outstanding project"
+          id: 9,
+          name: "Outstanding project",
+          positive: true,
+          icon: "star",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         },
-        feedback_rating: 5,
-        team: {
+        begin_at: new Date().toISOString(),
+        correcteds: [
+          { id: 4, login: "student4", url: "https://api.intra.42.fr/v2/users/student4" }
+        ],
+        corrector: {
           id: 1,
-          name: "Sample Project"
-        }
+          login: "corrector1",
+          url: "https://api.intra.42.fr/v2/users/corrector1"
+        },
+        truant: null,
+        filled_at: new Date().toISOString(),
+        questions_with_answers: [],
+        scale: {
+          id: 1,
+          evaluation_id: 4,
+          name: "Sample Scale",
+          is_primary: true,
+          comment: "Sample scale comment",
+          introduction_md: "",
+          disclaimer_md: "",
+          guidelines_md: "",
+          created_at: new Date().toISOString(),
+          correction_number: 1,
+          duration: 60,
+          manual_subscription: false,
+          languages: [],
+          flags: [],
+          free: true
+        },
+        team: {
+          id: 4,
+          name: "Long Comment Project",
+          url: "https://api.intra.42.fr/v2/teams/4",
+          final_mark: 100,
+          project_id: 4,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          status: "finished",
+          terminating_at: null,
+          users: [],
+          locked: false,
+          validated: true,
+          closed: true,
+          repo_url: "https://gitlab.com/sample/project4",
+          repo_uuid: "uuid4",
+          locked_at: new Date().toISOString(),
+          closed_at: new Date().toISOString(),
+          project_session_id: 1,
+          project_gitlab_path: "sample/project4"
+        },
+        feedbacks: [
+          {
+            id: 4,
+            user: { login: "student4", id: 4, url: "https://api.intra.42.fr/v2/users/student4" },
+            feedbackable_type: "ScaleTeam",
+            feedbackable_id: 4,
+            comment: "Amazing evaluation, very detailed feedback!",
+            rating: 5,
+            created_at: new Date().toISOString()
+          }
+        ]
       },
       {
         id: 5,
         scale_id: 1,
         comment: "Great work...",
         feedback: "Excellent implementation",
-        final_mark: 100,
+        final_mark: 75,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
         flag: {
           id: 1,
-          name: "Outstanding project"
+          name: "Ok",
+          positive: true,
+          icon: "check",
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         },
-        feedback_rating: 5,
-        team: {
+        begin_at: new Date().toISOString(),
+        correcteds: [
+          { id: 5, login: "student5", url: "https://api.intra.42.fr/v2/users/student5" }
+        ],
+        corrector: {
           id: 1,
-          name: "Sample Project"
-        }
+          login: "corrector1",
+          url: "https://api.intra.42.fr/v2/users/corrector1"
+        },
+        truant: null,
+        filled_at: new Date().toISOString(),
+        questions_with_answers: [],
+        scale: {
+          id: 1,
+          evaluation_id: 5,
+          name: "Sample Scale",
+          is_primary: true,
+          comment: "Sample scale comment",
+          introduction_md: "",
+          disclaimer_md: "",
+          guidelines_md: "",
+          created_at: new Date().toISOString(),
+          correction_number: 1,
+          duration: 60,
+          manual_subscription: false,
+          languages: [],
+          flags: [],
+          free: true
+        },
+        team: {
+          id: 5,
+          name: "Short Comment Project",
+          url: "https://api.intra.42.fr/v2/teams/5",
+          final_mark: 75,
+          project_id: 5,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          status: "finished",
+          terminating_at: null,
+          users: [],
+          locked: false,
+          validated: true,
+          closed: true,
+          repo_url: "https://gitlab.com/sample/project5",
+          repo_uuid: "uuid5",
+          locked_at: new Date().toISOString(),
+          closed_at: new Date().toISOString(),
+          project_session_id: 1,
+          project_gitlab_path: "sample/project5"
+        },
+        feedbacks: [
+          {
+            id: 5,
+            user: { login: "student5", id: 5, url: "https://api.intra.42.fr/v2/users/student5" },
+            feedbackable_type: "ScaleTeam",
+            feedbackable_id: 5,
+            comment: "Could be more detailed",
+            rating: 2,
+            created_at: new Date().toISOString()
+          }
+        ]
       }
     ]);
   }
