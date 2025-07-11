@@ -1,223 +1,346 @@
 # ft_portal
 
-A modern web application for visualizing student data from the 42 API, providing comprehensive analytics for evaluations, academic performance, and hall voice data.
+<div align="center">
+
+![ft_portal](https://img.shields.io/badge/ft_portal-42%20Analytics%20Platform-blue?style=for-the-badge&logo=42)
+![Next.js](https://img.shields.io/badge/Next.js-15.3.2-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)
+
+**A modern, comprehensive analytics platform for visualizing student data from the 42 API**
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Online-green?style=for-the-badge&logo=vercel)](https://portal.pfischof.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/pquline/ft_portal)
+
+*Empowering the 42 community with advanced student analytics and performance insights*
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+- [🏗️ Architecture](#️-architecture)
+- [🚀 Quick Start](#-quick-start)
+- [📁 Project Structure](#-project-structure)
+- [🛠️ Development](#️-development)
+- [🔒 Security](#-security)
+- [📊 Data Sources](#-data-sources)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+---
 
 ## ✨ Features
 
-### 🔐 **Authentication & Security**
-- Secure 42 OAuth 2.0 integration with JWT token management
-- Automatic session management with 24-hour expiration
-- Development mode with mock authentication for testing
-- Discord webhook notifications for authentication failures
-- Middleware-based route protection
-- Secure cookie handling with httpOnly and sameSite policies
+### 🔐 **Enterprise-Grade Authentication**
+- **Secure OAuth 2.0 Integration** with 42 API
+- **JWT Token Management** with automatic session handling
+- **Middleware-Based Route Protection** for enhanced security
+- **Development Mode** with comprehensive mock data for testing
+- **Discord Webhook Integration** for real-time error monitoring
+- **Secure Cookie Handling** with httpOnly and sameSite policies
 
-### 📊 **Student Analytics Dashboard**
-- **Real-time Student Search**: Search by login to access comprehensive student data
-- **Evaluation Statistics**: Detailed analysis of peer evaluations as a corrector
-  - Total evaluations count and feedback analysis
-  - Average rating calculations
-  - Project-specific performance metrics
-  - Flag distribution (Ok, Outstanding, Failed)
-  - Interactive quality metrics with length distribution
-- **Academic Performance**: C Piscine exam analysis
-  - Exam scores and pass/fail rates
-  - Performance evolution tracking
-  - Success rate calculations
-- **Hall Voice Integration**: Audio playback of student's hall voice sounds
-  - In/Out sound categorization
-  - Custom audio player component
-  - GitHub API integration for sound file access
+### 📊 **Advanced Analytics Dashboard**
+- **Real-Time Student Search** with instant data retrieval
+- **Comprehensive Evaluation Analytics**
+  - Peer evaluation statistics and performance metrics
+  - Interactive quality metrics with length distribution analysis
+  - Project-specific performance tracking
+  - Flag distribution visualization (Ok, Outstanding, Failed)
+- **Academic Performance Tracking**
+  - C Piscine exam analysis with detailed scoring
+  - Performance evolution and trend analysis
+  - Success rate calculations and predictive insights
+- **Hall Voice Integration**
+  - Audio playback with custom player interface
+  - Sound categorization (in/out sounds)
+  - GitHub API integration for seamless file access
 
-### 🎨 **User Experience**
-- **Modern UI**: Built with shadcn/ui components and Tailwind CSS
-- **Dark/Light Theme**: System preference detection with manual toggle
-- **Responsive Design**: Mobile-first approach with adaptive layouts
-- **Interactive Components**: Expandable cards, sortable tables, modal dialogs
-- **Loading States**: Comprehensive loading indicators and error handling
-- **Toast Notifications**: User feedback with Sonner toast system
+### 🎨 **Premium User Experience**
+- **Modern Design System** built with shadcn/ui components
+- **Adaptive Theme System** with dark/light mode support
+- **Responsive Architecture** optimized for all devices
+- **Interactive Components** with expandable cards and modal dialogs
+- **Professional Loading States** with comprehensive error handling
+- **Toast Notification System** for enhanced user feedback
 
-### 🔍 **SEO & Performance**
-- **Progressive Web App (PWA)**: Installable with service worker
-- **SEO Optimization**: Comprehensive meta tags, Open Graph, and Twitter cards
-- **Structured Data**: JSON-LD schema markup for search engines
-- **Dynamic Sitemap**: Auto-generated sitemap.xml
-- **Performance**: Next.js 15 with Turbopack for fast development
-- **Image Optimization**: Next.js Image component with CDN support
+### ⚡ **Performance & SEO**
+- **Progressive Web App (PWA)** with offline capabilities
+- **Advanced SEO Optimization** with structured data markup
+- **Dynamic Sitemap Generation** for search engine visibility
+- **Next.js 15 with Turbopack** for lightning-fast development
+- **Image Optimization** with CDN support and lazy loading
+
+---
 
 ## 🏗️ Architecture
 
-### **Frontend Stack**
-- **Framework**: Next.js 15.3.2 with App Router
-- **Language**: TypeScript 5
-- **Styling**: Tailwind CSS 4 with custom design system
-- **UI Components**: Radix UI primitives + shadcn/ui
-- **State Management**: React Hooks with useState/useEffect
-- **Data Visualization**: Chart.js 4 + Recharts 2
-- **Forms**: React Hook Form with Zod validation
+### **Frontend Technology Stack**
 
-### **Backend & API**
-- **API Routes**: Next.js API routes with TypeScript
-- **Authentication**: 42 OAuth 2.0 with JWT tokens
-- **Data Fetching**: Custom API client with retry logic and rate limiting
-- **Error Handling**: Comprehensive error boundaries and Discord notifications
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Next.js** | 15.3.2 | Full-stack React framework with App Router |
+| **TypeScript** | 5.0 | Type-safe development with full coverage |
+| **Tailwind CSS** | 4.0 | Utility-first CSS framework |
+| **Radix UI** | Latest | Accessible component primitives |
+| **shadcn/ui** | Latest | Modern component library |
+| **React Hook Form** | 7.56.4 | Performant form handling |
+| **Zod** | 3.24.4 | Schema validation and type inference |
 
-### **Development & Deployment**
-- **Development**: Turbopack for fast refresh
-- **Linting**: ESLint with Next.js configuration
-- **Type Safety**: Full TypeScript coverage
-- **Environment**: Development/production mode switching
+### **Data Visualization & State Management**
 
-## 🚀 Getting Started
+| Library | Version | Purpose |
+|---------|---------|---------|
+| **Chart.js** | 4.4.9 | Interactive chart rendering |
+| **Recharts** | 2.15.3 | Advanced data visualization |
+| **React Hooks** | Built-in | State management and side effects |
+| **Sonner** | 2.0.3 | Toast notification system |
 
-### 📋 Prerequisites
+### **Backend & API Infrastructure**
 
-- Node.js (v18 or higher)
-- npm or yarn
-- A 42 account for API access
-- Discord webhook URL (optional, for error monitoring)
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **API Routes** | Next.js API | Serverless backend endpoints |
+| **Authentication** | 42 OAuth 2.0 | Secure user authentication |
+| **Data Fetching** | Custom Client | Retry logic and rate limiting |
+| **Error Handling** | Discord Webhooks | Production error monitoring |
 
-### ⚙️ Installation
+---
 
-1. **Clone the repository**:
-```bash
-git clone https://github.com/pquline/ft_portal.git
-cd ft_portal
-```
+## 🚀 Quick Start
 
-2. **Install dependencies**:
-```bash
-npm install
-```
+### **Prerequisites**
 
-3. **Set up environment variables**:
-Create a `.env` file in the root directory:
-```env
-# 42 API Configuration
-FORTYTWO_CLIENT_ID=your_client_id
-FORTYTWO_CLIENT_SECRET=your_client_secret
-NEXT_PUBLIC_URL=http://localhost:3000
+- **Node.js** (v18 or higher)
+- **npm** or **yarn** package manager
+- **42 Account** for API access
+- **Discord Webhook** (optional, for error monitoring)
 
-# Security
-JWT_SECRET=your_random_secret_key
+### **Installation**
 
-# Optional: Error Monitoring
-DISCORD_WEBHOOK_URL_ERROR=your_discord_webhook_url
-```
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/pquline/ft_portal.git
+   cd ft_portal
+   ```
 
-4. **Configure 42 API Application**:
-   - Visit [42 API Applications](https://profile.intra.42.fr/oauth/applications)
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Configuration**
+
+   Create a `.env` file in the root directory:
+   ```env
+   # 42 API Configuration
+   FORTYTWO_CLIENT_ID=your_client_id
+   FORTYTWO_CLIENT_SECRET=your_client_secret
+   NEXT_PUBLIC_URL=http://localhost:3000
+
+   # Security Configuration
+   JWT_SECRET=your_random_secret_key
+
+   # Optional: Error Monitoring
+   DISCORD_WEBHOOK_URL_ERROR=your_discord_webhook_url
+   ```
+
+4. **42 API Application Setup**
+
+   - Navigate to [42 API Applications](https://profile.intra.42.fr/oauth/applications)
    - Create a new application
    - Set redirect URI to `http://localhost:3000/api/auth/callback`
-   - Copy the client ID and secret to your `.env` file
+   - Copy credentials to your `.env` file
 
-5. **Start development server**:
-```bash
-npm run dev
-```
+5. **Launch Development Server**
+   ```bash
+   npm run dev
+   ```
 
-6. **Open your browser**:
-Navigate to [http://localhost:3000](http://localhost:3000)
+6. **Access Application**
 
-### 🔧 Development Mode
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
 
-The application includes a comprehensive development mode that:
-- Provides mock authentication without requiring 42 API credentials
-- Returns realistic mock data for all API endpoints
-- Simulates loading states and network delays
-- Allows full feature testing without production dependencies
+### **Development Mode Features**
+
+The application includes a comprehensive development mode that provides:
+- ✅ **Mock Authentication** without requiring 42 API credentials
+- ✅ **Realistic Mock Data** for all API endpoints
+- ✅ **Simulated Loading States** and network delays
+- ✅ **Full Feature Testing** without production dependencies
+
+---
 
 ## 📁 Project Structure
 
 ```
 ft_portal/
-├── app/                          # Next.js App Router
-│   ├── (main)/                   # Main application routes
-│   │   ├── page.tsx             # Home dashboard
-│   │   ├── about/               # About page
-│   │   ├── privacy/             # Privacy policy
-│   │   └── terms/               # Terms of use
-│   ├── api/                     # API routes
-│   │   ├── auth/                # Authentication endpoints
-│   │   ├── students/            # Student data endpoints
-│   │   ├── evaluations/         # Evaluation data
-│   │   ├── hall-voice/          # Hall voice integration
-│   │   └── user/                # User profile data
-│   ├── auth/                    # Authentication page
-│   └── layout.tsx               # Root layout
-├── components/                   # React components
-│   ├── ui/                      # shadcn/ui components
-│   ├── EvaluationsCard.tsx      # Evaluation analytics
-│   ├── AcademicPerformanceCard.tsx # Academic metrics
-│   ├── HallVoiceCard.tsx        # Hall voice player
-│   └── EvaluationQualityMetrics.tsx # Quality analysis
-├── lib/                         # Utility libraries
-│   ├── api.ts                   # API client functions
-│   ├── auth.ts                  # Authentication utilities
-│   └── utils.ts                 # General utilities
-├── middleware.ts                # Route protection
-├── types/                       # TypeScript definitions
-└── public/                      # Static assets
+├── 📁 app/                          # Next.js App Router
+│   ├── 📁 (main)/                   # Main application routes
+│   │   ├── 📄 page.tsx             # Home dashboard
+│   │   ├── 📁 about/               # About page
+│   │   ├── 📁 privacy/             # Privacy policy
+│   │   └── 📁 terms/               # Terms of use
+│   ├── 📁 api/                     # API routes
+│   │   ├── 📁 auth/                # Authentication endpoints
+│   │   ├── 📁 students/            # Student data endpoints
+│   │   ├── 📁 evaluations/         # Evaluation data
+│   │   ├── 📁 hall-voice/          # Hall voice integration
+│   │   └── 📁 user/                # User profile data
+│   ├── 📁 auth/                    # Authentication page
+│   └── 📄 layout.tsx               # Root layout
+├── 📁 components/                   # React components
+│   ├── 📁 ui/                      # shadcn/ui components
+│   ├── 📄 EvaluationsCard.tsx      # Evaluation analytics
+│   ├── 📄 AcademicPerformanceCard.tsx # Academic metrics
+│   ├── 📄 HallVoiceCard.tsx        # Hall voice player
+│   └── 📄 EvaluationQualityMetrics.tsx # Quality analysis
+├── 📁 lib/                         # Utility libraries
+│   ├── 📄 api.ts                   # API client functions
+│   ├── 📄 auth.ts                  # Authentication utilities
+│   └── 📄 utils.ts                 # General utilities
+├── 📄 middleware.ts                # Route protection
+├── 📁 types/                       # TypeScript definitions
+└── 📁 public/                      # Static assets
 ```
-
-## 🛠️ Available Scripts
-
-- `npm run dev` - Start development server with Turbopack
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-
-## 🔒 Security Features
-
-- **JWT Token Management**: Secure session handling with 24-hour expiration
-- **Route Protection**: Middleware-based authentication checks
-- **Secure Cookies**: HttpOnly cookies with proper domain settings
-- **Rate Limiting**: Built-in API rate limiting and retry logic
-- **Error Monitoring**: Discord webhook integration for production errors
-- **Environment Isolation**: Separate development and production configurations
-
-## 📊 Data Sources
-
-- **42 API**: Student profiles, evaluations, and academic data
-- **GitHub API**: Hall voice sound files from 42paris/hall-voice repository
-- **Local Processing**: Statistical calculations and data aggregation
-
-## 🎯 Key Components
-
-### **Evaluation Analytics**
-- Comprehensive evaluation statistics with filtering and sorting
-- Quality metrics based on feedback length and ratings
-- Interactive charts and progress indicators
-- Detailed modal views for specific data subsets
-
-### **Academic Performance**
-- C Piscine exam analysis with pass/fail tracking
-- Performance evolution visualization
-- Success rate calculations and trends
-
-### **Hall Voice Integration**
-- Audio file discovery via GitHub API
-- Custom audio player with play/pause controls
-- Sound categorization (in/out sounds)
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🔗 Links
-
-- **Live Demo**: [https://portal.pfischof.com](https://portal.pfischof.com)
-- **GitHub Repository**: [https://github.com/pquline/ft_portal](https://github.com/pquline/ft_portal)
-- **42 API Documentation**: [https://api.intra.42.fr/apidoc](https://api.intra.42.fr/apidoc)
 
 ---
 
-Built with ❤️ for the 42 community
+## 🛠️ Development
+
+### **Available Scripts**
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with Turbopack |
+| `npm run build` | Build for production |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint for code quality |
+
+### **Development Workflow**
+
+1. **Feature Development**
+   - Create feature branch from `main`
+   - Implement changes with TypeScript
+   - Test with development mode
+   - Submit pull request
+
+2. **Code Quality**
+   - ESLint configuration for consistency
+   - TypeScript for type safety
+   - Conventional commit messages
+
+3. **Testing Strategy**
+   - Development mode for feature testing
+   - Mock data for isolated testing
+   - Production-like environment simulation
+
+---
+
+## 🔒 Security Features
+
+### **Authentication & Authorization**
+- **JWT Token Management** with 24-hour expiration
+- **Secure Session Handling** with automatic refresh
+- **Route Protection** via Next.js middleware
+- **OAuth 2.0 Flow** with 42 API integration
+
+### **Data Protection**
+- **HttpOnly Cookies** with secure domain settings
+- **SameSite Policy** for CSRF protection
+- **Environment Isolation** between dev/prod
+- **Rate Limiting** with exponential backoff
+
+### **Error Monitoring**
+- **Discord Webhook Integration** for production errors
+- **Comprehensive Error Boundaries** for graceful failures
+- **Logging and Analytics** for debugging
+
+---
+
+## 📊 Data Sources
+
+### **Primary APIs**
+- **42 API** - Student profiles, evaluations, and academic data
+- **GitHub API** - Hall voice sound files from 42paris/hall-voice repository
+
+### **Data Processing**
+- **Local Statistical Calculations** for performance metrics
+- **Real-time Data Aggregation** for analytics
+- **Caching Strategy** for optimal performance
+
+---
+
+## 🎯 Key Components
+
+### **Evaluation Analytics Engine**
+- **Comprehensive Statistics** with advanced filtering and sorting
+- **Quality Metrics Analysis** based on feedback length and ratings
+- **Interactive Visualizations** with Chart.js and Recharts
+- **Detailed Modal Views** for granular data exploration
+
+### **Academic Performance Tracker**
+- **C Piscine Exam Analysis** with detailed pass/fail tracking
+- **Performance Evolution Visualization** with trend analysis
+- **Success Rate Calculations** with predictive insights
+
+### **Hall Voice Integration System**
+- **Audio File Discovery** via GitHub API integration
+- **Custom Audio Player** with advanced playback controls
+- **Sound Categorization** for in/out sound management
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from the 42 community! Here's how you can help:
+
+### **Getting Started**
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+### **Contribution Guidelines**
+- Follow TypeScript best practices
+- Maintain code quality with ESLint
+- Write meaningful commit messages
+- Test thoroughly in development mode
+- Update documentation as needed
+
+### **Development Standards**
+- **Code Style**: ESLint + Prettier configuration
+- **Type Safety**: Full TypeScript coverage
+- **Testing**: Development mode validation
+- **Documentation**: Clear and comprehensive
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🔗 Links
+
+<div align="center">
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-View%20Online-green?style=for-the-badge&logo=vercel)](https://portal.pfischof.com)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/pquline/ft_portal)
+[![42 API](https://img.shields.io/badge/42%20API-Documentation-blue?style=for-the-badge)](https://api.intra.42.fr/apidoc)
+
+</div>
+
+---
+
+<div align="center">
+
+**Built with ❤️ for the 42 community**
+
+*Empowering students with data-driven insights*
+
+</div>
