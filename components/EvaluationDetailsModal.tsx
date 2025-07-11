@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Evaluation } from "@/lib/api";
 import { projectMap } from "@/components/projectMap";
+import Link from "next/link";
 
 const EXCLUDED_FEEDBACK_MESSAGES = new Set([
   "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
@@ -124,17 +125,17 @@ export function EvaluationDetailsModal({
                   <CardTitle className="text-lg">
                     {evaluation.correcteds?.map((c, index) => (
                       <span key={c.login}>
-                        <a
+                        <Link
                           href={`https://profile.intra.42.fr/users/${c.login}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                          className="font-mono hover:underline"
                         >
                           {c.login}
-                        </a>
+                        </Link>
                         {index < evaluation.correcteds!.length - 1 && " + "}
                       </span>
-                    )) || "unknown_user"} <span className="text-sm font-mono"> ({getProjectName(evaluation)})</span>
+                    )) || "unknown_user"} <span className="text-sm"> ({getProjectName(evaluation)})</span>
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
