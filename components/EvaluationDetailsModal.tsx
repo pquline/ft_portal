@@ -118,74 +118,85 @@ export function EvaluationDetailsModal({
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
-          {filteredEvaluations.map((evaluation) => (
-            <Card key={evaluation.id} className="dark:bg-background/30">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">
-                    {evaluation.correcteds?.map((c, index) => (
-                      <span key={c.login}>
-                        <Link
-                          href={`https://profile.intra.42.fr/users/${c.login}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-mono hover:underline"
-                        >
-                          {c.login}
-                        </Link>
-                        {index < evaluation.correcteds!.length - 1 && " + "}
-                      </span>
-                    )) || "unknown_user"} <span className="text-sm"> ({getProjectName(evaluation)})</span>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      {new Date(evaluation.created_at).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </div>
-                  </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
-                    {evaluation.final_mark !== null && (
-                      <Badge variant="outline" className="bg-background/50"> {evaluation.final_mark}/100 </Badge>
-                    )}
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {evaluation.comment && (
-                  <div>
-                    <h4 className="font-medium text-sm mb-1">Comment:</h4>
-                    <p className="text-sm bg-background/50 p-3 rounded-md">
-                      {evaluation.comment}
-                    </p>
-                  </div>
-                )}
-                {evaluation.feedbacks && evaluation.feedbacks.length > 0 && (
-                  <div>
-                    <h4 className="font-medium text-sm mb-2">Feedback:</h4>
-                    <div className="space-y-2">
-                      {evaluation.feedbacks.map((feedback) => (
-                        <div
-                          key={feedback.id}
-                          className="flex items-center justify-between bg-background/50 p-2 rounded-md"
-                        >
-                          <span className="text-sm">
-                            {feedback.comment || "N/A"}
-                          </span>
-                          <span className={`text-sm font-medium ${getRatingColor(feedback.rating)}`}>
-                            {feedback.rating}/5
-                          </span>
-                        </div>
-                      ))}
+          {filteredEvaluations.length === 0 ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="text-center">
+                <p className="text-lg font-medium text-muted-foreground">No evaluations found</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  There are no evaluations that match the selected criteria.
+                </p>
+              </div>
+            </div>
+          ) : (
+            filteredEvaluations.map((evaluation) => (
+              <Card key={evaluation.id} className="dark:bg-background/30">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">
+                      {evaluation.correcteds?.map((c, index) => (
+                        <span key={c.login}>
+                          <Link
+                            href={`https://profile.intra.42.fr/users/${c.login}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono hover:underline"
+                          >
+                            {c.login}
+                          </Link>
+                          {index < evaluation.correcteds!.length - 1 && " + "}
+                        </span>
+                      )) || "unknown_user"} <span className="text-sm"> ({getProjectName(evaluation)})</span>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {new Date(evaluation.created_at).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </div>
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
+                      {evaluation.final_mark !== null && (
+                        <Badge variant="outline" className="bg-background/50"> {evaluation.final_mark}/100 </Badge>
+                      )}
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {evaluation.comment && (
+                    <div>
+                      <h4 className="font-medium text-sm mb-1">Comment:</h4>
+                      <p className="text-sm bg-background/50 p-3 rounded-md">
+                        {evaluation.comment}
+                      </p>
+                    </div>
+                  )}
+                  {evaluation.feedbacks && evaluation.feedbacks.length > 0 && (
+                    <div>
+                      <h4 className="font-medium text-sm mb-2">Feedback:</h4>
+                      <div className="space-y-2">
+                        {evaluation.feedbacks.map((feedback) => (
+                          <div
+                            key={feedback.id}
+                            className="flex items-center justify-between bg-background/50 p-2 rounded-md"
+                          >
+                            <span className="text-sm">
+                              {feedback.comment || "N/A"}
+                            </span>
+                            <span className={`text-sm font-medium ${getRatingColor(feedback.rating)}`}>
+                              {feedback.rating}/5
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </DialogContent>
     </Dialog>
