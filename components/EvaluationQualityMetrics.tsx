@@ -113,7 +113,10 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
         <CardContent className="space-y-4">
           {Object.entries(ratingDistribution).map(([rating, count]) => (
             <div key={rating} className="space-y-2">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center cursor-pointer hover:bg-muted/50 p-2 rounded transition-colors"
+                onClick={() => handleRangeClick(`rating-${rating}`)}
+              >
                 <span className="text-sm font-medium">{rating}★</span>
                 <span className="text-sm text-gray-500">{count} ratings</span>
               </div>

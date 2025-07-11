@@ -10,6 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Evaluation } from "@/lib/api";
 import { projectMap } from "@/components/projectMap";
 
+const EXCLUDED_FEEDBACK_MESSAGES = new Set([
+  "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
+]);
+
 interface EvaluationDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -33,7 +37,21 @@ export function EvaluationDetailsModal({
 
   // Filtering logic
   let filteredEvaluations: Evaluation[] = [];
-  if (range === "Writer's soul (180+)") {
+
+  if (range.startsWith("rating-")) {
+    const targetRating = parseInt(range.replace("rating-", ""));
+    filteredEvaluations = evaluations.filter(evaluation => {
+      if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
+        return evaluation.feedbacks.some(feedback => {
+          if (EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)) {
+            return false;
+          }
+          return feedback.rating === targetRating;
+        });
+      }
+      return false;
+    });
+  } else if (range === "Writer's soul (180+)") {
     filteredEvaluations = evaluations.filter(
       (evaluation) => (evaluation.comment?.length || 0) >= 180
     );
@@ -66,12 +84,20 @@ export function EvaluationDetailsModal({
     return "text-red-600 dark:text-red-400";
   };
 
+  const getDisplayTitle = () => {
+    if (range.startsWith("rating-")) {
+      const rating = range.replace("rating-", "");
+      return `Evaluations with ${rating}★ Rating (${filteredEvaluations.length} evaluations)`;
+    }
+    return `Evaluations - ${range} (${filteredEvaluations.length} evaluations)`;
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-mono">
-            Evaluations - {range} ({filteredEvaluations.length} evaluations)
+            {getDisplayTitle()}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
