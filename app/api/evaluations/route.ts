@@ -7,7 +7,6 @@ export async function GET(request: Request) {
   // Return mock evaluations in development
   if (process.env.NODE_ENV !== 'production') {
     return NextResponse.json([
-      // Cancelled evaluation - should be filtered out
       {
         id: 8214865,
         scale_id: 45225,
