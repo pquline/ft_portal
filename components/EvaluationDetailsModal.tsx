@@ -79,7 +79,7 @@ export function EvaluationDetailsModal({
                       {evaluation.flag?.name || "Unknown"}
                     </Badge>
                     {evaluation.final_mark !== null && (
-                      <Badge variant="outline">
+                      <Badge variant="outline" className="bg-background/50">
                         {evaluation.final_mark}/100
                       </Badge>
                     )}
@@ -88,12 +88,22 @@ export function EvaluationDetailsModal({
                 <div className="text-sm text-muted-foreground">
                   Evaluated: {evaluation.correcteds?.map(c => c.login).join(", ") || "Unknown"}
                 </div>
+                {evaluation.final_mark !== null && (
+                  <div className="mt-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium text-green-800 dark:text-green-200">Final Rating:</span>
+                      <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                        {evaluation.final_mark}/100
+                      </span>
+                    </div>
+                  </div>
+                )}
               </CardHeader>
               <CardContent className="space-y-3">
                 {evaluation.comment && (
                   <div>
                     <h4 className="font-medium text-sm mb-1">Comment:</h4>
-                    <p className="text-sm bg-muted/50 p-3 rounded-md">
+                    <p className="text-sm bg-background/50 p-3 rounded-md">
                       {evaluation.comment}
                     </p>
                   </div>
@@ -101,7 +111,7 @@ export function EvaluationDetailsModal({
                 {evaluation.feedback && (
                   <div>
                     <h4 className="font-medium text-sm mb-1">Feedback:</h4>
-                    <p className="text-sm bg-muted/50 p-3 rounded-md">
+                    <p className="text-sm bg-background/50 p-3 rounded-md">
                       {evaluation.feedback}
                     </p>
                   </div>
@@ -113,7 +123,7 @@ export function EvaluationDetailsModal({
                       {evaluation.feedbacks.map((feedback) => (
                         <div
                           key={feedback.id}
-                          className="flex items-center justify-between bg-muted/30 p-2 rounded"
+                          className="flex items-center justify-between bg-background/30 p-2 rounded"
                         >
                           <span className="text-sm">
                             {feedback.user?.login || "Unknown"}: "{feedback.comment || "No comment"}"
