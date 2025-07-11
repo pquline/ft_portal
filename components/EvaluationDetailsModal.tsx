@@ -136,6 +136,15 @@ export function EvaluationDetailsModal({
                         {index < evaluation.correcteds!.length - 1 && " + "}
                       </span>
                     )) || "unknown_user"} <span className="text-sm"> ({getProjectName(evaluation)})</span>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {new Date(evaluation.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
