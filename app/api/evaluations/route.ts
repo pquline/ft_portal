@@ -17,7 +17,79 @@ export async function GET(request: Request) {
         updated_at: new Date().toISOString(),
         flag: {
           id: 1,
-          name: "Perfect"
+          name: "Ok"
+        },
+        feedback_rating: 5,
+        team: {
+          id: 1,
+          name: "Sample Project"
+        }
+      },
+      {
+        id: 2,
+        scale_id: 1,
+        comment: "Great work!",
+        feedback: "Excellent implementation",
+        final_mark: 100,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        flag: {
+          id: 1,
+          name: "Outstanding project"
+        },
+        feedback_rating: 5,
+        team: {
+          id: 1,
+          name: "Sample Project"
+        }
+      },
+      {
+        id: 3,
+        scale_id: 1,
+        comment: "Great work!",
+        feedback: "Excellent implementation",
+        final_mark: 100,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        flag: {
+          id: 1,
+          name: "Outstanding project"
+        },
+        feedback_rating: 5,
+        team: {
+          id: 1,
+          name: "Sample Project"
+        }
+      },
+      {
+        id: 4,
+        scale_id: 1,
+        comment: "Great work! I'm so proud of you! You're a great student! Omg im so impressed by your level you should definitely be a teacher! Wow such a great understanding of all the notions...",
+        feedback: "Excellent implementation",
+        final_mark: 100,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        flag: {
+          id: 1,
+          name: "Outstanding project"
+        },
+        feedback_rating: 5,
+        team: {
+          id: 1,
+          name: "Sample Project"
+        }
+      },
+      {
+        id: 5,
+        scale_id: 1,
+        comment: "Great work...",
+        feedback: "Excellent implementation",
+        final_mark: 100,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        flag: {
+          id: 1,
+          name: "Outstanding project"
         },
         feedback_rating: 5,
         team: {
