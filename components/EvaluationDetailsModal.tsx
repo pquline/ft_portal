@@ -34,6 +34,16 @@ export function EvaluationDetailsModal({
     return "500+";
   };
 
+  const getProjectName = (evaluation: Evaluation): string => {
+    const gitlabPath = evaluation.team.project_gitlab_path;
+    if (gitlabPath) {
+      return gitlabPath.split('/').slice(-2).join('/');
+    } else {
+      const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
+      return projectEntry ? projectEntry.project_path : 'unknown_project';
+    }
+  };
+
   // Filtering logic
   let filteredEvaluations: Evaluation[] = [];
 
@@ -70,16 +80,6 @@ export function EvaluationDetailsModal({
       (evaluation) => getLengthRange(evaluation.comment?.length || 0) === range
     );
   }
-
-  const getProjectName = (evaluation: Evaluation): string => {
-    const gitlabPath = evaluation.team.project_gitlab_path;
-    if (gitlabPath) {
-      return gitlabPath.split('/').slice(-2).join('/');
-    } else {
-      const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
-      return projectEntry ? projectEntry.project_path : 'unknown_project';
-    }
-  };
 
   const getFlagColor = (flagName: string) => {
     if (flagName === "Ok") return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
