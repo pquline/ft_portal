@@ -72,7 +72,7 @@ export function EvaluationDetailsModal({
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">
-                    {getProjectName(evaluation)}
+                  {evaluation.correcteds?.map(c => c.login).join(", ") || "unknown_user"} <span className="text-sm font-mono">- {getProjectName(evaluation)}</span>
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={getFlagColor(evaluation.flag?.name || "Unknown")}>
@@ -84,9 +84,6 @@ export function EvaluationDetailsModal({
                       </Badge>
                     )}
                   </div>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Evaluated: {evaluation.correcteds?.map(c => c.login).join(", ") || "Unknown"}
                 </div>
                 {evaluation.feedbacks && evaluation.feedbacks.length > 0 && (
                   <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
