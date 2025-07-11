@@ -87,9 +87,6 @@ export function EvaluationDetailsModal({
                     {evaluation.final_mark !== null && (
                       <Badge variant="outline" className="bg-background/50"> {evaluation.final_mark}/100 </Badge>
                     )}
-                    {range === "Writer's soul (180+)" && evaluation.comment && evaluation.comment.length >= 180 && (
-                      <Badge variant="outline" className="bg-yellow-200 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-200">Writer's soul (180+)</Badge>
-                    )}
                   </div>
                 </div>
               </CardHeader>
