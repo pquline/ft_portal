@@ -406,10 +406,37 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
     "C Piscine Final Exam"
   ];
 
+  // Deprecated exam names from older C Piscine format
+  const deprecatedExamNames = [
+    "Exam00",
+    "Exam01",
+    "Exam02",
+    "Final Exam",
+    "Day 00",
+    "Day 01",
+    "Day 02",
+    "Day 03",
+    "Day 04",
+    "Day 05",
+    "Day 06",
+    "Day 07",
+    "Day 08",
+    "Day 09",
+    "Day 10",
+    "Day 11",
+    "Day 12",
+    "Day 13",
+    "Rush 00",
+    "Rush 01",
+    "Rush 02"
+  ];
+
+  const allExamNames = [...examNames, ...deprecatedExamNames];
+
   const examResults: CPiscineExamResult[] = [];
 
   studentProfile.projects_users.forEach(project => {
-    if (examNames.includes(project.project.name) && project.final_mark !== null) {
+    if (allExamNames.includes(project.project.name) && project.final_mark !== null) {
       examResults.push({
         name: project.project.name,
         mark: project.final_mark,
