@@ -90,7 +90,6 @@ export async function GET(request: Request) {
         },
         feedbacks: []
       },
-      // Valid evaluation
       {
         id: 8214866,
         scale_id: 45226,
