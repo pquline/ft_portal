@@ -40,7 +40,10 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
   evaluations.forEach(evaluation => {
     totalEvaluations++;
     const length = evaluation.comment?.length || 0;
-    if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
+    if (length >= 180) {
+      lengthRanges["Writer's soul (180+)"]++;
+      lengthRanges['Writer\'s soul (180+)']++;
+    }
     if (length <= 50) lengthRanges['0-50']++;
     else if (length <= 100) lengthRanges['51-100']++;
     else if (length <= 200) lengthRanges['101-200']++;

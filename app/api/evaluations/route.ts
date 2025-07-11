@@ -118,8 +118,8 @@ export async function GET(request: Request) {
         updated_at: new Date().toISOString(),
         final_mark: 85,
         flag: {
-          id: 9,
-          name: "Outstanding project",
+          id: 2,
+          name: "Cheating",
           positive: true,
           icon: "star-1",
           created_at: "2017-05-18T14:07:37.380Z",
