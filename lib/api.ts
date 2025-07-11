@@ -362,8 +362,7 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
 }
 
 export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
-  // Mock data for development
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production' && login === 'test') {
     return {
       hasHallVoice: true,
       inSounds: ["sound1", "sound2"],
@@ -372,11 +371,7 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
   }
 
   try {
-    const response = await fetch(`https://api.intra.42.fr/v2/users/${login}/locations`, {
-      headers: {
-        Authorization: `Bearer ${process.env.FORTYTWO_ACCESS_TOKEN}`,
-      },
-    });
+    const response = await fetch(`/api/hall-voice?login=${encodeURIComponent(login)}`);
 
     if (!response.ok) {
       throw new Error('Failed to fetch hall voice data');
@@ -384,9 +379,9 @@ export async function checkHallVoice(login: string): Promise<HallVoiceSounds> {
 
     const data = await response.json();
     return {
-      hasHallVoice: data.length > 0,
-      inSounds: data.filter((location: { end_at: string | null }) => location.end_at === null).map((location: { host: string }) => location.host),
-      outSounds: data.filter((location: { end_at: string | null }) => location.end_at !== null).map((location: { host: string }) => location.host),
+      hasHallVoice: data.hasHallVoice,
+      inSounds: data.inSounds || [],
+      outSounds: data.outSounds || [],
     };
   } catch (error) {
     console.error('Error fetching hall voice data:', error);
