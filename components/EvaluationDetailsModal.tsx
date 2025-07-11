@@ -88,13 +88,19 @@ export function EvaluationDetailsModal({
                 <div className="text-sm text-muted-foreground">
                   Evaluated: {evaluation.correcteds?.map(c => c.login).join(", ") || "Unknown"}
                 </div>
-                {evaluation.final_mark !== null && (
-                  <div className="mt-2 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                {evaluation.feedbacks && evaluation.feedbacks.length > 0 && (
+                  <div className="mt-2 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-green-800 dark:text-green-200">Final Rating:</span>
-                      <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-                        {evaluation.final_mark}/100
-                      </span>
+                      <span className="font-medium text-blue-800 dark:text-blue-200">Student Rating:</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                          {(evaluation.feedbacks.reduce((sum, f) => sum + f.rating, 0) / evaluation.feedbacks.length).toFixed(1)}/5
+                        </span>
+                        <span className="text-sm text-blue-600 dark:text-blue-400">★</span>
+                      </div>
+                    </div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                      {evaluation.feedbacks.length} student{evaluation.feedbacks.length > 1 ? 's' : ''} rated
                     </div>
                   </div>
                 )}
