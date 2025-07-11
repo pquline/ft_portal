@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Evaluation } from "@/lib/api";
 import { projectMap } from "@/components/projectMap";
+import Link from "next/link";
 
 const EXCLUDED_FEEDBACK_MESSAGES = new Set([
   "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
@@ -34,6 +35,16 @@ export function EvaluationDetailsModal({
     return "500+";
   };
 
+  const getProjectName = (evaluation: Evaluation): string => {
+    const gitlabPath = evaluation.team.project_gitlab_path;
+    if (gitlabPath) {
+      return gitlabPath.split('/').slice(-2).join('/');
+    } else {
+      const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
+      return projectEntry ? projectEntry.project_path : 'unknown_project';
+    }
+  };
+
   // Filtering logic
   let filteredEvaluations: Evaluation[] = [];
 
@@ -55,6 +66,12 @@ export function EvaluationDetailsModal({
     filteredEvaluations = evaluations.filter(evaluation => {
       return evaluation.flag?.name === targetFlag;
     });
+  } else if (range.startsWith("project-")) {
+    const targetProject = range.replace("project-", "");
+    filteredEvaluations = evaluations.filter(evaluation => {
+      const projectName = getProjectName(evaluation);
+      return projectName === targetProject;
+    });
   } else if (range === "Writer's soul (180+)") {
     filteredEvaluations = evaluations.filter(
       (evaluation) => (evaluation.comment?.length || 0) >= 180
@@ -64,16 +81,6 @@ export function EvaluationDetailsModal({
       (evaluation) => getLengthRange(evaluation.comment?.length || 0) === range
     );
   }
-
-  const getProjectName = (evaluation: Evaluation): string => {
-    const gitlabPath = evaluation.team.project_gitlab_path;
-    if (gitlabPath) {
-      return gitlabPath.split('/').slice(-2).join('/');
-    } else {
-      const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
-      return projectEntry ? projectEntry.project_path : 'unknown_project';
-    }
-  };
 
   const getFlagColor = (flagName: string) => {
     if (flagName === "Ok") return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
@@ -95,6 +102,9 @@ export function EvaluationDetailsModal({
     } else if (range.startsWith("flag-")) {
       const flag = range.replace("flag-", "");
       return `Evaluations with ${flag} Flag (${filteredEvaluations.length} evaluations)`;
+    } else if (range.startsWith("project-")) {
+      const project = range.replace("project-", "");
+      return `Evaluations for ${project} (${filteredEvaluations.length} evaluations)`;
     }
     return `Evaluations - ${range} (${filteredEvaluations.length} evaluations)`;
   };
@@ -113,7 +123,19 @@ export function EvaluationDetailsModal({
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">
-                  {evaluation.correcteds?.map(c => c.login).join(" + ") || "unknown_user"} <span className="text-sm font-mono"> ({getProjectName(evaluation)})</span>
+                    {evaluation.correcteds?.map((c, index) => (
+                      <span key={c.login}>
+                        <Link
+                          href={`https://profile.intra.42.fr/users/${c.login}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono hover:underline"
+                        >
+                          {c.login}
+                        </Link>
+                        {index < evaluation.correcteds!.length - 1 && " + "}
+                      </span>
+                    )) || "unknown_user"} <span className="text-sm"> ({getProjectName(evaluation)})</span>
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
