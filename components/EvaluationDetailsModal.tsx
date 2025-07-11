@@ -139,10 +139,10 @@ export function EvaluationDetailsModal({
                       {evaluation.feedbacks.map((feedback) => (
                         <div
                           key={feedback.id}
-                          className="flex items-center justify-between bg-background/30 p-2 rounded"
+                          className="flex items-center justify-between bg-background/50 p-2 rounded-md"
                         >
                           <span className="text-sm">
-                            {feedback.user?.login || "unknown_user"}: &ldquo;{feedback.comment || "N/A"}&rdquo;
+                            {feedback.comment || "N/A"}
                           </span>
                           <span className={`text-sm font-medium ${getRatingColor(feedback.rating)}`}>
                             {feedback.rating}/5
