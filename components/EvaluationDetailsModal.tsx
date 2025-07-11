@@ -122,7 +122,19 @@ export function EvaluationDetailsModal({
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">
-                  {evaluation.correcteds?.map(c => c.login).join(" + ") || "unknown_user"} <span className="text-sm font-mono"> ({getProjectName(evaluation)})</span>
+                    {evaluation.correcteds?.map((c, index) => (
+                      <span key={c.login}>
+                        <a
+                          href={`https://profile.intra.42.fr/users/${c.login}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                        >
+                          {c.login}
+                        </a>
+                        {index < evaluation.correcteds!.length - 1 && " + "}
+                      </span>
+                    )) || "unknown_user"} <span className="text-sm font-mono"> ({getProjectName(evaluation)})</span>
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
