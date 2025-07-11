@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -143,7 +142,7 @@ export function EvaluationDetailsModal({
                           className="flex items-center justify-between bg-background/30 p-2 rounded"
                         >
                           <span className="text-sm">
-                            {feedback.user?.login || "unknown_user"}: "{feedback.comment || "N/A"}"
+                            {feedback.user?.login || "unknown_user"}: &ldquo;{feedback.comment || "N/A"}&rdquo;
                           </span>
                           <span className={`text-sm font-medium ${getRatingColor(feedback.rating)}`}>
                             {feedback.rating}/5
