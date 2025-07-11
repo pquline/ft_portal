@@ -31,9 +31,17 @@ export function EvaluationDetailsModal({
     return "500+";
   };
 
-  const filteredEvaluations = evaluations.filter(
-    (evaluation) => getLengthRange(evaluation.comment?.length || 0) === range
-  );
+  // Filtering logic
+  let filteredEvaluations: Evaluation[] = [];
+  if (range === "Writer's soul (180+)") {
+    filteredEvaluations = evaluations.filter(
+      (evaluation) => (evaluation.comment?.length || 0) >= 180
+    );
+  } else {
+    filteredEvaluations = evaluations.filter(
+      (evaluation) => getLengthRange(evaluation.comment?.length || 0) === range
+    );
+  }
 
   const getProjectName = (evaluation: Evaluation): string => {
     const gitlabPath = evaluation.team.project_gitlab_path;
@@ -79,7 +87,7 @@ export function EvaluationDetailsModal({
                     {evaluation.final_mark !== null && (
                       <Badge variant="outline" className="bg-background/50"> {evaluation.final_mark}/100 </Badge>
                     )}
-                    {evaluation.comment && evaluation.comment.length >= 180 && (
+                    {range === "Writer's soul (180+)" && evaluation.comment && evaluation.comment.length >= 180 && (
                       <Badge variant="outline" className="bg-yellow-200 text-yellow-900 dark:bg-yellow-900 dark:text-yellow-200">Writer's soul (180+)</Badge>
                     )}
                   </div>
