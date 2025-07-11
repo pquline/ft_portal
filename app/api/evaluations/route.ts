@@ -13,7 +13,6 @@ export async function GET(request: Request) {
         comment: "Great work! Very detailed evaluation with comprehensive feedback.",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        feedback: "Excellent implementation and thorough evaluation process.",
         final_mark: 100,
         flag: {
           id: 1,
@@ -117,7 +116,6 @@ export async function GET(request: Request) {
         comment: "Good work, but could be improved in some areas.",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        feedback: "Nice implementation with room for improvement.",
         final_mark: 85,
         flag: {
           id: 9,
@@ -226,19 +224,6 @@ export async function GET(request: Request) {
             comment: "Fair evaluation, thanks for the feedback",
             rating: 4,
             created_at: new Date().toISOString()
-          },
-          {
-            id: 7626047,
-            user: {
-              login: "student3",
-              id: 129071,
-              url: "https://profile.intra.42.fr/users/student3"
-            },
-            feedbackable_type: "ScaleTeam",
-            feedbackable_id: 7602191,
-            comment: "Good evaluation",
-            rating: 3,
-            created_at: new Date().toISOString()
           }
         ]
       },
@@ -248,7 +233,6 @@ export async function GET(request: Request) {
         comment: "Excellent work! Very impressive implementation with detailed explanations.",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        feedback: "Outstanding job and thorough evaluation process.",
         final_mark: 100,
         flag: {
           id: 9,
@@ -338,7 +322,6 @@ export async function GET(request: Request) {
         comment: "Great work! I'm so proud of you! You're a great student! Omg im so impressed by your level you should definitely be a teacher! Wow such a great understanding of all the notions and concepts. This is exactly what we look for in evaluations - thorough, detailed, and constructive feedback that helps students grow and improve their skills.",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        feedback: "Excellent implementation and very detailed evaluation process.",
         final_mark: 100,
         flag: {
           id: 9,
@@ -442,7 +425,6 @@ export async function GET(request: Request) {
         comment: "Great work...",
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
-        feedback: "Good implementation",
         final_mark: 75,
         flag: {
           id: 1,

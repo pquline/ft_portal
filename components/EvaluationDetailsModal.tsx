@@ -97,7 +97,7 @@ export function EvaluationDetailsModal({
                       </div>
                     </div>
                     <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
-                      {evaluation.feedbacks.length} student{evaluation.feedbacks.length > 1 ? 's' : ''} rated
+                      Student rated
                     </div>
                   </div>
                 )}
