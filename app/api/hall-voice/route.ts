@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
+interface GitHubFile {
+  type: string;
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string | null;
+}
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const login = searchParams.get("login");
@@ -28,7 +40,7 @@ export async function GET(request: NextRequest) {
       throw new Error(`GitHub API error: ${response.status}`);
     }
 
-    const files = await response.json();
+    const files = await response.json() as GitHubFile[];
 
     if (!Array.isArray(files)) {
       return NextResponse.json({
@@ -38,7 +50,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const audioFiles = files.filter((file: any) =>
+    const audioFiles = files.filter((file: GitHubFile) =>
       file.type === 'file' &&
       (file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.ogg'))
     );
@@ -46,7 +58,7 @@ export async function GET(request: NextRequest) {
     const inSounds: string[] = [];
     const outSounds: string[] = [];
 
-    audioFiles.forEach((file: any) => {
+    audioFiles.forEach((file: GitHubFile) => {
       const soundUrl = `https://raw.githubusercontent.com/42paris/hall-voice/master/mp3/${login}/${file.name}`;
 
       if (file.name.toLowerCase().includes('in') || file.name.toLowerCase().includes('enter')) {
