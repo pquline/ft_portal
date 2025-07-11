@@ -274,9 +274,7 @@ export async function getEvaluations(userId: number, accessToken: string): Promi
 export function filterValidEvaluations(evaluations: Evaluation[]): Evaluation[] {
   return evaluations.filter(evaluation => {
     const isCancelled =
-      evaluation.comment === null &&
-      evaluation.feedback === null &&
-      evaluation.final_mark === null;
+      evaluation.comment === null;
 
     return !isCancelled;
   });
