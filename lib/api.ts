@@ -406,10 +406,20 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
     "C Piscine Final Exam"
   ];
 
+  const deprecatedExamNames = [
+    "Exam00",
+    "Exam01",
+    "Exam02",
+    "Exam Final",
+  ];
+
+  const allExamNames = [...examNames, ...deprecatedExamNames];
+
   const examResults: CPiscineExamResult[] = [];
 
   studentProfile.projects_users.forEach(project => {
-    if (examNames.includes(project.project.name) && project.final_mark !== null) {
+    if (allExamNames.includes(project.project.name) && project.final_mark !== null) {
+      console.log(`Found exam: ${project.project.name} with mark ${project.final_mark}`);
       examResults.push({
         name: project.project.name,
         mark: project.final_mark,
@@ -430,7 +440,11 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
 
   // Prepare evolution data for chart
   const evolution = {
-    labels: examResults.map(exam => exam.name.replace("C Piscine ", "")),
+    labels: examResults.map(exam =>
+      exam.name.startsWith("C Piscine ")
+        ? exam.name.replace("C Piscine ", "")
+        : exam.name
+    ),
     data: examResults.map(exam => exam.mark)
   };
 

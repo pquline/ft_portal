@@ -119,7 +119,9 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
                         <Card key={index} className="dark:bg-background/70">
                           <CardHeader className="pb-2">
                             <CardTitle className="text-sm font-medium">
-                              {exam.name.replace("C Piscine ", "")}
+                              {exam.name.startsWith("C Piscine ")
+                                ? exam.name.replace("C Piscine ", "")
+                                : exam.name}
                             </CardTitle>
                           </CardHeader>
                           <CardContent>
