@@ -40,9 +40,9 @@ export async function GET(request: NextRequest) {
       throw new Error(`GitHub API error: ${response.status}`);
     }
 
-    const files = await response.json() as GitHubFile[];
+    const directories = await response.json() as GitHubFile[];
 
-    if (!Array.isArray(files)) {
+    if (!Array.isArray(directories)) {
       return NextResponse.json({
         hasHallVoice: false,
         inSounds: [],
@@ -50,28 +50,53 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const audioFiles = files.filter((file: GitHubFile) =>
-      file.type === 'file' &&
-      (file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.ogg'))
-    );
-
     const inSounds: string[] = [];
     const outSounds: string[] = [];
 
-    audioFiles.forEach((file: GitHubFile) => {
-      const soundUrl = `https://raw.githubusercontent.com/42paris/hall-voice/master/mp3/${login}/${file.name}`;
+    // Check for 'in' directory
+    const inDir = directories.find((dir: GitHubFile) => dir.type === 'dir' && dir.name === 'in');
+    if (inDir) {
+      const inResponse = await fetch(`https://api.github.com/repos/42paris/hall-voice/contents/mp3/${login}/in`, {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'ft_portal/1.0'
+        }
+      });
 
-      if (file.name.toLowerCase().includes('in') || file.name.toLowerCase().includes('enter')) {
-        inSounds.push(soundUrl);
-      } else if (file.name.toLowerCase().includes('out') || file.name.toLowerCase().includes('exit')) {
-        outSounds.push(soundUrl);
-      } else {
-        inSounds.push(soundUrl);
+      if (inResponse.ok) {
+        const inFiles = await inResponse.json() as GitHubFile[];
+        inFiles.forEach((file: GitHubFile) => {
+          if (file.type === 'file' && (file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.ogg'))) {
+            const soundUrl = `https://raw.githubusercontent.com/42paris/hall-voice/master/mp3/${login}/in/${file.name}`;
+            inSounds.push(soundUrl);
+          }
+        });
       }
-    });
+    }
+
+    // Check for 'out' directory
+    const outDir = directories.find((dir: GitHubFile) => dir.type === 'dir' && dir.name === 'out');
+    if (outDir) {
+      const outResponse = await fetch(`https://api.github.com/repos/42paris/hall-voice/contents/mp3/${login}/out`, {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'ft_portal/1.0'
+        }
+      });
+
+      if (outResponse.ok) {
+        const outFiles = await outResponse.json() as GitHubFile[];
+        outFiles.forEach((file: GitHubFile) => {
+          if (file.type === 'file' && (file.name.endsWith('.mp3') || file.name.endsWith('.wav') || file.name.endsWith('.ogg'))) {
+            const soundUrl = `https://raw.githubusercontent.com/42paris/hall-voice/master/mp3/${login}/out/${file.name}`;
+            outSounds.push(soundUrl);
+          }
+        });
+      }
+    }
 
     return NextResponse.json({
-      hasHallVoice: audioFiles.length > 0,
+      hasHallVoice: inSounds.length > 0 || outSounds.length > 0,
       inSounds,
       outSounds
     });
