@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp, ArrowUpDown } from "lucide-react";
 import { EvaluationQualityMetrics } from "@/components/EvaluationQualityMetrics";
+import { EvaluationDetailsModal } from "@/components/EvaluationDetailsModal";
 import { type EvaluationStats, type Evaluation } from "@/lib/api";
 import {
   Table,
@@ -34,6 +35,8 @@ export function EvaluationsCard({
   const [isExpanded, setIsExpanded] = useState(true);
   const [sortField, setSortField] = useState<SortField>("total");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [selectedFlag, setSelectedFlag] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const colorPalette = [
     "hsl(var(--chart-1))",
@@ -73,6 +76,16 @@ export function EvaluationsCard({
     ) : (
       <ChevronDown className="h-4 w-4" />
     );
+  };
+
+  const handleFlagClick = (flag: string) => {
+    setSelectedFlag(flag);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedFlag(null);
   };
 
   const sortProjects = (
@@ -179,7 +192,8 @@ export function EvaluationsCard({
                   return (
                     <Card
                       key={flag}
-                      className="relative overflow-hidden dark:bg-background/30"
+                      className="relative overflow-hidden dark:bg-background/30 cursor-pointer hover:bg-background/50 transition-colors"
+                      onClick={() => handleFlagClick(flag)}
                     >
                       <div className="absolute inset-0 opacity-10" />
                       <CardHeader className="pb-2">
@@ -274,6 +288,15 @@ export function EvaluationsCard({
               </Table>
             </CardContent>
           </Card>
+
+          {selectedFlag && (
+            <EvaluationDetailsModal
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+              evaluations={evaluationsData}
+              range={`flag-${selectedFlag}`}
+            />
+          )}
         </CardContent>
       )}
     </Card>

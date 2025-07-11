@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Evaluation } from "@/lib/api";
+import { EvaluationDetailsModal } from "@/components/EvaluationDetailsModal";
 
 const EXCLUDED_FEEDBACK_MESSAGES = new Set([
   "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
@@ -11,6 +13,9 @@ interface EvaluationQualityMetricsProps {
 }
 
 export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetricsProps) {
+  const [selectedRange, setSelectedRange] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const lengthRanges = {
     '0-50': 0,
     '51-100': 0,
@@ -35,7 +40,10 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
   evaluations.forEach(evaluation => {
     totalEvaluations++;
     const length = evaluation.comment?.length || 0;
-    if (length >= 180) lengthRanges['Writer\'s soul (180+)']++;
+    if (length >= 180) {
+      lengthRanges["Writer's soul (180+)"]++;
+      lengthRanges['Writer\'s soul (180+)']++;
+    }
     if (length <= 50) lengthRanges['0-50']++;
     else if (length <= 100) lengthRanges['51-100']++;
     else if (length <= 200) lengthRanges['101-200']++;
@@ -58,6 +66,16 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
     }
   });
 
+  const handleRangeClick = (range: string) => {
+    setSelectedRange(range);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRange(null);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Card className="dark:bg-background/30">
@@ -67,7 +85,10 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
         <CardContent className="space-y-4">
           {Object.entries(lengthRanges).map(([range, count]) => (
             <div key={range} className="space-y-2">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center cursor-pointer hover:bg-muted/50 p-2 rounded transition-colors"
+                onClick={() => handleRangeClick(range)}
+              >
                 <span className="text-sm font-medium">{range}</span>
                 <span className="text-sm text-gray-500">
                   {range === 'Writer\'s soul (180+)'
@@ -92,7 +113,10 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
         <CardContent className="space-y-4">
           {Object.entries(ratingDistribution).map(([rating, count]) => (
             <div key={rating} className="space-y-2">
-              <div className="flex justify-between items-center">
+              <div
+                className="flex justify-between items-center cursor-pointer hover:bg-muted/50 p-2 rounded transition-colors"
+                onClick={() => handleRangeClick(`rating-${rating}`)}
+              >
                 <span className="text-sm font-medium">{rating}★</span>
                 <span className="text-sm text-gray-500">{count} ratings</span>
               </div>
@@ -101,6 +125,15 @@ export function EvaluationQualityMetrics({ evaluations }: EvaluationQualityMetri
           ))}
         </CardContent>
       </Card>
+
+      {selectedRange && (
+        <EvaluationDetailsModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          evaluations={evaluations}
+          range={selectedRange}
+        />
+      )}
     </div>
   );
 }
