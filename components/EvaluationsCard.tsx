@@ -289,8 +289,8 @@ export function EvaluationsCard({
                         <TableCell className="font-medium">{project}</TableCell>
                         <TableCell className="text-right">{data.count}</TableCell>
                         <TableCell className="text-right">{data.okCount}</TableCell>
-                        <TableCell className="text-right">{data.outstandingCount}</TableCell>
                         <TableCell className="text-right">{data.count - data.okCount - data.outstandingCount}</TableCell>
+                        <TableCell className="text-right">{data.outstandingCount}</TableCell>
                       </TableRow>
                     )
                   )}
