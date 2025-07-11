@@ -8,6 +8,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Evaluation } from "@/lib/api";
+import { projectMap } from "@/components/projectMap";
 
 interface EvaluationDetailsModalProps {
   isOpen: boolean;
@@ -35,6 +36,16 @@ export function EvaluationDetailsModal({
     (evaluation) => getLengthRange(evaluation.comment?.length || 0) === range
   );
 
+  const getProjectName = (evaluation: Evaluation): string => {
+    const gitlabPath = evaluation.team.project_gitlab_path;
+    if (gitlabPath) {
+      return gitlabPath.split('/').slice(-2).join('/');
+    } else {
+      const projectEntry = projectMap.find(p => p.id === evaluation.team.project_id);
+      return projectEntry ? projectEntry.project_path : 'unknown_project';
+    }
+  };
+
   const getFlagColor = (flagName: string) => {
     if (flagName === "Ok") return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
     if (flagName === "Outstanding project") return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300";
@@ -61,7 +72,7 @@ export function EvaluationDetailsModal({
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">
-                    {evaluation.team?.name || evaluation.scale?.name || "Unknown Project"}
+                    {getProjectName(evaluation)}
                   </CardTitle>
                   <div className="flex items-center gap-2">
                     <Badge className={getFlagColor(evaluation.flag?.name || "Unknown")}>
