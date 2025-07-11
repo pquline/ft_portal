@@ -19,6 +19,7 @@ import {
     getEvaluations,
     searchStudent,
     calculateCPiscineExamStats,
+    filterValidEvaluations,
     type EvaluationStats,
     type HallVoiceSounds,
     type CPiscineExamStats,
@@ -121,12 +122,19 @@ export default function Home() {
         toast.error("No evaluations found for this student");
         return;
       }
+
+      const validEvaluations = filterValidEvaluations(evaluations);
+      if (validEvaluations.length === 0) {
+        toast.error("No valid evaluations found for this student");
+        return;
+      }
+
       const stats = calculateEvaluationStats(evaluations);
       const hallVoice = await checkHallVoice(login);
       const cPiscineStats = calculateCPiscineExamStats(studentData);
 
       setStats(stats);
-      setEvaluationsData(evaluations);
+      setEvaluationsData(validEvaluations);
       setHallVoiceSounds(hallVoice);
       setCPiscineStats(cPiscineStats);
     } catch (err) {

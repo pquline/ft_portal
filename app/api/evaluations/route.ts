@@ -7,6 +7,89 @@ export async function GET(request: Request) {
   // Return mock evaluations in development
   if (process.env.NODE_ENV !== 'production') {
     return NextResponse.json([
+      // Cancelled evaluation - should be filtered out
+      {
+        id: 8214865,
+        scale_id: 45225,
+        comment: null,
+        created_at: "2025-06-20T16:36:54.846Z",
+        updated_at: "2025-06-20T17:38:12.998Z",
+        feedback: null,
+        final_mark: null,
+        flag: {
+          id: 1,
+          name: "Ok",
+          positive: true,
+          icon: "check-4",
+          created_at: "2015-09-14T23:06:52.000Z",
+          updated_at: "2015-09-14T23:06:52.000Z"
+        },
+        begin_at: "2025-06-20T16:36:54.846Z",
+        correcteds: [
+          {
+            id: 177397,
+            login: "cancelled_student",
+            url: "https://api.intra.42.fr/v2/users/cancelled_student"
+          }
+        ],
+        corrector: {
+          id: 129059,
+          login: "corrector1",
+          url: "https://api.intra.42.fr/v2/users/corrector1"
+        },
+        truant: null,
+        filled_at: null,
+        questions_with_answers: [],
+        scale: {
+          id: 45225,
+          evaluation_id: 8214865,
+          name: "Sample Scale",
+          is_primary: true,
+          comment: "Sample comment",
+          introduction_md: "Introduction",
+          disclaimer_md: "Disclaimer",
+          guidelines_md: "Guidelines",
+          created_at: "2025-06-20T16:36:54.846Z",
+          correction_number: 1,
+          duration: 3600,
+          manual_subscription: false,
+          languages: [],
+          flags: [],
+          free: true
+        },
+        team: {
+          id: 6050702,
+          name: "cancelled_team",
+          url: "https://api.intra.42.fr/v2/teams/6050702",
+          final_mark: null,
+          project_id: 1330,
+          created_at: "2025-06-20T16:36:54.846Z",
+          updated_at: "2025-06-20T16:36:54.846Z",
+          status: "finished",
+          terminating_at: null,
+          users: [
+            {
+              id: 177397,
+              login: "cancelled_student",
+              url: "https://api.intra.42.fr/v2/users/cancelled_student",
+              leader: false,
+              occurrence: 0,
+              validated: false,
+              projects_user_id: 3898860
+            }
+          ],
+          "locked?": false,
+          "validated?": false,
+          "closed?": false,
+          repo_url: "git@vogsphere.42paris.fr:vogsphere/cancelled-repo",
+          repo_uuid: "cancelled-uuid",
+          locked_at: null,
+          closed_at: null,
+          project_session_id: 4502,
+          project_gitlab_path: "pedago_world/42-cursus/inner-circle/cancelled-project"
+        },
+        feedbacks: []
+      },
       {
         id: 8214866,
         scale_id: 45226,

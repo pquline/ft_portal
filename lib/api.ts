@@ -271,9 +271,22 @@ export async function getEvaluations(userId: number, accessToken: string): Promi
   return response.json();
 }
 
+export function filterValidEvaluations(evaluations: Evaluation[]): Evaluation[] {
+  return evaluations.filter(evaluation => {
+    const isCancelled =
+      evaluation.comment === null &&
+      evaluation.feedback === null &&
+      evaluation.final_mark === null;
+
+    return !isCancelled;
+  });
+}
+
 export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationStats {
+  const validEvaluations = filterValidEvaluations(evaluations);
+
   const stats: EvaluationStats = {
-    totalEvaluations: evaluations.length,
+    totalEvaluations: validEvaluations.length,
     averageRating: 0,
     totalFeedback: 0,
     projectStats: {},
@@ -288,7 +301,7 @@ export function calculateEvaluationStats(evaluations: Evaluation[]): EvaluationS
     "You failed to complete this feedback within the allocated time (this is very wrong), so we did it for you (do it next time)."
   ]);
 
-  evaluations.forEach((evaluation) => {
+  validEvaluations.forEach((evaluation) => {
     if (evaluation.feedbacks && evaluation.feedbacks.length > 0) {
       const validFeedbacks = evaluation.feedbacks.filter(
         feedback => !EXCLUDED_FEEDBACK_MESSAGES.has(feedback.comment)
