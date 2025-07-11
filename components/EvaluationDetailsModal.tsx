@@ -87,7 +87,7 @@ export function EvaluationDetailsModal({
   const getDisplayTitle = () => {
     if (range.startsWith("rating-")) {
       const rating = range.replace("rating-", "");
-      return `Evaluations with ${rating}★ Rating (${filteredEvaluations.length} evaluations)`;
+      return `Evaluations with ${rating}/5 Rating (${filteredEvaluations.length} evaluations)`;
     }
     return `Evaluations - ${range} (${filteredEvaluations.length} evaluations)`;
   };
