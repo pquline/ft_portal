@@ -55,6 +55,12 @@ export function EvaluationDetailsModal({
     filteredEvaluations = evaluations.filter(evaluation => {
       return evaluation.flag?.name === targetFlag;
     });
+  } else if (range.startsWith("project-")) {
+    const targetProject = range.replace("project-", "");
+    filteredEvaluations = evaluations.filter(evaluation => {
+      const projectName = getProjectName(evaluation);
+      return projectName === targetProject;
+    });
   } else if (range === "Writer's soul (180+)") {
     filteredEvaluations = evaluations.filter(
       (evaluation) => (evaluation.comment?.length || 0) >= 180
@@ -95,6 +101,9 @@ export function EvaluationDetailsModal({
     } else if (range.startsWith("flag-")) {
       const flag = range.replace("flag-", "");
       return `Evaluations with ${flag} Flag (${filteredEvaluations.length} evaluations)`;
+    } else if (range.startsWith("project-")) {
+      const project = range.replace("project-", "");
+      return `Evaluations for ${project} (${filteredEvaluations.length} evaluations)`;
     }
     return `Evaluations - ${range} (${filteredEvaluations.length} evaluations)`;
   };

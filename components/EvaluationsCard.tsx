@@ -36,6 +36,7 @@ export function EvaluationsCard({
   const [sortField, setSortField] = useState<SortField>("total");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [selectedFlag, setSelectedFlag] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const colorPalette = [
@@ -80,12 +81,20 @@ export function EvaluationsCard({
 
   const handleFlagClick = (flag: string) => {
     setSelectedFlag(flag);
+    setSelectedProject(null);
+    setIsModalOpen(true);
+  };
+
+  const handleProjectClick = (project: string) => {
+    setSelectedProject(project);
+    setSelectedFlag(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedFlag(null);
+    setSelectedProject(null);
   };
 
   const sortProjects = (
@@ -274,7 +283,8 @@ export function EvaluationsCard({
                     ([project, data]) => (
                       <TableRow
                         key={project}
-                        className="hover:bg-secondary/30 dark:hover:bg-background/30"
+                        className="hover:bg-secondary/30 dark:hover:bg-background/30 cursor-pointer"
+                        onClick={() => handleProjectClick(project)}
                       >
                         <TableCell className="font-medium">{project}</TableCell>
                         <TableCell className="text-right">{data.count}</TableCell>
@@ -289,14 +299,22 @@ export function EvaluationsCard({
             </CardContent>
           </Card>
 
-          {selectedFlag && (
-            <EvaluationDetailsModal
-              isOpen={isModalOpen}
-              onClose={handleCloseModal}
-              evaluations={evaluationsData}
-              range={`flag-${selectedFlag}`}
-            />
-          )}
+                      {selectedFlag && (
+              <EvaluationDetailsModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                evaluations={evaluationsData}
+                range={`flag-${selectedFlag}`}
+              />
+            )}
+            {selectedProject && (
+              <EvaluationDetailsModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                evaluations={evaluationsData}
+                range={`project-${selectedProject}`}
+              />
+            )}
         </CardContent>
       )}
     </Card>
