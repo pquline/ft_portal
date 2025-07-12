@@ -103,7 +103,6 @@ export default function Privacy() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li><strong>42 API:</strong> Official 42 API for student data, evaluations, and academic records</li>
               <li><strong>GitHub API:</strong> For accessing hall voice sound files from the 42paris/hall-voice repository</li>
-              <li><strong>Discord Webhooks:</strong> For error monitoring and system alerts (production only)</li>
             </ul>
             <p className="mt-4">
               <strong>No Analytics or Tracking:</strong> We do not use any third-party analytics, tracking, or advertising services. Your data is never shared with any third parties for marketing or commercial purposes.
@@ -127,27 +126,6 @@ export default function Privacy() {
               <li><strong>Rate Limiting:</strong> API rate limiting to prevent abuse and ensure service stability</li>
               <li><strong>Error Monitoring:</strong> Secure error reporting without exposing sensitive data</li>
             </ul>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-mono">Your Privacy Rights</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">
-              You have full control over your data and privacy:
-            </p>
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li><strong>Right to Access:</strong> You can view all data we have about you (stored in your browser)</li>
-              <li><strong>Right to Deletion:</strong> Sign out at any time to immediately clear all session data</li>
-              <li><strong>Right to Portability:</strong> All data is accessible through your browser&apos;s developer tools</li>
-              <li><strong>Right to Revoke Access:</strong> Revoke ft_portal&apos;s access through your 42 OAuth applications settings</li>
-              <li><strong>Right to Object:</strong> You can stop using the service at any time</li>
-            </ul>
-            <p className="mt-4">
-              Since we don&apos;t store your data on our servers, most privacy rights are automatically satisfied. Your data remains under your control at all times.
-            </p>
           </CardContent>
         </Card>
 
@@ -194,7 +172,7 @@ export default function Privacy() {
               >
                 GitHub repository
               </Link>
-              {" "}or by creating an issue in the repository.
+              {" "}by creating an issue in the repository.
             </p>
           </CardContent>
         </Card>

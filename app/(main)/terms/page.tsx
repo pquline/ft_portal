@@ -63,17 +63,6 @@ export default function Terms() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">Service Description</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
-              ft_portal is a comprehensive analytics platform that provides visualization and analysis of student data from the 42 API. The service includes evaluation analytics, academic performance tracking, hall voice integration, and data visualization tools designed for the 42 community.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
             <CardTitle className="font-mono">Acceptable Use</CardTitle>
           </CardHeader>
           <CardContent>
@@ -89,27 +78,6 @@ export default function Terms() {
               <li>Not interfere with or disrupt the service or servers</li>
               <li>Not attempt to gain unauthorized access to any part of the service</li>
             </ul>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-mono">API Usage & Rate Limiting</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">
-              ft_portal integrates with the 42 API and GitHub API. You agree to:
-            </p>
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>Respect the rate limits and usage policies of both the 42 API and GitHub API</li>
-              <li>Not abuse or overload the APIs through excessive requests</li>
-              <li>Not attempt to scrape or collect data in bulk without authorization</li>
-              <li>Use the APIs in accordance with their respective terms of service</li>
-              <li>Accept that API availability and response times may vary</li>
-            </ul>
-            <p className="mt-4">
-              We implement rate limiting and request throttling to ensure fair usage and service stability for all users.
-            </p>
           </CardContent>
         </Card>
 
@@ -157,61 +125,6 @@ export default function Terms() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">Intellectual Property</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
-              ft_portal and its original content, features, and functionality are owned by the ft_portal team and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws. The service is provided as-is without any warranties regarding ownership or rights to the underlying data, which remains the property of 42 and respective data owners.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-mono">Service Availability</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
-              ft_portal is provided on an &quot;as is&quot; and &quot;as available&quot; basis. We do not guarantee uninterrupted or error-free service. The service may be temporarily unavailable due to maintenance, updates, or technical issues. We reserve the right to modify, suspend, or discontinue the service at any time with or without notice.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-mono">Limitation of Liability</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>
-              In no event shall ft_portal, its developers, or contributors be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your use of the service. We are not responsible for any misuse of the service, changes to the 42 API that may affect functionality, or any consequences of using the service.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-mono">Indemnification</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="">
-              You agree to defend, indemnify, and hold harmless ft_portal, its developers, and contributors from and against any claims, damages, obligations, losses, liabilities, costs, or debt arising from your use of the service or violation of these terms.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="font-mono">Governing Law</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="">
-              These terms shall be governed by and construed in accordance with the laws of the jurisdiction where the service is hosted, without regard to its conflict of law provisions. Any disputes arising from these terms or your use of the service shall be resolved through appropriate legal channels.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
             <CardTitle className="font-mono">Changes to Terms</CardTitle>
           </CardHeader>
           <CardContent>
@@ -236,7 +149,7 @@ export default function Terms() {
               >
                 GitHub repository
               </Link>
-              {" "}or by creating an issue in the repository.
+              {" "}by creating an issue in the repository.
             </p>
           </CardContent>
         </Card>
