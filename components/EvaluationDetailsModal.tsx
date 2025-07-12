@@ -119,12 +119,9 @@ export function EvaluationDetailsModal({
         </DialogHeader>
         <div className="space-y-4">
           {filteredEvaluations.length === 0 ? (
-            <div className="flex items-center justify-center py-8">
+            <div className="flex items-center justify-center py-4">
               <div className="text-center">
-                <p className="text-lg font-medium text-muted-foreground">No evaluations found</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  There are no evaluations that match the selected criteria.
-                </p>
+                <p>No evaluations found</p>
               </div>
             </div>
           ) : (
