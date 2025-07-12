@@ -83,28 +83,6 @@ export default function Terms() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">Data Usage & Privacy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">
-              When using <Link href="/" className="text-foreground font-mono">ft_portal</Link>, you agree to:
-            </p>
-            <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>Use the data only for legitimate educational or community purposes</li>
-              <li>Respect student privacy and confidentiality</li>
-              <li>Not use the data for harassment, discrimination, or any harmful purpose</li>
-              <li>Not share or distribute student data without proper authorization</li>
-              <li>Not use the data for commercial purposes without explicit permission</li>
-              <li>Comply with applicable data protection laws and regulations</li>
-            </ul>
-            <p className="mt-4">
-              All data accessed through ft_portal remains subject to 42&apos;s privacy policies and data protection regulations.
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
             <CardTitle className="font-mono">Account Security</CardTitle>
           </CardHeader>
           <CardContent>
