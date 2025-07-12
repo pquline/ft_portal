@@ -10,6 +10,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Use - ft_portal",
   description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
+  description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
   keywords: [
     "terms of use",
     "acceptable use",
@@ -21,9 +22,13 @@ export const metadata: Metadata = {
     "user guidelines",
     "API usage",
     "service agreement"
+    "user guidelines",
+    "API usage",
+    "service agreement"
   ],
   openGraph: {
     title: "Terms of Use - ft_portal",
+    description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
     description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
     url: "https://portal.pfischof.com/terms",
   },
@@ -121,6 +126,10 @@ export default function Terms() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>Use the data only for legitimate educational or community purposes</li>
               <li>Respect student privacy and confidentiality</li>
+              <li>Not use the data for harassment, discrimination, or any harmful purpose</li>
+              <li>Not share or distribute student data without proper authorization</li>
+              <li>Not use the data for commercial purposes without explicit permission</li>
+              <li>Comply with applicable data protection laws and regulations</li>
               <li>Not use the data for harassment, discrimination, or any harmful purpose</li>
               <li>Not share or distribute student data without proper authorization</li>
               <li>Not use the data for commercial purposes without explicit permission</li>

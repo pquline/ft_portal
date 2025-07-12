@@ -38,7 +38,7 @@ export default function About() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <div>
           <h2 className="text-2xl font-bold mb-2 font-mono">About ft_portal</h2>
-          <p className=" text-sm">
+          <p className="text-sm">
             A comprehensive analytics platform for visualizing student data from the 42 API
           </p>
         </div>
@@ -48,7 +48,7 @@ export default function About() {
             <CardTitle className="font-mono">What is ft_portal?</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="">
+            <p>
               <Link href="/" className="text-foreground font-mono">
                 ft_portal
               </Link>{" "}
@@ -66,28 +66,28 @@ export default function About() {
           <CardContent className="space-y-4">
             <div>
               <h3 className="mb-4 font-mono text-sm">🔐 Secure Authentication</h3>
-              <p className="">
+              <p>
                 Secure OAuth 2.0 integration with the 42 API, featuring JWT token management, middleware-based route protection, and secure cookie handling with httpOnly and sameSite policies.
               </p>
             </div>
 
             <div>
               <h3 className="mb-4 font-mono text-sm">📊 Comprehensive Evaluation Analytics</h3>
-              <p className="">
+              <p>
                 Advanced evaluation statistics including peer evaluation performance metrics, interactive quality metrics with feedback length distribution analysis, project-specific performance tracking, and flag distribution visualization (Ok, Outstanding, Failed).
               </p>
             </div>
 
             <div>
               <h3 className="mb-4 font-mono text-sm">🎓 Academic Performance Tracking</h3>
-              <p className="">
+              <p>
                 Detailed C Piscine exam analysis with comprehensive scoring breakdowns, performance evolution tracking with trend analysis, success rate calculations, and predictive insights for academic progression.
               </p>
             </div>
 
             <div>
               <h3 className="mb-4 font-mono text-sm">🎵 Hall Voice Integration</h3>
-              <p className="">
+              <p>
                 Seamless integration with the{" "}
                 <Link
                   className="text-foreground hover:underline font-mono"
@@ -103,7 +103,7 @@ export default function About() {
 
             <div>
               <h3 className="mb-4 font-mono text-sm">📱 Modern User Experience</h3>
-              <p className="">
+              <p>
                 Progressive Web App (PWA) capabilities, responsive design with Tailwind CSS, dark/light theme support, real-time data visualization with Chart.js and Recharts, and comprehensive error handling with Discord webhook integration for production monitoring.
               </p>
             </div>
@@ -119,21 +119,21 @@ export default function About() {
           <CardContent className="space-y-4">
             <div>
               <h3 className="mb-4 font-mono text-sm">1. Authentication</h3>
-              <p className="">
+              <p>
                 Click the &quot;Sign in&quot; button to authenticate with your 42 account using OAuth 2.0. Your session is managed securely using JWT tokens with automatic expiration handling and refresh capabilities.
               </p>
             </div>
 
             <div>
               <h3 className="mb-4 font-mono text-sm">2. Student Search</h3>
-              <p className="">
+              <p>
                 Enter any student&apos;s login to fetch comprehensive data from the 42 API. The platform retrieves real-time information including profile data, academic records, and project history.
               </p>
             </div>
 
             <div>
               <h3 className="mb-4 font-mono text-sm">3. Data Analysis & Visualization</h3>
-              <p className="">
+              <p>
                 The platform processes and visualizes data across multiple dimensions:
               </p>
               <ul className="list-disc list-inside mt-2 space-y-1">
@@ -156,7 +156,7 @@ export default function About() {
             <CardTitle className="font-mono">Technology Stack</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className=" mb-4">
+            <p className="mb-4">
               Built with modern web technologies for optimal performance and user experience:
             </p>
             <ul className="list-disc list-inside space-y-1">
@@ -175,7 +175,7 @@ export default function About() {
             <CardTitle className="font-mono">Privacy & Security</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="">
+            <p>
               <Link href="/" className="text-foreground font-mono">
                 ft_portal
               </Link>{" "}
@@ -189,7 +189,7 @@ export default function About() {
             <CardTitle className="font-mono">Development & Contributing</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="">
+            <p>
               ft_portal is an open-source project that welcomes contributions from the 42 community. The platform includes comprehensive development mode features with mock data for testing, detailed documentation, and a robust development workflow. Visit our{" "}
               <Link
                 className="text-foreground hover:underline font-mono"
