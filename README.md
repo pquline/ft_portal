@@ -28,7 +28,7 @@
 
 ## ✨ Features
 
-### 🔐 **Enterprise-Grade Authentication**
+### 🔐 **Authentication**
 - **Secure OAuth 2.0 Integration** with 42 API
 - **JWT Token Management** with automatic session handling
 - **Middleware-Based Route Protection** for enhanced security
@@ -36,7 +36,7 @@
 - **Discord Webhook Integration** for real-time error monitoring
 - **Secure Cookie Handling** with httpOnly and sameSite policies
 
-### 📊 **Advanced Analytics Dashboard**
+### 📊 **Analytics Dashboard**
 - **Real-Time Student Search** with instant data retrieval
 - **Comprehensive Evaluation Analytics**
   - Peer evaluation statistics and performance metrics
@@ -51,21 +51,6 @@
   - Audio playback with custom player interface
   - Sound categorization (in/out sounds)
   - GitHub API integration for seamless file access
-
-### 🎨 **Premium User Experience**
-- **Modern Design System** built with shadcn/ui components
-- **Adaptive Theme System** with dark/light mode support
-- **Responsive Architecture** optimized for all devices
-- **Interactive Components** with expandable cards and modal dialogs
-- **Professional Loading States** with comprehensive error handling
-- **Toast Notification System** for enhanced user feedback
-
-### ⚡ **Performance & SEO**
-- **Progressive Web App (PWA)** with offline capabilities
-- **Advanced SEO Optimization** with structured data markup
-- **Dynamic Sitemap Generation** for search engine visibility
-- **Next.js 15 with Turbopack** for lightning-fast development
-- **Image Optimization** with CDN support and lazy loading
 
 ---
 
