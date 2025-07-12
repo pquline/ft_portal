@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     "service terms",
     "user guidelines",
     "API usage",
-    "service agreement"
+    "service agreement",
     "user guidelines",
     "API usage",
     "service agreement"
