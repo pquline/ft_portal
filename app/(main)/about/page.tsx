@@ -59,59 +59,6 @@ export default function About() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono" id="features">
-              Key Features
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <h3 className="mb-4 font-mono text-sm">🔐 Secure Authentication</h3>
-              <p>
-                Secure OAuth 2.0 integration with the 42 API, featuring JWT token management, middleware-based route protection, and secure cookie handling with httpOnly and sameSite policies.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-4 font-mono text-sm">📊 Comprehensive Evaluation Analytics</h3>
-              <p>
-                Advanced evaluation statistics including peer evaluation performance metrics, interactive quality metrics with feedback length distribution analysis, project-specific performance tracking, and flag distribution visualization (Ok, Outstanding, Failed).
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-4 font-mono text-sm">🎓 Academic Performance Tracking</h3>
-              <p>
-                Detailed C Piscine exam analysis with comprehensive scoring breakdowns, performance evolution tracking with trend analysis, success rate calculations, and predictive insights for academic progression.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-4 font-mono text-sm">🎵 Hall Voice Integration</h3>
-              <p>
-                Seamless integration with the{" "}
-                <Link
-                  className="text-foreground hover:underline font-mono"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://github.com/42paris/hall-voice"
-                >
-                  hall-voice repository
-                </Link>
-                , featuring custom audio playback interface, sound categorization (in/out sounds), and GitHub API integration for seamless file access.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="mb-4 font-mono text-sm">📱 Modern User Experience</h3>
-              <p>
-                Progressive Web App (PWA) capabilities, responsive design with Tailwind CSS, dark/light theme support, real-time data visualization with Chart.js and Recharts, and comprehensive error handling with Discord webhook integration for production monitoring.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
             <CardTitle className="font-mono" id="how-it-works">
               How it Works
             </CardTitle>
