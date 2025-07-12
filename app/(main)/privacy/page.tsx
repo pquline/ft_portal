@@ -87,7 +87,7 @@ export default function Privacy() {
               <li><strong>Theme Preference:</strong> Your dark/light mode preference (if enabled)</li>
             </ul>
             <p className="text-muted-foreground mt-4">
-              This data is stored in your browser&apos;s secure cookies and is automatically removed when you sign out or when your session expires (24 hours). We use httpOnly and sameSite cookie policies for enhanced security.
+              This data is stored in your browser&apos;s secure cookies and is automatically removed when you sign out or when your session expires (2 hours). We use httpOnly and sameSite cookie policies for enhanced security.
             </p>
           </CardContent>
         </Card>
@@ -161,7 +161,7 @@ export default function Privacy() {
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>You manually sign out</li>
-              <li>Your session expires (24 hours)</li>
+              <li>Your session expires (2 hours)</li>
               <li>You clear your browser cookies</li>
               <li>You close your browser (depending on your browser settings)</li>
             </ul>
