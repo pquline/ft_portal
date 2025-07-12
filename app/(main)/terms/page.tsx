@@ -10,7 +10,6 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Terms of Use - ft_portal",
   description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
-  description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
   keywords: [
     "terms of use",
     "acceptable use",
@@ -28,7 +27,6 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Terms of Use - ft_portal",
-    description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
     description: "Rules and guidelines for using ft_portal. Learn about acceptable use, data usage policies, API limitations, and account security requirements.",
     url: "https://portal.pfischof.com/terms",
   },
