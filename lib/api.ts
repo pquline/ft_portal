@@ -414,7 +414,6 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
 
   studentProfile.projects_users.forEach(project => {
     if (allExamNames.includes(project.project.name) && project.final_mark !== null) {
-      console.log(`Found exam: ${project.project.name} with mark ${project.final_mark}`);
       examResults.push({
         name: project.project.name,
         mark: project.final_mark,
