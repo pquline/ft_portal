@@ -165,9 +165,9 @@ export default function Home() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">Search</CardTitle>
+            <CardTitle className="font-mono">Student Data Search</CardTitle>
             <CardDescription>
-              Enter a student login to view their data
+              Enter a student login to view comprehensive evaluation and performance data
             </CardDescription>
           </CardHeader>
           <CardContent>
