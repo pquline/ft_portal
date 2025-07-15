@@ -123,7 +123,7 @@ export function EvaluationDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="w-[95vw] max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-mono">
             {getDisplayTitle()}
@@ -140,7 +140,7 @@ export function EvaluationDetailsModal({
             filteredEvaluations.map((evaluation) => (
               <Card key={evaluation.id} className="dark:bg-background/30">
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <CardTitle className="text-lg">
                       {evaluation.correcteds?.map((c, index) => (
                         <span key={c.login}>
@@ -165,7 +165,7 @@ export function EvaluationDetailsModal({
                         })}
                       </div>
                     </CardTitle>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <Badge className={getFlagColor(evaluation.flag?.name || "unknown_flag")}> {evaluation.flag?.name || "unknown_flag"} </Badge>
                       {evaluation.final_mark !== null && (
                         <Badge variant="outline" className="bg-background/50"> {evaluation.final_mark}/100 </Badge>
@@ -189,12 +189,12 @@ export function EvaluationDetailsModal({
                         {evaluation.feedbacks.map((feedback) => (
                           <div
                             key={feedback.id}
-                            className="flex items-center justify-between bg-background/50 p-2 rounded-md"
+                            className="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-background/50 p-2 rounded-md gap-1"
                           >
-                            <span className="text-sm">
+                            <span className="text-sm flex-1">
                               {feedback.comment || "N/A"}
                             </span>
-                            <span className={`text-sm font-medium ${getRatingColor(feedback.rating)}`}>
+                            <span className={`text-sm font-medium ${getRatingColor(feedback.rating)} shrink-0`}>
                               {feedback.rating}/5
                             </span>
                           </div>
