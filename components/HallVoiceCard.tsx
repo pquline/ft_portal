@@ -22,8 +22,8 @@ export function HallVoiceCard({ sounds }: HallVoiceCardProps) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
         <div className="space-y-2">
-          <CardTitle className="font-mono">Hall Voice</CardTitle>
-          <CardDescription>Student&apos;s hall voice sounds</CardDescription>
+          <CardTitle className="font-mono">Hall Voice Sounds</CardTitle>
+          <CardDescription>Student&apos;s hall voice audio recordings and sounds</CardDescription>
         </div>
         <Button
           variant="outline"

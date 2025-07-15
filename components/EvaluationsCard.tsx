@@ -128,9 +128,9 @@ export function EvaluationsCard({
     <Card className="">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
         <div className="space-y-2">
-          <CardTitle className="font-mono">Evaluations</CardTitle>
+          <CardTitle className="font-mono">Evaluation Statistics</CardTitle>
           <CardDescription>
-            Detailed statistics about student evaluations as a corrector
+            Comprehensive statistics and analysis of student evaluations as a corrector
           </CardDescription>
         </div>
         <Button
@@ -192,7 +192,7 @@ export function EvaluationsCard({
 
           <Card className="flex flex-col dark:bg-background/30">
             <CardHeader className="items-center pb-0">
-              <CardTitle className="font-mono">Flag Distribution</CardTitle>
+              <CardTitle className="font-mono">Evaluation Flag Distribution</CardTitle>
             </CardHeader>
             <CardContent className="flex-1 pb-0">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -230,7 +230,7 @@ export function EvaluationsCard({
 
           <Card className="dark:bg-background/30">
             <CardHeader className="pb-2">
-              <CardTitle className="font-mono">Project Distribution</CardTitle>
+              <CardTitle className="font-mono">Project Evaluation Distribution</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>

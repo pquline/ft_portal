@@ -32,10 +32,10 @@ export function AcademicPerformanceCard({ stats }: AcademicPerformanceCardProps)
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-0">
         <div className="space-y-2">
           <CardTitle className="font-mono flex items-center gap-2">
-            Academic Performance
+            Academic Performance Overview
           </CardTitle>
           <CardDescription>
-            Student performance across different academic assessments and evaluations
+            Comprehensive analysis of student performance across academic assessments and evaluations
           </CardDescription>
         </div>
         <Button

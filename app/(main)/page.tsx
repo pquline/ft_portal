@@ -68,7 +68,6 @@ export default function Home() {
 
   useEffect(() => {
     const verifySession = async () => {
-      // Set mock access token in development
       if (process.env.NODE_ENV !== 'production') {
         setAccessToken('dev_mock_token');
         return;
@@ -162,12 +161,12 @@ export default function Home() {
       <Head>
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </Head>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="font-mono">Search</CardTitle>
+            <CardTitle className="font-mono">Student Data Search</CardTitle>
             <CardDescription>
-              Enter a student login to view their data
+              Enter a student login to view comprehensive evaluation and performance data
             </CardDescription>
           </CardHeader>
           <CardContent>
