@@ -105,6 +105,18 @@ export function EvaluationDetailsModal({
     } else if (range.startsWith("project-")) {
       const project = range.replace("project-", "");
       return `Evaluations for ${project} (${filteredEvaluations.length} evaluations)`;
+    } else if (range === "Writer's soul (180+)") {
+      return `Writer's Soul Evaluations - 180+ Characters (${filteredEvaluations.length} evaluations)`;
+    } else if (range === "0-50") {
+      return `Short Evaluations - 0-50 Characters (${filteredEvaluations.length} evaluations)`;
+    } else if (range === "51-100") {
+      return `Brief Evaluations - 51-100 Characters (${filteredEvaluations.length} evaluations)`;
+    } else if (range === "101-200") {
+      return `Standard Evaluations - 101-200 Characters (${filteredEvaluations.length} evaluations)`;
+    } else if (range === "201-500") {
+      return `Detailed Evaluations - 201-500 Characters (${filteredEvaluations.length} evaluations)`;
+    } else if (range === "500+") {
+      return `Comprehensive Evaluations - 500+ Characters (${filteredEvaluations.length} evaluations)`;
     }
     return `Evaluations - ${range} (${filteredEvaluations.length} evaluations)`;
   };
