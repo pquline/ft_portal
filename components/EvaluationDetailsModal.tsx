@@ -123,7 +123,7 @@ export function EvaluationDetailsModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="w-[90vw] max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-4xl xl:max-w-6xl max-h-[80vh] overflow-y-auto rounded-lg mx-auto">
         <DialogHeader>
           <DialogTitle className="font-mono">
             {getDisplayTitle()}
