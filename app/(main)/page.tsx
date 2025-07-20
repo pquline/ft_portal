@@ -200,25 +200,6 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {/* Loading State */}
-        {isLoadingStats && (
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center justify-center py-8 space-y-4">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
-                <div className="text-center space-y-2">
-                  <p className="text-lg font-medium text-foreground">
-                    Loading student data...
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Fetching evaluations and statistics for {login}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
         {stats && evaluationsData.length > 0 && (
           <EvaluationsCard stats={stats} evaluationsData={evaluationsData} />
         )}
