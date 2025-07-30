@@ -105,6 +105,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="ft_portal" />
+        <script defer src="https://umami.pfischof.com/script.js" data-website-id="717367b7-9389-4606-bb01-be4e2270b376"></script>
       </head>
       <body className={`${inter.className} ${firaCode.variable} bg-background dark:bg-gradient-to-t dark:from-primary/5 dark:to-primary/10`}>
         <Providers>
