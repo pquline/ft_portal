@@ -103,9 +103,10 @@ export default function Privacy() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li><strong>42 API:</strong> Official 42 API for student data, evaluations, and academic records</li>
               <li><strong>GitHub API:</strong> For accessing hall voice sound files from the 42paris/hall-voice repository</li>
+              <li><strong>Umami Analytics:</strong> Privacy-focused analytics service for understanding platform usage</li>
             </ul>
             <p className="mt-4">
-              <strong>No Analytics or Tracking:</strong> We do not use any third-party analytics, tracking, or advertising services. Your data is never shared with any third parties for marketing or commercial purposes.
+              <strong>Analytics:</strong> We use Umami, a privacy-focused analytics service, to understand how our platform is used. Umami collects anonymous usage data such as page views and referrers, but does not track individual users or store personal information. Your data is never shared with any third parties for marketing or commercial purposes.
             </p>
           </CardContent>
         </Card>
