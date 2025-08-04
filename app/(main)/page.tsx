@@ -166,7 +166,7 @@ export default function Home() {
         performSearch(normalizedQueryLogin);
       }
     }
-  }, [searchParams, accessToken, login, performSearch]);
+  }, [searchParams, accessToken, performSearch]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
