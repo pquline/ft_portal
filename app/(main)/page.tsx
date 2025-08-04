@@ -25,6 +25,7 @@ import {
     type CPiscineExamStats,
 } from "@/lib/api";
 import Head from "next/head";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -38,6 +39,7 @@ export default function Home() {
     useState<HallVoiceSounds | null>(null);
   const [cPiscineStats, setCPiscineStats] = useState<CPiscineExamStats | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
   // Structured data for SEO
   const structuredData = {
@@ -89,6 +91,17 @@ export default function Home() {
 
     verifySession();
   }, []);
+
+  useEffect(() => {
+    const loginFromQuery = searchParams.get("login");
+    if (loginFromQuery && loginFromQuery.trim() && login !== loginFromQuery) {
+      setLogin(loginFromQuery.toLowerCase());
+      const syntheticEvent = {
+        preventDefault: () => {},
+      } as React.FormEvent;
+      handleSearch(syntheticEvent);
+    }
+  }, [searchParams, accessToken]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
