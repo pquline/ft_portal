@@ -224,16 +224,6 @@ export default function Home() {
                   "Load Data"
                 )}
               </Button>
-              {login && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={clearSearch}
-                  disabled={isLoadingStats}
-                >
-                  Clear
-                </Button>
-              )}
             </form>
             {error && (
               <div className="mt-4 p-4 bg-red-50/80 backdrop-blur-sm text-red-700 rounded-md">
