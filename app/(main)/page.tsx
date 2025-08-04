@@ -108,6 +108,7 @@ export default function Home() {
       const studentData = await searchStudent(searchLogin, accessToken || 'dev_mock_token');
       if (!studentData) {
         toast.error("Student not found");
+        setIsLoadingStats(false);
         return;
       }
       const evaluations = await getEvaluations(studentData.id, accessToken || 'dev_mock_token');
@@ -117,12 +118,14 @@ export default function Home() {
         evaluations.length === 0
       ) {
         toast.error("No evaluations found for this student");
+        setIsLoadingStats(false);
         return;
       }
 
       const validEvaluations = filterValidEvaluations(evaluations);
       if (validEvaluations.length === 0) {
         toast.error("No valid evaluations found for this student");
+        setIsLoadingStats(false);
         return;
       }
 
