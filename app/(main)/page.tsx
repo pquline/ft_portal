@@ -176,19 +176,6 @@ export default function Home() {
     await performSearch(login);
   };
 
-  const clearSearch = () => {
-    setLogin("");
-    setStats(null);
-    setEvaluationsData([]);
-    setHallVoiceSounds(null);
-    setCPiscineStats(null);
-    setError(null);
-
-    const url = new URL(window.location.href);
-    url.searchParams.delete('login');
-    router.push(url.pathname, { scroll: false });
-  };
-
   return (
     <main className="flex-1">
       <Head>
