@@ -25,8 +25,8 @@ import {
     type CPiscineExamStats,
 } from "@/lib/api";
 import Head from "next/head";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Home() {
@@ -40,8 +40,8 @@ export default function Home() {
   const [cPiscineStats, setCPiscineStats] = useState<CPiscineExamStats | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Structured data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -92,21 +92,7 @@ export default function Home() {
     verifySession();
   }, []);
 
-  useEffect(() => {
-    const loginFromQuery = searchParams.get("login");
-    if (loginFromQuery && loginFromQuery.trim() && login !== loginFromQuery) {
-      setLogin(loginFromQuery.toLowerCase());
-      const syntheticEvent = {
-        preventDefault: () => {},
-      } as React.FormEvent;
-      handleSearch(syntheticEvent);
-    }
-  }, [searchParams, accessToken]);
-
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!login.trim()) return;
-
+  const performSearch = useCallback(async (searchLogin: string) => {
     setIsLoadingStats(true);
     setError(null);
     setStats(null);
@@ -119,8 +105,7 @@ export default function Home() {
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
-      // In development mode, the API routes will return mock data
-      const studentData = await searchStudent(login, accessToken || 'dev_mock_token');
+      const studentData = await searchStudent(searchLogin, accessToken || 'dev_mock_token');
       if (!studentData) {
         toast.error("Student not found");
         return;
@@ -142,7 +127,7 @@ export default function Home() {
       }
 
       const stats = calculateEvaluationStats(evaluations);
-      const hallVoice = await checkHallVoice(login);
+      const hallVoice = await checkHallVoice(searchLogin);
       const cPiscineStats = calculateCPiscineExamStats(studentData);
 
       setStats(stats);
@@ -167,6 +152,41 @@ export default function Home() {
     } finally {
       setIsLoadingStats(false);
     }
+  }, [accessToken]);
+
+  useEffect(() => {
+    const loginFromQuery = searchParams.get("login");
+    if (loginFromQuery && loginFromQuery.trim() && accessToken) {
+      const normalizedQueryLogin = loginFromQuery.toLowerCase();
+      if (login !== normalizedQueryLogin) {
+        setLogin(normalizedQueryLogin);
+        performSearch(normalizedQueryLogin);
+      }
+    }
+  }, [searchParams, accessToken, login, performSearch]);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!login.trim()) return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('login', login);
+    router.push(url.pathname + url.search, { scroll: false });
+
+    await performSearch(login);
+  };
+
+  const clearSearch = () => {
+    setLogin("");
+    setStats(null);
+    setEvaluationsData([]);
+    setHallVoiceSounds(null);
+    setCPiscineStats(null);
+    setError(null);
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete('login');
+    router.push(url.pathname, { scroll: false });
   };
 
   return (
@@ -204,6 +224,16 @@ export default function Home() {
                   "Load Data"
                 )}
               </Button>
+              {login && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={clearSearch}
+                  disabled={isLoadingStats}
+                >
+                  Clear
+                </Button>
+              )}
             </form>
             {error && (
               <div className="mt-4 p-4 bg-red-50/80 backdrop-blur-sm text-red-700 rounded-md">
