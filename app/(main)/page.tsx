@@ -3,6 +3,7 @@
 import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
 import { AcademicPerformanceCard } from "@/components/AcademicPerformanceCard";
+import { ComparisonCard } from "@/components/ComparisonCard";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -23,6 +24,7 @@ import {
     type EvaluationStats,
     type HallVoiceSounds,
     type CPiscineExamStats,
+    type StudentProfile,
 } from "@/lib/api";
 import Head from "next/head";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -32,6 +34,7 @@ import { toast } from "sonner";
 export default function Home() {
   const [login, setLogin] = useState("");
   const [isLoadingStats, setIsLoadingStats] = useState(false);
+  const [isLoadingComparison, setIsLoadingComparison] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<EvaluationStats | null>(null);
   const [evaluationsData, setEvaluationsData] = useState<Evaluation[]>([]);
@@ -39,6 +42,17 @@ export default function Home() {
     useState<HallVoiceSounds | null>(null);
   const [cPiscineStats, setCPiscineStats] = useState<CPiscineExamStats | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  
+  // Comparison state
+  const [user1Data, setUser1Data] = useState<{
+    profile: StudentProfile | null;
+    stats: EvaluationStats | null;
+  } | null>(null);
+  const [user2Data, setUser2Data] = useState<{
+    profile: StudentProfile | null;
+    stats: EvaluationStats | null;
+  } | null>(null);
+  
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -157,6 +171,82 @@ export default function Home() {
     }
   }, [accessToken]);
 
+  const performComparison = useCallback(async (login1: string, login2: string) => {
+    setIsLoadingComparison(true);
+    setError(null);
+    setUser1Data(null);
+    setUser2Data(null);
+
+    try {
+      if (process.env.NODE_ENV !== 'production') {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+
+      // Fetch data for both users
+      const [studentData1, studentData2] = await Promise.all([
+        searchStudent(login1, accessToken || 'dev_mock_token'),
+        searchStudent(login2, accessToken || 'dev_mock_token')
+      ]);
+
+      if (!studentData1 || !studentData2) {
+        toast.error("One or both students not found");
+        setIsLoadingComparison(false);
+        return;
+      }
+
+      // Fetch evaluations for both users
+      const [evaluations1, evaluations2] = await Promise.all([
+        getEvaluations(studentData1.id, accessToken || 'dev_mock_token'),
+        getEvaluations(studentData2.id, accessToken || 'dev_mock_token')
+      ]);
+
+      if (!evaluations1 || !evaluations2 || !Array.isArray(evaluations1) || !Array.isArray(evaluations2)) {
+        toast.error("No evaluations found for one or both students");
+        setIsLoadingComparison(false);
+        return;
+      }
+
+      const validEvaluations1 = filterValidEvaluations(evaluations1);
+      const validEvaluations2 = filterValidEvaluations(evaluations2);
+
+      if (validEvaluations1.length === 0 || validEvaluations2.length === 0) {
+        toast.error("No valid evaluations found for one or both students");
+        setIsLoadingComparison(false);
+        return;
+      }
+
+      const stats1 = calculateEvaluationStats(evaluations1);
+      const stats2 = calculateEvaluationStats(evaluations2);
+
+      setUser1Data({
+        profile: studentData1,
+        stats: stats1
+      });
+      setUser2Data({
+        profile: studentData2,
+        stats: stats2
+      });
+
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch comparison data";
+
+      if (errorMessage.includes("access token expired") || errorMessage.includes("401")) {
+        document.cookie = 'session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/auth';
+        return;
+      }
+
+      setError(errorMessage);
+      toast.error("Failed to fetch comparison data", {
+        description: errorMessage,
+      });
+    } finally {
+      setIsLoadingComparison(false);
+    }
+  }, [accessToken]);
+
   useEffect(() => {
     const loginFromQuery = searchParams.get("login");
     if (loginFromQuery && loginFromQuery.trim() && accessToken) {
@@ -222,6 +312,13 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
+
+        <ComparisonCard
+          onCompare={performComparison}
+          isLoading={isLoadingComparison}
+          user1Data={user1Data}
+          user2Data={user2Data}
+        />
 
         {stats && evaluationsData.length > 0 && (
           <EvaluationsCard stats={stats} evaluationsData={evaluationsData} />
