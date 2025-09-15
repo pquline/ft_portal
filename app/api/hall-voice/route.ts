@@ -21,8 +21,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Fetch hall voice directory listing from GitHub API
-    const response = await fetch(`https://api.github.com/repos/42paris/hall-voice/contents/mp3/${login}`, {
+        const response = await fetch(`https://api.github.com/repos/42paris/hall-voice/contents/mp3/${login}`, {
       headers: {
         'Accept': 'application/vnd.github.v3+json',
         'User-Agent': 'ft_portal/1.0'
@@ -53,8 +52,7 @@ export async function GET(request: NextRequest) {
     const inSounds: string[] = [];
     const outSounds: string[] = [];
 
-    // Check for 'in' directory
-    const inDir = directories.find((dir: GitHubFile) => dir.type === 'dir' && dir.name === 'in');
+        const inDir = directories.find((dir: GitHubFile) => dir.type === 'dir' && dir.name === 'in');
     if (inDir) {
       const inResponse = await fetch(`https://api.github.com/repos/42paris/hall-voice/contents/mp3/${login}/in`, {
         headers: {
@@ -74,8 +72,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Check for 'out' directory
-    const outDir = directories.find((dir: GitHubFile) => dir.type === 'dir' && dir.name === 'out');
+        const outDir = directories.find((dir: GitHubFile) => dir.type === 'dir' && dir.name === 'out');
     if (outDir) {
       const outResponse = await fetch(`https://api.github.com/repos/42paris/hall-voice/contents/mp3/${login}/out`, {
         headers: {

@@ -122,8 +122,7 @@ export default function Home() {
     setEvaluationsData([]);
     setHallVoiceSounds(null);
     setCPiscineStats(null);
-    // Clear comparison state when performing new search
-    setUser1Data(null);
+        setUser1Data(null);
     setUser2Data(null);
     setShowCompareModal(false);
 
@@ -195,8 +194,7 @@ export default function Home() {
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
 
-      // Fetch data for both users
-      const [studentData1, studentData2] = await Promise.all([
+            const [studentData1, studentData2] = await Promise.all([
         searchStudent(login1, accessToken || 'dev_mock_token'),
         searchStudent(login2, accessToken || 'dev_mock_token')
       ]);
@@ -207,8 +205,7 @@ export default function Home() {
         return;
       }
 
-      // Fetch evaluations for both users
-      const [evaluations1, evaluations2] = await Promise.all([
+            const [evaluations1, evaluations2] = await Promise.all([
         getEvaluations(studentData1.id, accessToken || 'dev_mock_token'),
         getEvaluations(studentData2.id, accessToken || 'dev_mock_token')
       ]);
@@ -269,8 +266,7 @@ export default function Home() {
   const startComparison = () => {
     setShowCompareModal(true);
     setCompareLogin("");
-    // Clear any existing comparison data
-    setUser1Data(null);
+        setUser1Data(null);
     setUser2Data(null);
   };
 
@@ -508,13 +504,11 @@ export default function Home() {
                   <CardContent>
                     <div className="space-y-4">
                       {(() => {
-                        // Get common projects between both users
-                        const user1Projects = Object.keys(user1Data.stats.projectStats);
+                                                const user1Projects = Object.keys(user1Data.stats.projectStats);
                         const user2Projects = Object.keys(user2Data.stats.projectStats);
                         const commonProjects = user1Projects.filter(project => user2Projects.includes(project));
 
-                        // Sort by total evaluations (most evaluated projects first)
-                        const sortedProjects = commonProjects
+                                                const sortedProjects = commonProjects
                           .map(project => ({
                             name: project,
                             user1: user1Data.stats.projectStats[project],
@@ -523,8 +517,7 @@ export default function Home() {
                           }))
                           .filter(p => p.totalEvals > 0)
                           .sort((a, b) => b.totalEvals - a.totalEvals)
-                          .slice(0, 8); // Show top 8 projects
-
+                          .slice(0, 8);
                         if (sortedProjects.length === 0) {
                           return <div className="text-center text-muted-foreground py-8">No common projects found</div>;
                         }
