@@ -415,9 +415,6 @@ export default function Home() {
                       <CardTitle className="text-lg font-mono">
                         {user1Data.profile?.login || login}
                       </CardTitle>
-                      <CardDescription>
-                        {user1Data.profile?.first_name} {user1Data.profile?.last_name}
-                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold text-primary">
@@ -432,9 +429,6 @@ export default function Home() {
                       <CardTitle className="text-lg font-mono">
                         {user2Data.profile?.login || compareLogin}
                       </CardTitle>
-                      <CardDescription>
-                        {user2Data.profile?.first_name} {user2Data.profile?.last_name}
-                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold text-primary">
