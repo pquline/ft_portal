@@ -5,35 +5,35 @@ import { EvaluationsCard } from "@/components/EvaluationsCard";
 import { HallVoiceCard } from "@/components/HallVoiceCard";
 import { Button } from "@/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 import {
-	Evaluation,
-	calculateCPiscineExamStats,
-	calculateEvaluationStats,
-	checkHallVoice,
-	filterValidEvaluations,
-	getEvaluations,
-	searchStudent,
-	type CPiscineExamStats,
-	type EvaluationStats,
-	type HallVoiceSounds,
-	type StudentProfile,
+    Evaluation,
+    calculateCPiscineExamStats,
+    calculateEvaluationStats,
+    checkHallVoice,
+    filterValidEvaluations,
+    getEvaluations,
+    searchStudent,
+    type CPiscineExamStats,
+    type EvaluationStats,
+    type HallVoiceSounds,
+    type StudentProfile,
 } from "@/lib/api";
-import { Download } from "lucide-react";
+import { X } from "lucide-react";
 import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -41,8 +41,8 @@ import { toast } from "sonner";
 
 export default function Home() {
   const [login, setLogin] = useState("");
+  const [showCompareModal, setShowCompareModal] = useState(false);
   const [compareLogin, setCompareLogin] = useState("");
-  const [isComparing, setIsComparing] = useState(false);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
   const [isLoadingComparison, setIsLoadingComparison] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -122,6 +122,10 @@ export default function Home() {
     setEvaluationsData([]);
     setHallVoiceSounds(null);
     setCPiscineStats(null);
+    // Clear comparison state when performing new search
+    setUser1Data(null);
+    setUser2Data(null);
+    setShowCompareModal(false);
 
     try {
       if (process.env.NODE_ENV !== 'production') {
@@ -256,45 +260,21 @@ export default function Home() {
     }
   }, [accessToken]);
 
-  const handleCompare = async () => {
+  const handleCompareSubmit = async () => {
     if (!login.trim() || !compareLogin.trim()) return;
     await performComparison(login.trim(), compareLogin.trim());
+    setShowCompareModal(false);
   };
 
-  const formatValue = (value: number, decimals: number = 2) => {
-    return value % 1 === 0 ? value.toFixed(0) : value.toFixed(decimals);
+  const startComparison = () => {
+    setShowCompareModal(true);
+    setCompareLogin("");
+    // Clear any existing comparison data
+    setUser1Data(null);
+    setUser2Data(null);
   };
 
-  const getDifferenceColor = (value1: number, value2: number) => {
-    if (value1 === value2) return "text-green-600";
-    if (value1 > value2) return "text-blue-600";
-    return "text-red-600";
-  };
 
-  const getDifferenceIcon = (value1: number, value2: number) => {
-    if (value1 === value2) return "=";
-    if (value1 > value2) return "↑";
-    return "↓";
-  };
-
-  const exportComparison = () => {
-    if (!user1Data?.stats || !user2Data?.stats) return;
-
-    const csvContent = [
-      "Metric,User 1,User 2,Difference",
-      `Total Evaluations,${user1Data.stats.totalEvaluations},${user2Data.stats.totalEvaluations},${user1Data.stats.totalEvaluations - user2Data.stats.totalEvaluations}`,
-      `Total Feedback,${user1Data.stats.totalFeedback},${user2Data.stats.totalFeedback},${user1Data.stats.totalFeedback - user2Data.stats.totalFeedback}`,
-      `Average Rating,${formatValue(user1Data.stats.averageRating)},${formatValue(user2Data.stats.averageRating)},${formatValue(user1Data.stats.averageRating - user2Data.stats.averageRating)}`,
-    ].join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `comparison-${login}-${compareLogin}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
-  };
 
   useEffect(() => {
     const loginFromQuery = searchParams.get("login");
@@ -305,7 +285,7 @@ export default function Home() {
         performSearch(normalizedQueryLogin);
       }
     }
-  }, [searchParams, accessToken, performSearch]);
+  }, [searchParams, accessToken, performSearch, login]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -354,54 +334,62 @@ export default function Home() {
                     "Load Data"
                   )}
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsComparing(!isComparing)}
-                  disabled={isLoadingStats || isLoadingComparison}
-                >
-                  {isComparing ? "Cancel Compare" : "Compare"}
-                </Button>
               </div>
 
-              {isComparing && (
-                <div className="flex gap-4 items-end">
-                  <div className="flex-1">
-                    <label htmlFor="compareLogin" className="text-sm font-medium mb-2 block">
-                      Compare with
-                    </label>
-                    <Input
-                      id="compareLogin"
-                      value={compareLogin}
-                      onChange={(e) =>
-                        setCompareLogin(e.target.value.toLowerCase().replace(/\s+/g, ""))
-                      }
-                      placeholder="Enter second student login"
-                      className="bg-background/50 backdrop-blur-sm"
-                    />
-                  </div>
-                  <Button
-                    type="button"
-                    onClick={() => handleCompare()}
-                    disabled={isLoadingComparison || !login || !compareLogin}
-                  >
-                    {isLoadingComparison ? (
-                      <div className="flex items-center gap-2">
-                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
-                        Comparing...
-                      </div>
-                    ) : (
-                      "Compare"
-                    )}
-                  </Button>
-                </div>
-              )}
             </form>
 
             {error && (
               <div className="mt-4 p-4 bg-red-50/80 backdrop-blur-sm text-red-700 rounded-md">
                 {error}
               </div>
+            )}
+
+            {/* Comparison Modal */}
+            {showCompareModal && (
+              <>
+              <div className="mt-4 p-4 border rounded-lg bg-white dark:bg-background/30 border-foreground/10 dark:border-foreground/20">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="font-semibold font-mono">Compare with another user</h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowCompareModal(false)}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                <div className="flex gap-4">
+                  <Input
+                    value={compareLogin}
+                    onChange={(e) =>
+                      setCompareLogin(e.target.value.toLowerCase().replace(/\s+/g, ""))
+                    }
+                    placeholder="Enter student login to compare with"
+                    className="bg-background/50 backdrop-blur-sm"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleCompareSubmit();
+                      }
+                    }}
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={handleCompareSubmit}
+                    disabled={isLoadingComparison || !compareLogin.trim()}
+                  >
+                    {isLoadingComparison ? (
+                      <div className="flex items-center gap-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent" />
+                        Loading...
+                      </div>
+                    ) : (
+                      "Compare"
+                    )}
+                  </Button>
+                  </div>
+                </div>
+              </>
             )}
 
             {/* Comparison Results */}
@@ -412,16 +400,20 @@ export default function Home() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={exportComparison}
+                    onClick={() => {
+                      setUser1Data(null);
+                      setUser2Data(null);
+                      setShowCompareModal(false);
+                    }}
                     className="flex items-center gap-2"
                   >
-                    <Download className="h-4 w-4" />
-                    Export CSV
+                    <X className="h-4 w-4" />
+                    Close Comparison
                   </Button>
                 </div>
 
+                {/* User Overview Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* User 1 Column */}
                   <Card className="dark:bg-background/30">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg font-mono">
@@ -431,31 +423,14 @@ export default function Home() {
                         {user1Data.profile?.first_name} {user1Data.profile?.last_name}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 gap-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Total Evaluations</span>
-                          <span className="font-mono font-semibold">
-                            {user1Data.stats.totalEvaluations}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Total Feedback</span>
-                          <span className="font-mono font-semibold">
-                            {user1Data.stats.totalFeedback}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Average Rating</span>
-                          <span className="font-mono font-semibold">
-                            {formatValue(user1Data.stats.averageRating)}/5
-                          </span>
-                        </div>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-primary">
+                        {user1Data.stats.totalEvaluations}
                       </div>
+                      <div className="text-sm text-muted-foreground">evaluations completed</div>
                     </CardContent>
                   </Card>
 
-                  {/* User 2 Column */}
                   <Card className="dark:bg-background/30">
                     <CardHeader className="pb-3">
                       <CardTitle className="text-lg font-mono">
@@ -465,73 +440,192 @@ export default function Home() {
                         {user2Data.profile?.first_name} {user2Data.profile?.last_name}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="grid grid-cols-1 gap-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Total Evaluations</span>
-                          <span className="font-mono font-semibold">
-                            {user2Data.stats.totalEvaluations}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Total Feedback</span>
-                          <span className="font-mono font-semibold">
-                            {user2Data.stats.totalFeedback}
-                          </span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm text-muted-foreground">Average Rating</span>
-                          <span className="font-mono font-semibold">
-                            {formatValue(user2Data.stats.averageRating)}/5
-                          </span>
-                        </div>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-primary">
+                        {user2Data.stats.totalEvaluations}
                       </div>
+                      <div className="text-sm text-muted-foreground">evaluations completed</div>
                     </CardContent>
                   </Card>
                 </div>
 
-                {/* Comparison Table */}
+                {/* Flag Distribution Comparison */}
                 <Card className="dark:bg-background/30">
                   <CardHeader>
-                    <CardTitle className="font-mono">Detailed Comparison</CardTitle>
+                    <CardTitle className="font-mono">Evaluation Flag Distribution</CardTitle>
+                    <CardDescription>
+                      Compare how each user distributes evaluation outcomes
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>Metric</TableHead>
-                          <TableHead className="text-center">{user1Data.profile?.login || login}</TableHead>
-                          <TableHead className="text-center">{user2Data.profile?.login || compareLogin}</TableHead>
-                          <TableHead className="text-center">Difference</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell className="font-medium">Total Evaluations</TableCell>
-                          <TableCell className="text-center font-mono">{user1Data.stats.totalEvaluations}</TableCell>
-                          <TableCell className="text-center font-mono">{user2Data.stats.totalEvaluations}</TableCell>
-                          <TableCell className={`text-center font-mono ${getDifferenceColor(user1Data.stats.totalEvaluations, user2Data.stats.totalEvaluations)}`}>
-                            {getDifferenceIcon(user1Data.stats.totalEvaluations, user2Data.stats.totalEvaluations)} {Math.abs(user1Data.stats.totalEvaluations - user2Data.stats.totalEvaluations)}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell className="font-medium">Total Feedback</TableCell>
-                          <TableCell className="text-center font-mono">{user1Data.stats.totalFeedback}</TableCell>
-                          <TableCell className="text-center font-mono">{user2Data.stats.totalFeedback}</TableCell>
-                          <TableCell className={`text-center font-mono ${getDifferenceColor(user1Data.stats.totalFeedback, user2Data.stats.totalFeedback)}`}>
-                            {getDifferenceIcon(user1Data.stats.totalFeedback, user2Data.stats.totalFeedback)} {Math.abs(user1Data.stats.totalFeedback - user2Data.stats.totalFeedback)}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell className="font-medium">Average Rating</TableCell>
-                          <TableCell className="text-center font-mono">{formatValue(user1Data.stats.averageRating)}/5</TableCell>
-                          <TableCell className="text-center font-mono">{formatValue(user2Data.stats.averageRating)}/5</TableCell>
-                          <TableCell className={`text-center font-mono ${getDifferenceColor(user1Data.stats.averageRating, user2Data.stats.averageRating)}`}>
-                            {getDifferenceIcon(user1Data.stats.averageRating, user2Data.stats.averageRating)} {formatValue(Math.abs(user1Data.stats.averageRating - user2Data.stats.averageRating))}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      {[user1Data, user2Data].map((userData, index) => {
+                        const totalFlags = Object.values(userData.stats.flagStats).reduce((acc, count) => acc + count, 0);
+                        const username = userData.profile?.login || (index === 0 ? login : compareLogin);
+
+                        return (
+                          <div key={index} className="space-y-4">
+                            <h4 className="font-semibold font-mono text-center">{username}</h4>
+                            <div className="grid grid-cols-1 gap-3">
+                              {Object.entries(userData.stats.flagStats).map(([flag, count]) => {
+                                const percentage = totalFlags > 0 ? (count / totalFlags * 100) : 0;
+                                const flagColor = flag === "Ok" ? "oklch(0.723 0.219 149.579)" :
+                                                 flag === "Outstanding project" ? "oklch(0.541 0.281 293.009)" :
+                                                 "hsl(var(--chart-1))";
+
+                                return (
+                                  <div key={flag} className="flex items-center justify-between p-3 rounded-lg bg-background/50">
+                                    <div className="flex items-center gap-2">
+                                      <div
+                                        className="w-3 h-3 rounded-full"
+                                        style={{ backgroundColor: flagColor }}
+                                      />
+                                      <span className="text-sm font-medium">{flag}</span>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="font-bold">{count}</div>
+                                      <div className="text-xs text-muted-foreground">{percentage.toFixed(1)}%</div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Project Expertise Comparison */}
+                <Card className="dark:bg-background/30">
+                  <CardHeader>
+                    <CardTitle className="font-mono">Project Expertise Comparison</CardTitle>
+                    <CardDescription>
+                      Compare average evaluation performance across different projects
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {(() => {
+                        // Get common projects between both users
+                        const user1Projects = Object.keys(user1Data.stats.projectStats);
+                        const user2Projects = Object.keys(user2Data.stats.projectStats);
+                        const commonProjects = user1Projects.filter(project => user2Projects.includes(project));
+
+                        // Sort by total evaluations (most evaluated projects first)
+                        const sortedProjects = commonProjects
+                          .map(project => ({
+                            name: project,
+                            user1: user1Data.stats.projectStats[project],
+                            user2: user2Data.stats.projectStats[project],
+                            totalEvals: (user1Data.stats.projectStats[project]?.count || 0) + (user2Data.stats.projectStats[project]?.count || 0)
+                          }))
+                          .filter(p => p.totalEvals > 0)
+                          .sort((a, b) => b.totalEvals - a.totalEvals)
+                          .slice(0, 8); // Show top 8 projects
+
+                        if (sortedProjects.length === 0) {
+                          return <div className="text-center text-muted-foreground py-8">No common projects found</div>;
+                        }
+
+                        return (
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Project</TableHead>
+                                <TableHead className="text-center">{user1Data.profile?.login || login}</TableHead>
+                                <TableHead className="text-center">{user2Data.profile?.login || compareLogin}</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {sortedProjects.map((project) => {
+                                const user1Outstanding = project.user1.outstandingCount || 0;
+                                const user1Total = project.user1.count || 0;
+                                const user2Outstanding = project.user2.outstandingCount || 0;
+                                const user2Total = project.user2.count || 0;
+
+                                const user1OutstandingRate = user1Total > 0 ? (user1Outstanding / user1Total * 100) : 0;
+                                const user2OutstandingRate = user2Total > 0 ? (user2Outstanding / user2Total * 100) : 0;
+
+                                return (
+                                  <TableRow key={project.name}>
+                                    <TableCell className="font-medium">
+                                      {project.name}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <div className="space-y-1">
+                                        <div className="font-mono text-sm">{user1Outstanding}/{user1Total}</div>
+                                        <div className="text-xs text-muted-foreground">
+                                          {user1OutstandingRate.toFixed(0)}% outstanding
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <div className="space-y-1">
+                                        <div className="font-mono text-sm">{user2Outstanding}/{user2Total}</div>
+                                        <div className="text-xs text-muted-foreground">
+                                          {user2OutstandingRate.toFixed(0)}% outstanding
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                );
+                              })}
+                            </TableBody>
+                          </Table>
+                        );
+                      })()}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Evaluation Quality Summary */}
+                <Card className="dark:bg-background/30">
+                  <CardHeader>
+                    <CardTitle className="font-mono">Evaluation Quality Summary</CardTitle>
+                    <CardDescription>
+                      Overall evaluation performance and feedback quality
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="space-y-4">
+                        <h4 className="font-semibold font-mono text-center">{user1Data.profile?.login || login}</h4>
+                        <div className="grid grid-cols-2 gap-4 text-center">
+                          <div>
+                            <div className="text-2xl font-bold text-primary">
+                              {user1Data.stats.averageRating ? user1Data.stats.averageRating.toFixed(1) : 'N/A'}
+                            </div>
+                            <div className="text-sm text-muted-foreground">avg rating received</div>
+                          </div>
+                          <div>
+                            <div className="text-2xl font-bold text-primary">
+                              {user1Data.stats.totalFeedback}
+                            </div>
+                            <div className="text-sm text-muted-foreground">feedback sessions</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h4 className="font-semibold font-mono text-center">{user2Data.profile?.login || compareLogin}</h4>
+                        <div className="grid grid-cols-2 gap-4 text-center">
+                          <div>
+                            <div className="text-2xl font-bold text-primary">
+                              {user2Data.stats.averageRating ? user2Data.stats.averageRating.toFixed(1) : 'N/A'}
+                            </div>
+                            <div className="text-sm text-muted-foreground">avg rating received</div>
+                          </div>
+                          <div>
+                            <div className="text-2xl font-bold text-primary">
+                              {user2Data.stats.totalFeedback}
+                            </div>
+                            <div className="text-sm text-muted-foreground">feedback sessions</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </div>
@@ -539,11 +633,20 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        {stats && evaluationsData.length > 0 && (
-          <EvaluationsCard stats={stats} evaluationsData={evaluationsData} />
+        {/* Single User Results - only show when not in comparison mode */}
+        {!user1Data && !user2Data && (
+          <>
+            {stats && evaluationsData.length > 0 && (
+              <EvaluationsCard
+                stats={stats}
+                evaluationsData={evaluationsData}
+                onStartComparison={startComparison}
+              />
+            )}
+            {cPiscineStats && <AcademicPerformanceCard stats={cPiscineStats} />}
+            {hallVoiceSounds && <HallVoiceCard sounds={hallVoiceSounds} />}
+          </>
         )}
-        {cPiscineStats && <AcademicPerformanceCard stats={cPiscineStats} />}
-        {hallVoiceSounds && <HallVoiceCard sounds={hallVoiceSounds} />}
       </div>
     </main>
   );
