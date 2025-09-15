@@ -1,13 +1,13 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { projectMap } from "@/components/projectMap";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 import { Evaluation } from "@/lib/api";
-import { projectMap } from "@/components/projectMap";
 import Link from "next/link";
 
 const EXCLUDED_FEEDBACK_MESSAGES = new Set([
@@ -45,8 +45,7 @@ export function EvaluationDetailsModal({
     }
   };
 
-  // Filtering logic
-  let filteredEvaluations: Evaluation[] = [];
+    let filteredEvaluations: Evaluation[] = [];
 
   if (range.startsWith("rating-")) {
     const targetRating = parseInt(range.replace("rating-", ""));

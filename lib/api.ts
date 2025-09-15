@@ -423,15 +423,13 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
     }
   });
 
-  // Sort exams in the correct order: Exam 00, Exam 01, Exam 02, Final Exam
-  examResults.sort((a, b) => {
+    examResults.sort((a, b) => {
     const getExamOrder = (examName: string) => {
       if (examName.includes("Exam 00") || examName.includes("Exam00")) return 0;
       if (examName.includes("Exam 01") || examName.includes("Exam01")) return 1;
       if (examName.includes("Exam 02") || examName.includes("Exam02")) return 2;
       if (examName.includes("Final Exam") || examName.includes("Exam Final")) return 3;
-      return 4; // Any other exams go at the end
-    };
+      return 4;     };
 
     return getExamOrder(a.name) - getExamOrder(b.name);
   });
@@ -442,8 +440,7 @@ export function calculateCPiscineExamStats(studentProfile: StudentProfile): CPis
     ? examResults.reduce((sum, exam) => sum + exam.mark, 0) / totalExams
     : 0;
 
-  // Prepare evolution data for chart
-  const evolution = {
+    const evolution = {
     labels: examResults.map(exam =>
       exam.name.startsWith("C Piscine ")
         ? exam.name.replace("C Piscine ", "")

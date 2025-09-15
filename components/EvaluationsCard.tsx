@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, ArrowUpDown } from "lucide-react";
+import { ChevronDown, ChevronUp, ArrowUpDown, GitCompare } from "lucide-react";
 import { EvaluationQualityMetrics } from "@/components/EvaluationQualityMetrics";
 import { EvaluationDetailsModal } from "@/components/EvaluationDetailsModal";
 import { type EvaluationStats, type Evaluation } from "@/lib/api";
@@ -23,6 +23,7 @@ import {
 interface EvaluationsCardProps {
   stats: EvaluationStats;
   evaluationsData: Evaluation[];
+  onStartComparison?: () => void;
 }
 
 type SortField = "project" | "total" | "ok" | "outstanding" | "ko";
@@ -31,6 +32,7 @@ type SortDirection = "asc" | "desc";
 export function EvaluationsCard({
   stats,
   evaluationsData,
+  onStartComparison,
 }: EvaluationsCardProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [sortField, setSortField] = useState<SortField>("total");
@@ -133,18 +135,31 @@ export function EvaluationsCard({
             Comprehensive statistics and analysis of student evaluations as a corrector
           </CardDescription>
         </div>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="h-8 w-8"
-        >
-          {isExpanded ? (
-            <ChevronUp className="h-4 w-4" />
-          ) : (
-            <ChevronDown className="h-4 w-4" />
+        <div className="flex gap-2">
+          {onStartComparison && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onStartComparison}
+              className="flex items-center gap-2"
+            >
+              <GitCompare className="h-4 w-4" />
+              Compare
+            </Button>
           )}
-        </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="h-8 w-8"
+          >
+            {isExpanded ? (
+              <ChevronUp className="h-4 w-4" />
+            ) : (
+              <ChevronDown className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </CardHeader>
       {isExpanded && (
         <CardContent className="space-y-6">
