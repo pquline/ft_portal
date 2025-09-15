@@ -281,7 +281,7 @@ export default function Home() {
         performSearch(normalizedQueryLogin);
       }
     }
-  }, [searchParams, accessToken, performSearch]);
+  }, [searchParams, accessToken, performSearch, login]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -467,7 +467,7 @@ export default function Home() {
                                 const percentage = totalFlags > 0 ? (count / totalFlags * 100) : 0;
                                 const flagColor = flag === "Ok" ? "oklch(0.723 0.219 149.579)" :
                                                  flag === "Outstanding project" ? "oklch(0.541 0.281 293.009)" :
-                                                 "hsl(var(--chart-1))";
+                                                 "oklch(0.714 0.214 27.33)";
 
                                 return (
                                   <div key={flag} className="flex items-center justify-between p-3 rounded-lg bg-background/50">
