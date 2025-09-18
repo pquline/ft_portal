@@ -36,7 +36,7 @@ import {
 import { X } from "lucide-react";
 import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export default function Home() {
@@ -276,12 +276,10 @@ export default function Home() {
     const loginFromQuery = searchParams.get("login");
     if (loginFromQuery && loginFromQuery.trim() && accessToken) {
       const normalizedQueryLogin = loginFromQuery.toLowerCase();
-      if (login !== normalizedQueryLogin) {
-        setLogin(normalizedQueryLogin);
-        performSearch(normalizedQueryLogin);
-      }
+      setLogin(normalizedQueryLogin);
+      performSearch(normalizedQueryLogin);
     }
-  }, [searchParams, accessToken, performSearch, login]);
+  }, [searchParams, accessToken, performSearch]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
