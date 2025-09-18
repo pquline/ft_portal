@@ -36,7 +36,7 @@ import {
 import { X } from "lucide-react";
 import Head from "next/head";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function Home() {
